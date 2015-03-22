@@ -26,7 +26,7 @@ namespace Serilog
     {
         const string DefaultOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}{Exception}";
 
-        public static LoggerConfiguration EventLog(
+        public static LoggerConfiguration Udp(
             this LoggerSinkConfiguration sinkConfiguration,
             int localPort,
             IPAddress remoteAddress,
