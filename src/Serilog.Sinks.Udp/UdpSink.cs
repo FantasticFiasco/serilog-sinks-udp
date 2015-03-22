@@ -76,8 +76,12 @@ namespace Serilog.Sinks.Udp
                     using (var stringWriter = new StringWriter())
                     {
                         textFormatter.Format(logEvent, stringWriter);
+
+                        byte[] buffer = encoding.GetBytes(stringWriter
+                            .ToString()
+                            .Trim()
+                            .ToCharArray());
                         
-                        byte[] buffer = encoding.GetBytes(stringWriter.ToString().ToCharArray());
                         client.Send(buffer, buffer.Length, remoteEndPoint);
                     }
                 }
