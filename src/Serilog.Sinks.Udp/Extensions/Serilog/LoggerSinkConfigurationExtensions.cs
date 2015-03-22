@@ -13,8 +13,11 @@
 // limitations under the License.
 
 using System;
+using System.Net;
 using Serilog.Configuration;
 using Serilog.Events;
+using Serilog.Formatting.Display;
+using Serilog.Sinks.Udp;
 
 // ReSharper disable once CheckNamespace
 namespace Serilog
@@ -24,12 +27,19 @@ namespace Serilog
         const string DefaultOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}{Exception}";
 
         public static LoggerConfiguration EventLog(
-            this LoggerSinkConfiguration loggerConfiguration,
+            this LoggerSinkConfiguration sinkConfiguration,
+            int localPort,
+            IPAddress remoteAddress,
+            int remotePort,
             string outputTemplate = DefaultOutputTemplate,
             IFormatProvider formatProvider = null,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum)
         {
-            throw new NotImplementedException();
+            if (sinkConfiguration == null) throw new ArgumentNullException("sinkConfiguration");
+
+            var formatter = new MessageTemplateTextFormatter(outputTemplate, formatProvider);
+            var sink = new UdpSink(localPort, remoteAddress, remotePort, formatter);
+            return sinkConfiguration.Sink(sink, restrictedToMinimumLevel);
         }
     }
 }
