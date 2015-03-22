@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serilog.Sinks.Udp", "Serilog.Sinks.Udp\Serilog.Sinks.Udp.csproj", "{51F7D329-3005-4ED8-977C-A972E007BE75}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serilog.Sinks.Udp", "src\Serilog.Sinks.Udp\Serilog.Sinks.Udp.csproj", "{51F7D329-3005-4ED8-977C-A972E007BE75}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9E11ECE9-3E85-47DE-83A4-3686F7C7E359}"
 	ProjectSection(SolutionItems) = preProject
