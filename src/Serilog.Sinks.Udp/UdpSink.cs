@@ -24,6 +24,7 @@ using Serilog.Formatting;
 
 namespace Serilog.Sinks.Udp
 {
+    // https://sentinel.codeplex.com/
     public sealed class UdpSink : ILogEventSink, IDisposable
     {
         private readonly IPEndPoint remoteEndPoint;
