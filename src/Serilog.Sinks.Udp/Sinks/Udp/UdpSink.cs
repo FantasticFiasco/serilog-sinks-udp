@@ -24,7 +24,9 @@ using Serilog.Formatting;
 
 namespace Serilog.Sinks.Udp
 {
-    // https://log2console.codeplex.com/
+    /// <summary>
+    /// Send log events as UDP packages over the network.
+    /// </summary>
     public sealed class UdpSink : ILogEventSink, IDisposable
     {
         private readonly IPEndPoint remoteEndPoint;
@@ -33,7 +35,27 @@ namespace Serilog.Sinks.Udp
         private readonly object syncRoot = new object();
         
         private UdpClient client;
-        
+
+        /// <summary>
+        /// Construct a <see cref="UdpSink"/>.
+        /// </summary>
+        /// <param name="localPort">
+        /// The TCP port from which the UDP client will communicate. Setting the value to 0 will
+        /// cause the UDP client not to bind to a local port.
+        /// </param>
+        /// <param name="remoteAddress">
+        /// The <see cref="IPAddress"/> of the remote host or multicast group to which the UDP
+        /// client should sent the logging event.
+        /// </param>
+        /// <param name="remotePort">
+        /// The TCP port of the remote host or multicast group to which the UDP client should sent
+        /// the logging event.
+        /// </param>
+        /// <param name="textFormatter">Formatter used to convert log events to text.</param>
+        /// <param name="encoding">
+        /// Character encoding used to write the data on the UDP package. The default is
+        /// <see cref="Encoding.Default"/>.
+        /// </param>
         public UdpSink(
             int localPort,
             IPAddress remoteAddress,
@@ -96,6 +118,10 @@ namespace Serilog.Sinks.Udp
 
         #region IDisposable Members
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting
+        /// unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             if (client != null)
