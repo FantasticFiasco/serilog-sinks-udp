@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Serilog.Sinks.UDP</id>
+    <version>$version$-beta</version>
+    <authors>Mattias Kindborg</authors>
+    <language>en-US</language>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>http://serilog.net</projectUrl>
+    <iconUrl>http://serilog.net/images/serilog-nuget.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Serilog event sink that sends UDP packages over the network.</description>
+    <tags>serilog logging udp</tags>
+    <dependencies>
+      <dependency id="Serilog" />
+    </dependencies>
+  </metadata>
+  <files>
+      <file src="bin\Release\Serilog.Sinks.Udp.dll" target="lib\net45\Serilog.Sinks.Udp.dll" />
+      <file src="bin\Release\Serilog.Sinks.Udp.XML" target="lib\net45\Serilog.Sinks.Udp.XML" />
+  </files>
+</package>
