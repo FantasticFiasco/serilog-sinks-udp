@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9E11EC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{5FB2BC94-DF8F-40D6-B0AF-C825C0DD85FD}"
 	ProjectSection(SolutionItems) = preProject
+		Build.bat = Build.bat
 		README.md = README.md
 		assets\Serilog.snk = assets\Serilog.snk
 	EndProjectSection

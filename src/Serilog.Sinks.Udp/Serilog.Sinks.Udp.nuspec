@@ -12,11 +12,7 @@
     <description>Serilog event sink that sends UDP packages over the network.</description>
     <tags>serilog logging udp</tags>
     <dependencies>
-      <dependency id="Serilog" />
+      <dependency id="Serilog" version="[1.4.204,)" />
     </dependencies>
   </metadata>
-  <files>
-      <file src="bin\Release\Serilog.Sinks.Udp.dll" target="lib\net45\Serilog.Sinks.Udp.dll" />
-      <file src="bin\Release\Serilog.Sinks.Udp.XML" target="lib\net45\Serilog.Sinks.Udp.XML" />
-  </files>
 </package>
