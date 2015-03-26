@@ -1,6 +1,6 @@
 # serilog-sinks-udp
 
-A sink for Serilog that sends UDP packages over the network. Published to [NuGet](https://www.nuget.org/packages/serilog.sinks.udp).
+A Serilog sink that sends UDP packages over the network. Published to [NuGet](https://www.nuget.org/packages/serilog.sinks.udp).
 
 ### Usage
 
