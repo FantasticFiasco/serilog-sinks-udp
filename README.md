@@ -1,3 +1,12 @@
 # serilog-sinks-udp
-# Link to https://log2console.codeplex.com/
-A UDP sink for Serilog
+
+A sink for Serilog that sends UPD packages over the network. Published to [NuGet](https://www.nuget.org/packages/serilog.sinks.udp).
+
+### Usage
+
+<pre>
+    Serilog.ILogger log = new LoggerConfiguration()
+        .MinimumLevel.Verbose()
+        .WriteTo.Udp(IPAddress.Loopback, 7071)
+        .CreateLogger();
+</pre>
