@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serilog.Sinks.Udp", "src\Serilog.Sinks.Udp\Serilog.Sinks.Udp.csproj", "{51F7D329-3005-4ED8-977C-A972E007BE75}"
 EndProject
@@ -12,11 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9E11EC
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{5FB2BC94-DF8F-40D6-B0AF-C825C0DD85FD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{21948E8D-F145-4F2C-86FF-95521C2F7D5C}"
 	ProjectSection(SolutionItems) = preProject
-		Build.bat = Build.bat
+		CHANGELOG.md = CHANGELOG.md
+		LICENSE = LICENSE
 		README.md = README.md
-		assets\Serilog.snk = assets\Serilog.snk
 	EndProjectSection
 EndProject
 Global

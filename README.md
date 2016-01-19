@@ -10,11 +10,3 @@ A Serilog sink that sends UDP packages over the network. Published to [NuGet](ht
         .WriteTo.Udp(IPAddress.Loopback, 7071)
         .CreateLogger();
 </pre>
-
-### Versions
-
-#### 1.0.1
-Updated NuGet package icon to reflect that the package is a Serilog sink on not Serilog itself
-
-#### 1.0.0
-Initial version
