@@ -6,9 +6,11 @@ A Serilog sink that sends UDP packages over the network. Published to [NuGet](ht
 
 ### Usage
 
+```c#
 <pre>
     Serilog.ILogger log = new LoggerConfiguration()
         .MinimumLevel.Verbose()
         .WriteTo.Udp(IPAddress.Loopback, 7071)
         .CreateLogger();
 </pre>
+```
