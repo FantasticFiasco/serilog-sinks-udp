@@ -29,11 +29,23 @@ pull_requests:
 
 skip_tags: true
 
-configuration: Release
-
 build:
   publish_nuget: true
   verbosity: minimal
+
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+build_script:
+  - cmd: set SOLUTION=Serilog.Sinks.Udp.sln
+  - cmd: set PROJECT=src\Serilog.Sinks.Udp\Serilog.Sinks.Udp.csproj
+  - cmd: set LOGGER=C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll
+
+  - cmd: msbuild %SOLUTION% /t:Rebuild /p:Configuration=Release;TargetFrameworkVersion=v4.0 /m /logger:"%LOGGER%"
+  - cmd: msbuild %SOLUTION% /t:Rebuild /p:Configuration=Release;TargetFrameworkVersion=v4.5 /m /logger:"%LOGGER%"
+  
+  - cmd: nuget pack -Prop Configuration=Release %PROJECT%
 
 
 #---------------------------------#

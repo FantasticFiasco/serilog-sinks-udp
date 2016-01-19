@@ -15,4 +15,10 @@
       <dependency id="Serilog" version="[1.4.204,)" />
     </dependencies>
   </metadata>
+  <files>
+    <file src="src\Serilog.Sinks.Udp\bin\Release\net40\Serilog.Sinks.Udp.dll" target="lib\net40\Serilog.Sinks.Udp.dll" />
+    <file src="src\Serilog.Sinks.Udp\bin\Release\net40\Serilog.Sinks.Udp.xml" target="lib\net40\Serilog.Sinks.Udp.xml" />
+    <file src="src\Serilog.Sinks.Udp\bin\Release\net45\Serilog.Sinks.Udp.dll" target="lib\net45\Serilog.Sinks.Udp.dll" />
+    <file src="src\Serilog.Sinks.Udp\bin\Release\net45\Serilog.Sinks.Udp.xml" target="lib\net45\Serilog.Sinks.Udp.xml" />
+  </files>
 </package>
