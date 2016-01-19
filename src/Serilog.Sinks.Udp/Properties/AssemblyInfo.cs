@@ -5,7 +5,7 @@
 // associated with an assembly.
 [assembly: AssemblyTitle("Serilog.Sinks.Udp")]
 [assembly: AssemblyDescription("Serilog sink for UDP")]
-[assembly: AssemblyCopyright("Copyright © Serilog Contributors 2015")]
+[assembly: AssemblyCopyright("Copyright © Serilog Contributors 2015-2016")]
 
 // Version information for an assembly consists of the following four values:
 //
