@@ -64,13 +64,13 @@ namespace Serilog.Sinks.Udp
             Encoding encoding = null)
         {
             if (localPort < IPEndPoint.MinPort || localPort > IPEndPoint.MaxPort)
-                throw new ArgumentOutOfRangeException("localPort");
+                throw new ArgumentOutOfRangeException(nameof(localPort));
             if (remoteAddress == null)
-                throw new ArgumentNullException("remoteAddress");
+                throw new ArgumentNullException(nameof(remoteAddress));
             if (remotePort < IPEndPoint.MinPort || remotePort > IPEndPoint.MaxPort)
-                throw new ArgumentOutOfRangeException("remotePort");
+                throw new ArgumentOutOfRangeException(nameof(remotePort));
             if (textFormatter == null)
-                throw new ArgumentNullException("textFormatter");
+                throw new ArgumentNullException(nameof(textFormatter));
 
             remoteEndPoint = new IPEndPoint(remoteAddress, remotePort);
             this.textFormatter = textFormatter;
@@ -89,7 +89,7 @@ namespace Serilog.Sinks.Udp
         /// <param name="logEvent">The log event to write.</param>
         public void Emit(LogEvent logEvent)
         {
-            if (logEvent == null) throw new ArgumentNullException("logEvent");
+            if (logEvent == null) throw new ArgumentNullException(nameof(logEvent));
 
             try
             {

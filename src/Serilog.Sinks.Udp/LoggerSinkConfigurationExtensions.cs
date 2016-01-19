@@ -65,7 +65,7 @@ namespace Serilog
             string outputTemplate = DefaultOutputTemplate,
             IFormatProvider formatProvider = null)
         {
-            if (sinkConfiguration == null) throw new ArgumentNullException("sinkConfiguration");
+            if (sinkConfiguration == null) throw new ArgumentNullException(nameof(sinkConfiguration));
 
             var formatter = new MessageTemplateTextFormatter(outputTemplate, formatProvider);
             var sink = new UdpSink(localPort, remoteAddress, remotePort, formatter);
