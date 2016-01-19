@@ -6,7 +6,7 @@
     <authors>Mattias Kindborg</authors>
     <language>en-US</language>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
-    <projectUrl>http://serilog.net</projectUrl>
+    <projectUrl>https://github.com/FantasticFiasco/serilog-sinks-udp</projectUrl>
     <iconUrl>http://serilog.net/images/serilog-sink-nuget.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Serilog event sink that sends UDP packages over the network.</description>
