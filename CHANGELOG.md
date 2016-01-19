@@ -6,6 +6,12 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+## 1.1.0 2016-01-19
+
+### Added
+
+- Added support for Serilog v1.5.14.
+
 ## 1.0.1 2015-03-30
 
 ### Fixed
