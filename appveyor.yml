@@ -30,6 +30,7 @@ pull_requests:
 skip_tags: true
 
 build:
+  publish_nuget: true
   verbosity: minimal
 
 
