@@ -126,6 +126,9 @@ namespace Serilog.Sinks.Udp
         {
             if (client != null)
             {
+                // UdpClient does not implement IDisposable, but calling Close disables the
+                // underlying socket and releases all managed and unmanaged resources associated
+                // with the instance.
                 client.Close();
                 client = null;
             }
