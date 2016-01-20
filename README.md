@@ -2,7 +2,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/p7gx5eltx8u0op7d?svg=true)](https://ci.appveyor.com/project/FantasticFiasco/serilog-sinks-udp)
 
-A Serilog sink that sends UDP packages over the network.
+A [Serilog](http://serilog.net/) sink that sends UDP packages over the network.
 
 ### Usage
 
