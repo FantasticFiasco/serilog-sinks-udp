@@ -1,12 +1,15 @@
-# UDP sink for Serilog
+# Serilog.Sinks.UDP
 
 [![Build status](https://ci.appveyor.com/api/projects/status/p7gx5eltx8u0op7d?svg=true)](https://ci.appveyor.com/project/FantasticFiasco/serilog-sinks-udp)
 
 A [Serilog](http://serilog.net/) sink that sends UDP packages over the network.
 
-### Usage
+**Package** - [Serilog.Sinks.UDP](https://www.nuget.org/packages/serilog.sinks.udp)
+| **Platforms** - .NET 4.6, .NETStandard 1.5
 
-```c#
+In the example shown, the sink will send UDP packages on the network to localhost on port 7071.
+
+```csharp
 Serilog.ILogger log = new LoggerConfiguration()
   .MinimumLevel.Verbose()
   .WriteTo.Udp(IPAddress.Loopback, 7071)
