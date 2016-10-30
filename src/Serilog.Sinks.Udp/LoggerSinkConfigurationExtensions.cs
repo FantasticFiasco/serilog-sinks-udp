@@ -22,11 +22,11 @@ using Serilog.Sinks.Udp;
 namespace Serilog
 {
     /// <summary>
-    /// Extends <see cref="LoggerConfiguration"/> to add UDP sink capabilities.
+    /// Adds the WriteTo.Udp() extension method to <see cref="LoggerConfiguration"/>.
     /// </summary>
     public static class LoggerSinkConfigurationExtensions
     {
-        private const string DefaultOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}{Exception}";
+        private const string DefaultOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}";
 
         /// <summary>
         /// Send log events as UDP packages over the network.
@@ -50,7 +50,7 @@ namespace Serilog
         /// </param>
         /// <param name="outputTemplate">
         /// A message template describing the format used to write to the sink. The default is
-        /// "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}{Exception}".
+        /// "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}".
         /// </param>
         /// <param name="formatProvider">
         /// Supplies culture-specific formatting information, or null.
@@ -65,7 +65,8 @@ namespace Serilog
             string outputTemplate = DefaultOutputTemplate,
             IFormatProvider formatProvider = null)
         {
-            if (sinkConfiguration == null) throw new ArgumentNullException(nameof(sinkConfiguration));
+            if (sinkConfiguration == null)
+                throw new ArgumentNullException(nameof(sinkConfiguration));
 
             var formatter = new MessageTemplateTextFormatter(outputTemplate, formatProvider);
             var sink = new UdpSink(localPort, remoteAddress, remotePort, formatter);

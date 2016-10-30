@@ -13,27 +13,28 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using Serilog.Core;
+using System.Threading.Tasks;
 using Serilog.Debugging;
 using Serilog.Events;
 using Serilog.Formatting;
+using Serilog.Sinks.PeriodicBatching;
 
 namespace Serilog.Sinks.Udp
 {
     /// <summary>
     /// Send log events as UDP packages over the network.
     /// </summary>
-    public sealed class UdpSink : ILogEventSink, IDisposable
+    public sealed class UdpSink : PeriodicBatchingSink
     {
         private readonly IPEndPoint remoteEndPoint;
         private readonly ITextFormatter textFormatter;
         private readonly Encoding encoding;
-        private readonly object syncRoot = new object();
-        
+
         private UdpClient client;
 
         /// <summary>
@@ -54,7 +55,7 @@ namespace Serilog.Sinks.Udp
         /// <param name="textFormatter">Formatter used to convert log events to text.</param>
         /// <param name="encoding">
         /// Character encoding used to write the data on the UDP package. The default is
-        /// <see cref="Encoding.Default"/>.
+        /// <see cref="Encoding.GetEncoding(int)"/>.
         /// </param>
         public UdpSink(
             int localPort,
@@ -62,6 +63,7 @@ namespace Serilog.Sinks.Udp
             int remotePort,
             ITextFormatter textFormatter,
             Encoding encoding = null)
+            : base(1000, TimeSpan.FromSeconds(0.5))
         {
             if (localPort < IPEndPoint.MinPort || localPort > IPEndPoint.MaxPort)
                 throw new ArgumentOutOfRangeException(nameof(localPort));
@@ -74,63 +76,69 @@ namespace Serilog.Sinks.Udp
 
             remoteEndPoint = new IPEndPoint(remoteAddress, remotePort);
             this.textFormatter = textFormatter;
-            this.encoding = encoding ?? Encoding.Default;
+            this.encoding = encoding ?? Encoding.GetEncoding(0);
 
-            client = localPort == 0 ?
-                new UdpClient(remoteAddress.AddressFamily) :
-                new UdpClient(localPort, remoteAddress.AddressFamily);
+            client = localPort == 0
+                ? new UdpClient(remoteAddress.AddressFamily)
+                : new UdpClient(localPort, remoteAddress.AddressFamily);
         }
-        
-        #region ILogEventSink Members
+
+        #region PeriodicBatchingSink Members
 
         /// <summary>
-        /// Emit the provided log event to the sink.
+        /// Emit a batch of log events, running asynchronously.
         /// </summary>
-        /// <param name="logEvent">The log event to write.</param>
-        public void Emit(LogEvent logEvent)
+        /// <param name="events">The events to emit.</param>
+        protected override async Task EmitBatchAsync(IEnumerable<LogEvent> events)
         {
-            if (logEvent == null) throw new ArgumentNullException(nameof(logEvent));
-
-            try
+            foreach (LogEvent logEvent in events)
             {
-                lock (syncRoot)
+                try
                 {
                     using (var stringWriter = new StringWriter())
                     {
                         textFormatter.Format(logEvent, stringWriter);
 
-                        byte[] buffer = encoding.GetBytes(stringWriter
-                            .ToString()
-                            .Trim()
-                            .ToCharArray());
+                        byte[] buffer = encoding.GetBytes(
+                            stringWriter
+                                .ToString()
+                                .Trim()
+                                .ToCharArray());
 
-                        client.Send(buffer, buffer.Length, remoteEndPoint);
+                        await client.SendAsync(buffer, buffer.Length, remoteEndPoint);
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                SelfLog.WriteLine("Failed to send UDP package. {0}", e);
+                catch (Exception e)
+                {
+                    SelfLog.WriteLine("Failed to send UDP package. {0}", e);
+                }
             }
         }
 
-        #endregion
-
-        #region IDisposable Members
-
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting
-        /// unmanaged resources.
+        /// Free resources held by the sink.
         /// </summary>
-        public void Dispose()
+        /// <param name="disposing">
+        /// If true, called because the object is being disposed; if false, the object is being
+        /// disposed from the finalizer.
+        /// </param>
+        protected override void Dispose(bool disposing)
         {
-            if (client != null)
+            base.Dispose(disposing);
+
+            if (disposing && client != null)
             {
+#if NET4
                 // UdpClient does not implement IDisposable, but calling Close disables the
                 // underlying socket and releases all managed and unmanaged resources associated
                 // with the instance.
                 client.Close();
+#else
+                client.Dispose();
+
+#endif
                 client = null;
+
             }
         }
 
