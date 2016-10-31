@@ -6,17 +6,22 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+### Added
+
+- Support for Serilog 2.0.0
+- Support for .NET Standard 1.5
+
 ## 1.1.0 2016-01-19
 
 ### Added
 
-- Added support for Serilog v1.5.14.
+- Support for Serilog v1.5.14.
 
 ## 1.0.1 2015-03-30
 
 ### Fixed
 
-- Fixed URL to NuGet package icon.
+- URL to NuGet package icon.
 
 ## 1.0.0 - 2015-03-26
 
