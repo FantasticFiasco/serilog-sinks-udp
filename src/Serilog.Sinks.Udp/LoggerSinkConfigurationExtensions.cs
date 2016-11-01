@@ -68,8 +68,9 @@ namespace Serilog
             if (sinkConfiguration == null)
                 throw new ArgumentNullException(nameof(sinkConfiguration));
 
+            var client = new UdpClientWrapper(localPort, remoteAddress);
             var formatter = new MessageTemplateTextFormatter(outputTemplate, formatProvider);
-            var sink = new UdpSink(localPort, remoteAddress, remotePort, formatter);
+            var sink = new UdpSink(client, remoteAddress, remotePort, formatter);
             return sinkConfiguration.Sink(sink, restrictedToMinimumLevel);
         }
     }
