@@ -32,7 +32,7 @@ namespace Serilog.Sinks.Udp
     public sealed class UdpSink : PeriodicBatchingSink
     {
         private readonly IPEndPoint remoteEndPoint;
-        private readonly ITextFormatter textFormatter;
+        private readonly ITextFormatter formatter;
         private readonly Encoding encoding;
 
         private UdpClient client;
@@ -52,7 +52,7 @@ namespace Serilog.Sinks.Udp
         /// The TCP port of the remote host or multicast group to which the UDP client should sent
         /// the logging event.
         /// </param>
-        /// <param name="textFormatter">Formatter used to convert log events to text.</param>
+        /// <param name="formatter">Formatter used to convert log events to text.</param>
         /// <param name="encoding">
         /// Character encoding used to write the data on the UDP package. The default is
         /// <see cref="Encoding.GetEncoding(int)"/>.
@@ -61,7 +61,7 @@ namespace Serilog.Sinks.Udp
             int localPort,
             IPAddress remoteAddress,
             int remotePort,
-            ITextFormatter textFormatter,
+            ITextFormatter formatter,
             Encoding encoding = null)
             : base(1000, TimeSpan.FromSeconds(0.5))
         {
@@ -71,11 +71,11 @@ namespace Serilog.Sinks.Udp
                 throw new ArgumentNullException(nameof(remoteAddress));
             if (remotePort < IPEndPoint.MinPort || remotePort > IPEndPoint.MaxPort)
                 throw new ArgumentOutOfRangeException(nameof(remotePort));
-            if (textFormatter == null)
-                throw new ArgumentNullException(nameof(textFormatter));
+            if (formatter == null)
+                throw new ArgumentNullException(nameof(formatter));
 
             remoteEndPoint = new IPEndPoint(remoteAddress, remotePort);
-            this.textFormatter = textFormatter;
+            this.formatter = formatter;
             this.encoding = encoding ?? Encoding.GetEncoding(0);
 
             client = localPort == 0
@@ -97,7 +97,7 @@ namespace Serilog.Sinks.Udp
                 {
                     using (var stringWriter = new StringWriter())
                     {
-                        textFormatter.Format(logEvent, stringWriter);
+                        formatter.Format(logEvent, stringWriter);
 
                         byte[] buffer = encoding.GetBytes(
                             stringWriter
