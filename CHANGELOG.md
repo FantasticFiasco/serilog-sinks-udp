@@ -6,7 +6,13 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
-## 2.0.0 2016-01-31
+## 2.1.0 2016-11-01
+
+### Added
+
+- Support for specifying a log event formatter
+
+## 2.0.0 2016-10-31
 
 ### Added
 
