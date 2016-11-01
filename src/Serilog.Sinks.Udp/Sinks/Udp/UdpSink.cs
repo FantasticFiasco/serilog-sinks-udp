@@ -16,7 +16,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Serilog.Debugging;
@@ -35,14 +34,13 @@ namespace Serilog.Sinks.Udp
         private readonly ITextFormatter textFormatter;
         private readonly Encoding encoding;
 
-        private UdpClient client;
+        private IUdpClient client;
 
         /// <summary>
         /// Construct a <see cref="UdpSink"/>.
         /// </summary>
-        /// <param name="localPort">
-        /// The TCP port from which the UDP client will communicate. Setting the value to 0 will
-        /// cause the UDP client not to bind to a local port.
+        /// <param name="client">
+        /// The UDP client responsible for sending multicast messages.
         /// </param>
         /// <param name="remoteAddress">
         /// The <see cref="IPAddress"/> of the remote host or multicast group to which the UDP
@@ -58,15 +56,15 @@ namespace Serilog.Sinks.Udp
         /// <see cref="Encoding.GetEncoding(int)"/>.
         /// </param>
         public UdpSink(
-            int localPort,
+            IUdpClient client,
             IPAddress remoteAddress,
             int remotePort,
             ITextFormatter textFormatter,
             Encoding encoding = null)
             : base(1000, TimeSpan.FromSeconds(0.5))
         {
-            if (localPort < IPEndPoint.MinPort || localPort > IPEndPoint.MaxPort)
-                throw new ArgumentOutOfRangeException(nameof(localPort));
+            if (client == null)
+                throw new ArgumentNullException(nameof(client));
             if (remoteAddress == null)
                 throw new ArgumentNullException(nameof(remoteAddress));
             if (remotePort < IPEndPoint.MinPort || remotePort > IPEndPoint.MaxPort)
@@ -77,10 +75,7 @@ namespace Serilog.Sinks.Udp
             remoteEndPoint = new IPEndPoint(remoteAddress, remotePort);
             this.textFormatter = textFormatter;
             this.encoding = encoding ?? Encoding.GetEncoding(0);
-
-            client = localPort == 0
-                ? new UdpClient(remoteAddress.AddressFamily)
-                : new UdpClient(localPort, remoteAddress.AddressFamily);
+            this.client = client;
         }
 
         #region PeriodicBatchingSink Members
