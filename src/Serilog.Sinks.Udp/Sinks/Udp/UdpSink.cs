@@ -32,7 +32,6 @@ namespace Serilog.Sinks.Udp
     {
         private readonly IPEndPoint remoteEndPoint;
         private readonly ITextFormatter formatter;
-        private readonly Encoding encoding;
 
         private IUdpClient client;
 
@@ -51,16 +50,11 @@ namespace Serilog.Sinks.Udp
         /// the logging event.
         /// </param>
         /// <param name="formatter">Formatter used to convert log events to text.</param>
-        /// <param name="encoding">
-        /// Character encoding used to write the data on the UDP package. The default is
-        /// <see cref="Encoding.GetEncoding(int)"/>.
-        /// </param>
         public UdpSink(
             IUdpClient client,
             IPAddress remoteAddress,
             int remotePort,
-            ITextFormatter formatter,
-            Encoding encoding = null)
+            ITextFormatter formatter)
             : base(1000, TimeSpan.FromSeconds(0.5))
         {
             if (client == null)
@@ -74,7 +68,6 @@ namespace Serilog.Sinks.Udp
 
             remoteEndPoint = new IPEndPoint(remoteAddress, remotePort);
             this.formatter = formatter;
-            this.encoding = encoding ?? Encoding.GetEncoding(0);
             this.client = client;
         }
 
@@ -94,7 +87,7 @@ namespace Serilog.Sinks.Udp
                     {
                         formatter.Format(logEvent, stringWriter);
 
-                        byte[] buffer = encoding.GetBytes(
+                        byte[] buffer = Encoding.UTF8.GetBytes(
                             stringWriter
                                 .ToString()
                                 .Trim()
