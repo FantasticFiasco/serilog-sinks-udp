@@ -30,7 +30,7 @@ namespace Serilog
         private const string DefaultOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}";
 
         /// <summary>
-        /// Send log events as UDP packages over the network.
+        /// Adds a sink that sends log events as UDP packages over the network.
         /// </summary>
         /// <param name="sinkConfiguration">Logger sink configuration.</param>
         /// <param name="remoteAddress">
