@@ -56,7 +56,7 @@ namespace Serilog
         /// <param name="formatProvider">
         /// Supplies culture-specific formatting information, or null.
         /// </param>
-        /// <returns>Configuration object allowing method chaining.</returns>
+        /// <returns>Logger configuration, allowing configuration to continue.</returns>
         public static LoggerConfiguration Udp(
             this LoggerSinkConfiguration sinkConfiguration,
             IPAddress remoteAddress,
@@ -82,7 +82,7 @@ namespace Serilog
         }
 
         /// <summary>
-        /// Send log events as UDP packages over the network.
+        /// Adds a sink that sends log events as UDP packages over the network.
         /// </summary>
         /// <param name="sinkConfiguration">Logger sink configuration.</param>
         /// <param name="remoteAddress">
@@ -105,6 +105,7 @@ namespace Serilog
         /// The minimum level for events passed through the sink. The default is
         /// <see cref="LevelAlias.Minimum"/>.
         /// </param>
+        /// <returns>Logger configuration, allowing configuration to continue.</returns>
         public static LoggerConfiguration Udp(
             this LoggerSinkConfiguration sinkConfiguration,
             IPAddress remoteAddress,
