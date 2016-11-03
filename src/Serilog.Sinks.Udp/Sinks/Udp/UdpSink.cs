@@ -93,7 +93,9 @@ namespace Serilog.Sinks.Udp
                                 .Trim()
                                 .ToCharArray());
 
-                        await client.SendAsync(buffer, buffer.Length, remoteEndPoint);
+                        await client
+                            .SendAsync(buffer, buffer.Length, remoteEndPoint)
+                            .ConfigureAwait(false);
                     }
                 }
                 catch (Exception e)
