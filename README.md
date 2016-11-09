@@ -18,6 +18,14 @@ Serilog.ILogger log = new LoggerConfiguration()
   .CreateLogger();
 ```
 
+### Typical use case
+
+Producing log events is only half the story. Unless you are consuming them in a matter that benefits you in development or operations, there is really no need to produce them in the first place.
+
+In development I've been sending UDP packages to the loopback address, and use [Log2Console](https://log2console.codeplex.com/) to visualize them. It supports UDP receivers, and allows me to filter and search according to my needs.
+
+Taking it to the next level is when you as a team agree on sending the log events to a multicast address, making them accessible to all team members. This can be beneficial for Quality Assurance who wishes to monitor log events from all instances of your running application.
+
 ### Install via NuGet
 
 If you want to include the UDP sink in your project, you can [install it directly from NuGet](https://www.nuget.org/packages/Serilog.Sinks.UDP/).
