@@ -20,7 +20,7 @@ Serilog.ILogger log = new LoggerConfiguration()
 
 ### Typical use case
 
-Producing log events is only half the story. Unless you are consuming them in a matter that benefits you in development or operations, there is really no need to produce them in the first place.
+Producing log events is only half the story. Unless you are consuming them in a matter that benefits you in development or production, there is really no need to produce them in the first place.
 
 In development I've been sending UDP packages to the loopback address, and use [Log2Console](https://log2console.codeplex.com/) to visualize them. It supports UDP receivers, and allows me to filter and search according to my needs.
 
