@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+### Added
+
+- Support for [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) (contribution by [@bonejon](https://github.com/bonejon))
+
 ## 2.1.0 2016-11-01
 
 ### Added
