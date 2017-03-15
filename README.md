@@ -18,6 +18,24 @@ Serilog.ILogger log = new LoggerConfiguration()
   .CreateLogger();
 ```
 
+Used in conjunction with [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) the sink can also be configured in the following way
+```json
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Debug",
+    },
+    "WriteTo": [
+      {
+        "name": "Udp",
+        "Args": {
+          "remoteAddress": "127.0.0.1",
+          "remotePort": "7071"
+        } 
+      }
+    ]
+  }
+```
+
 ### Typical use case
 
 Producing log events is only half the story. Unless you are consuming them in a matter that benefits you in development or production, there is really no need to produce them in the first place.
