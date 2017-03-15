@@ -18,15 +18,16 @@ Serilog.ILogger log = new LoggerConfiguration()
   .CreateLogger();
 ```
 
-Used in conjunction with [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) the sink can also be configured in the following way
+Used in conjunction with [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) the sink can also be configured in the following way:
 ```json
+{
   "Serilog": {
     "MinimumLevel": {
       "Default": "Debug",
     },
     "WriteTo": [
       {
-        "name": "Udp",
+        "Name": "Udp",
         "Args": {
           "remoteAddress": "127.0.0.1",
           "remotePort": "7071"
@@ -34,6 +35,7 @@ Used in conjunction with [Serilog.Settings.Configuration](https://github.com/ser
       }
     ]
   }
+}
 ```
 
 ### Typical use case
