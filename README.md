@@ -29,7 +29,7 @@ Used in conjunction with [Serilog.Settings.Configuration](https://github.com/ser
       {
         "Name": "Udp",
         "Args": {
-          "remoteAddress": "127.0.0.1",
+          "remoteAddressAsString": "127.0.0.1",
           "remotePort": "7071"
         } 
       }

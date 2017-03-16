@@ -33,7 +33,7 @@ namespace Serilog
         /// Adds a sink that sends log events as UDP packages over the network.
         /// </summary>
         /// <param name="sinkConfiguration">Logger sink configuration.</param>
-        /// <param name="remoteAddress">
+        /// <param name="remoteAddressAsString">
         /// The address of the remote host or multicast group to which the UDP
         /// client should sent the logging event.
         /// </param>
@@ -59,7 +59,7 @@ namespace Serilog
         /// <returns>Logger configuration, allowing configuration to continue.</returns>
         public static LoggerConfiguration Udp(
             this LoggerSinkConfiguration sinkConfiguration,
-            string remoteAddress,
+            string remoteAddressAsString,
             int remotePort,
             int localPort = 0,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
@@ -68,7 +68,7 @@ namespace Serilog
         {
             return Udp(
                 sinkConfiguration,
-                IPAddress.Parse(remoteAddress),
+                IPAddress.Parse(remoteAddressAsString),
                 remotePort,
                 localPort,
                 restrictedToMinimumLevel,
