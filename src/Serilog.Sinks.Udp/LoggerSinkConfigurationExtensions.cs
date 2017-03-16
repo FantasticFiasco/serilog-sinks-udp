@@ -34,7 +34,7 @@ namespace Serilog
         /// </summary>
         /// <param name="sinkConfiguration">Logger sink configuration.</param>
         /// <param name="remoteAddress">
-        /// The IPAddress of the remote host or multicast group to which the UDP
+        /// The address of the remote host or multicast group to which the UDP
         /// client should sent the logging event.
         /// </param>
         /// <param name="remotePort">
@@ -66,19 +66,14 @@ namespace Serilog
             string outputTemplate = DefaultOutputTemplate,
             IFormatProvider formatProvider = null)
         {
-            if (sinkConfiguration == null)
-                throw new ArgumentNullException(nameof(sinkConfiguration));
-            if (outputTemplate == null)
-                throw new ArgumentNullException(nameof(outputTemplate));
-
-            var formatter = new MessageTemplateTextFormatter(outputTemplate, formatProvider);
             return Udp(
                 sinkConfiguration,
                 IPAddress.Parse(remoteAddress),
                 remotePort,
-                formatter,
                 localPort,
-                restrictedToMinimumLevel);
+                restrictedToMinimumLevel,
+                outputTemplate,
+                formatProvider);
         }
         
         /// <summary>
