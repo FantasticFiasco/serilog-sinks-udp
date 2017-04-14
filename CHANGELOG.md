@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+## 2.3.0 2017-04-14
+
 ### Added
 
 - [#7](https://github.com/FantasticFiasco/serilog-sinks-udp/issues/7) - Support for .NET Standard 1.3 (contribution by [scottamartin](https://github.com/scottamartin))
