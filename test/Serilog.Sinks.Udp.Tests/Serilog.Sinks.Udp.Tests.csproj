@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp1.1</TargetFrameworks>
+    <AssemblyName>Serilog.Sinks.Udp.Tests</AssemblyName>
+    <PackageId>Serilog.Sinks.Udp.Tests</PackageId>
+    <Authors>Mattias Kindborg</Authors>
+    <Description>Tests for Serilog.Sinks.Udp.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/Serilog.Sinks.Udp/Serilog.Sinks.Udp.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
+    <PackageReference Include="xunit" Version="2.2.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
+    <PackageReference Include="Moq" Version="4.7.8" />
+  </ItemGroup>
+
+</Project>
