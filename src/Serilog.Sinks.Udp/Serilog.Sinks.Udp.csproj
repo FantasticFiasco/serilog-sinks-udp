@@ -5,6 +5,7 @@
     <AssemblyName>Serilog.Sinks.Udp</AssemblyName>
     <Description>Serilog event sink that sends UDP packages over the network.</Description>
     <TargetFrameworks>net45;netstandard1.3</TargetFrameworks>
+    <RootNamespace>Serilog</RootNamespace>
     <Authors>Mattias Kindborg</Authors>
     <Company />
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -19,7 +20,7 @@
     <PackageProjectUrl>http://serilog.net</PackageProjectUrl>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <!-- Don't reference the full NETStandard.Library -->
-    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>  
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
   </PropertyGroup>
 
   <ItemGroup>
