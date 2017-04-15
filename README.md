@@ -5,7 +5,7 @@
 A [Serilog](http://serilog.net/) sink that sends UDP packages over the network.
 
 **Package** - [Serilog.Sinks.Udp](https://www.nuget.org/packages/serilog.sinks.udp)
-| **Platforms** - .NET 4.5, .NETStandard 1.5
+| **Platforms** - .NET 4.5, .NETStandard 1.3
 
 ### Getting started
 
