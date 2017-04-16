@@ -67,7 +67,7 @@ namespace Serilog.Sinks.Udp.Tests.Sinks.Udp
             }
 
             // Assert
-            counter.Wait(TimeSpan.FromSeconds(10));
+            counter.Wait();
         }
 
         private bool VerifyRemoteEndpoint(IPEndPoint endPoint)
