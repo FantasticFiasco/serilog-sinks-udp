@@ -1,23 +1,52 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using Moq;
 using Serilog.Core;
+using Serilog.Events;
 using Serilog.Sinks.Udp.Private;
 using Serilog.Support;
 using Xunit;
 
 namespace Serilog
 {
-    public abstract class SinkFixture
+    public abstract class SinkFixture : IDisposable
     {
         private readonly UdpClientMock client;
 
         protected SinkFixture()
         {
-            client = new UdpClientMock(IPAddress.Loopback, 7071);
+            client = new UdpClientMock();
             UdpClientFactory.Create = (_, __) => client.Object;
         }
 
+        protected IPAddress RemoteAddress { get; set; }
+
+        protected int RemotePort { get; set; }
+
         protected Logger Logger { get; set; }
+
+        [Theory]
+        [InlineData(LogEventLevel.Verbose)]
+        [InlineData(LogEventLevel.Debug)]
+        [InlineData(LogEventLevel.Information)]
+        [InlineData(LogEventLevel.Warning)]
+        [InlineData(LogEventLevel.Error)]
+        [InlineData(LogEventLevel.Fatal)]
+        public void Level(LogEventLevel level)
+        {
+            // Arrange
+            var counter = new Counter(1);
+
+            client
+                .SetupSendAsync(RemoteAddress, RemotePort)
+                .Callback(() => counter.Increment());
+
+            // Act
+            Logger.Write(level, "Some message");
+
+            // Assert
+            counter.Wait();
+        }
 
         [Fact]
         public void SentToCorrectEndPoint()
@@ -26,7 +55,7 @@ namespace Serilog
             Logger.Write(Some.DebugEvent());
 
             // Assert
-            client.VerifySendAsync(Times.Once());
+            client.VerifySendAsync(RemoteAddress, RemotePort, Times.Once());
         }
 
         [Theory]
@@ -35,13 +64,13 @@ namespace Serilog
         [InlineData(100)]       // 1 batch
         [InlineData(1000)]      // ~1 batch
         [InlineData(10000)]     // ~10 batches
-        public void Emit(int numberOfEvents)
+        public void Batches(int numberOfEvents)
         {
             // Arrange
             var counter = new Counter(numberOfEvents);
 
             client
-                .SetupSendAsync()
+                .SetupSendAsync(RemoteAddress, RemotePort)
                 .Callback(() => counter.Increment());
 
             // Act
@@ -52,6 +81,11 @@ namespace Serilog
 
             // Assert
             counter.Wait();
+        }
+
+        public void Dispose()
+        {
+            Logger?.Dispose();
         }
     }
 }
