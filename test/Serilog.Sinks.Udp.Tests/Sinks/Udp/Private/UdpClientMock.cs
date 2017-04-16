@@ -2,9 +2,8 @@
 using System.Threading.Tasks;
 using Moq;
 using Moq.Language.Flow;
-using Serilog.Sinks.Udp;
 
-namespace Serilog.Support
+namespace Serilog.Sinks.Udp.Private
 {
     internal class UdpClientMock : Mock<IUdpClient>
     {

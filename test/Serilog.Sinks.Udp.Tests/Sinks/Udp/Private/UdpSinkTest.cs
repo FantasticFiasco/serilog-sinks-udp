@@ -4,7 +4,7 @@ using Serilog.Formatting.Display;
 using Serilog.Support;
 using Xunit;
 
-namespace Serilog.Sinks.Udp
+namespace Serilog.Sinks.Udp.Private
 {
     public class UdpSinkTest
     {

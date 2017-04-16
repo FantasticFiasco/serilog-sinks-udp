@@ -23,7 +23,7 @@ using Serilog.Events;
 using Serilog.Formatting;
 using Serilog.Sinks.PeriodicBatching;
 
-namespace Serilog.Sinks.Udp
+namespace Serilog.Sinks.Udp.Private
 {
     /// <summary>
     /// Send log events as UDP packages over the network.

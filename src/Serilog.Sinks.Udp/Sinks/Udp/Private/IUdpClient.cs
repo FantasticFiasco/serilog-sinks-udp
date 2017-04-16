@@ -15,7 +15,7 @@
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Serilog.Sinks.Udp
+namespace Serilog.Sinks.Udp.Private
 {
     /// <summary>
     /// Interface responsible for sending UDP messages.
