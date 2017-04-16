@@ -28,7 +28,7 @@ namespace Serilog.Sinks.Udp.Private
     /// <summary>
     /// Send log events as UDP packages over the network.
     /// </summary>
-    public sealed class UdpSink : PeriodicBatchingSink
+    internal class UdpSink : PeriodicBatchingSink
     {
         private readonly IPEndPoint remoteEndPoint;
         private readonly ITextFormatter formatter;

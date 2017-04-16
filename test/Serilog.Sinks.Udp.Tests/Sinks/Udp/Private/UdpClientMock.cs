@@ -7,6 +7,15 @@ namespace Serilog.Sinks.Udp.Private
 {
     internal class UdpClientMock : Mock<IUdpClient>
     {
+        private readonly IPAddress remoteAddress;
+        private readonly int remotePort;
+
+        public UdpClientMock(IPAddress remoteAddress, int remotePort)
+        {
+            this.remoteAddress = remoteAddress;
+            this.remotePort = remotePort;
+        }
+
         internal ISetup<IUdpClient, Task<int>> SetupSendAsync()
         {
             return Setup(
@@ -16,7 +25,7 @@ namespace Serilog.Sinks.Udp.Private
                     It.IsAny<IPEndPoint>()));
         }
 
-        internal void VerifySendAsync(IPAddress remoteAddress, int remotePort, Times times)
+        internal void VerifySendAsync(Times times)
         {
             Verify(
                 mock => mock.SendAsync(
