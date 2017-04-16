@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace Serilog.Sinks.Udp
+namespace Serilog.Sinks.Udp.Private
 {
     internal class UdpClientWrapper : IUdpClient
     {

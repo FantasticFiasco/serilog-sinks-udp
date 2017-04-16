@@ -19,6 +19,7 @@ using Serilog.Events;
 using Serilog.Formatting;
 using Serilog.Formatting.Display;
 using Serilog.Sinks.Udp;
+using Serilog.Sinks.Udp.Private;
 
 namespace Serilog
 {
