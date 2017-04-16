@@ -4,7 +4,7 @@ using System.Threading;
 using Serilog.Events;
 using Serilog.Parsing;
 
-namespace Serilog.Sinks.Udp.Tests.Support
+namespace Serilog.Support
 {
     internal static class Some
     {

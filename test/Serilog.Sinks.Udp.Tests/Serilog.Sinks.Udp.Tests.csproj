@@ -2,10 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp1.1</TargetFrameworks>
-    <AssemblyName>Serilog.Sinks.Udp.Tests</AssemblyName>
-    <PackageId>Serilog.Sinks.Udp.Tests</PackageId>
-    <Authors>Mattias Kindborg</Authors>
-    <Description>Tests for Serilog.Sinks.Udp.</Description>
+    <RootNamespace>Serilog</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,22 +1,21 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using Moq;
 using Serilog.Formatting.Display;
-using Serilog.Sinks.Udp.Tests.Support;
+using Serilog.Support;
 using Xunit;
 
-namespace Serilog.Sinks.Udp.Tests.Sinks.Udp
+namespace Serilog.Sinks.Udp
 {
     public class UdpSinkTest
     {
-        private readonly Mock<IUdpClient> client;
+        private readonly UdpClientMock client;
         private readonly IPAddress remoteAddress;
         private readonly int remotePort;
         private readonly UdpSink sink;
 
         public UdpSinkTest()
         {
-            client = new Mock<IUdpClient>();
+            client = new UdpClientMock();
             remoteAddress = IPAddress.Loopback;
             remotePort = 7071;
             sink = new UdpSink(
@@ -27,37 +26,28 @@ namespace Serilog.Sinks.Udp.Tests.Sinks.Udp
         }
 
         [Fact]
-        public void RemoteEndPoint()
+        public void SentToCorrectEndPoint()
         {
             // Act
             sink.Emit(Some.DebugEvent());
 
             // Assert
-            client.Verify(
-                mock => mock.SendAsync(
-                    It.IsAny<byte[]>(),
-                    It.IsAny<int>(),
-                    It.Is<IPEndPoint>(remoteEndpoint => VerifyRemoteEndpoint(remoteEndpoint))),
-                Times.Once);
+            client.VerifySendAsync(remoteAddress, remotePort, Times.Once());
         }
 
         [Theory]
-        [InlineData(1)]
-        [InlineData(10)]
-        [InlineData(100)]
-        [InlineData(1000)]
-        [InlineData(10000)]
+        [InlineData(1)]         // 1 batch
+        [InlineData(10)]        // 1 batch
+        [InlineData(100)]       // 1 batch
+        [InlineData(1000)]      // ~1 batch
+        [InlineData(10000)]     // ~10 batches
         public void Emit(int numberOfEvents)
         {
             // Arrange
             var counter = new Counter(numberOfEvents);
 
             client
-                .Setup(
-                    mock => mock.SendAsync(
-                        It.IsAny<byte[]>(),
-                        It.IsAny<int>(),
-                        It.IsAny<IPEndPoint>()))
+                .SetupSendAsync()
                 .Callback(() => counter.Increment());
 
             // Act
@@ -68,14 +58,6 @@ namespace Serilog.Sinks.Udp.Tests.Sinks.Udp
 
             // Assert
             counter.Wait();
-        }
-
-        private bool VerifyRemoteEndpoint(IPEndPoint endPoint)
-        {
-            return endPoint != null &&
-                endPoint.AddressFamily == remoteAddress.AddressFamily &&
-                endPoint.Address.Equals(remoteAddress) &&
-                endPoint.Port == remotePort;
         }
     }
 }
