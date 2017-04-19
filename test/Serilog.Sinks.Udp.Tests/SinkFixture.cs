@@ -79,6 +79,8 @@ namespace Serilog
         public void Dispose()
         {
             Logger?.Dispose();
+
+            UdpClientFactory.Create = null;
         }
     }
 }
