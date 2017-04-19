@@ -2,9 +2,9 @@
 
 namespace Serilog
 {
-    public class UdpSinkTest : SinkFixture
+    public class UdpSinkConfiguredInCodeTest : SinkFixture
     {
-        public UdpSinkTest()
+        public UdpSinkConfiguredInCodeTest()
         {
             RemoteAddress = IPAddress.Loopback;
             RemotePort = 7071;
