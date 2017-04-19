@@ -1,4 +1,4 @@
-﻿// Copyright 2015-2016 Serilog Contributors
+﻿// Copyright 2015-2017 Serilog Contributors
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,12 +23,12 @@ using Serilog.Events;
 using Serilog.Formatting;
 using Serilog.Sinks.PeriodicBatching;
 
-namespace Serilog.Sinks.Udp
+namespace Serilog.Sinks.Udp.Private
 {
     /// <summary>
     /// Send log events as UDP packages over the network.
     /// </summary>
-    public sealed class UdpSink : PeriodicBatchingSink
+    internal class UdpSink : PeriodicBatchingSink
     {
         private readonly IPEndPoint remoteEndPoint;
         private readonly ITextFormatter formatter;
@@ -57,18 +57,14 @@ namespace Serilog.Sinks.Udp
             ITextFormatter formatter)
             : base(1000, TimeSpan.FromSeconds(0.5))
         {
-            if (client == null)
-                throw new ArgumentNullException(nameof(client));
             if (remoteAddress == null)
                 throw new ArgumentNullException(nameof(remoteAddress));
             if (remotePort < IPEndPoint.MinPort || remotePort > IPEndPoint.MaxPort)
                 throw new ArgumentOutOfRangeException(nameof(remotePort));
-            if (formatter == null)
-                throw new ArgumentNullException(nameof(formatter));
 
             remoteEndPoint = new IPEndPoint(remoteAddress, remotePort);
-            this.formatter = formatter;
-            this.client = client;
+            this.formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
+            this.client = client ?? throw new ArgumentNullException(nameof(client));
         }
 
         #region PeriodicBatchingSink Members
@@ -116,15 +112,15 @@ namespace Serilog.Sinks.Udp
         {
             base.Dispose(disposing);
 
-            if (disposing && client != null)
+            if (disposing)
             {
 #if NET4
                 // UdpClient does not implement IDisposable, but calling Close disables the
                 // underlying socket and releases all managed and unmanaged resources associated
                 // with the instance.
-                client.Close();
+                client?.Close();
 #else
-                client.Dispose();
+                client?.Dispose();
 
 #endif
                 client = null;

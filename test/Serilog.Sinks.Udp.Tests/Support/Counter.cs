@@ -2,7 +2,7 @@
 using System.Threading;
 using Xunit;
 
-namespace Serilog.Sinks.Udp.Tests.Support
+namespace Serilog.Support
 {
     internal class Counter
     {
@@ -29,9 +29,11 @@ namespace Serilog.Sinks.Udp.Tests.Support
             }
         }
 
-        public void Wait(TimeSpan timeout)
+        public void Wait(int timeoutInSeconds = 10)
         {
+            var timeout = TimeSpan.FromSeconds(timeoutInSeconds);
             var success = resetEvent.Wait(timeout);
+
             Assert.True(success, $"Expected to count to {expected} but only got to {actual} before timeout {timeout}");
         }
     }

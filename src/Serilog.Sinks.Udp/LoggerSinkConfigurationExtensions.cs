@@ -1,4 +1,4 @@
-﻿// Copyright 2015-2016 Serilog Contributors
+﻿// Copyright 2015-2017 Serilog Contributors
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ using Serilog.Configuration;
 using Serilog.Events;
 using Serilog.Formatting;
 using Serilog.Formatting.Display;
-using Serilog.Sinks.Udp;
+using Serilog.Sinks.Udp.Private;
 
 namespace Serilog
 {
@@ -164,7 +164,7 @@ namespace Serilog
             if (sinkConfiguration == null)
                 throw new ArgumentNullException(nameof(sinkConfiguration));
 
-            var client = new UdpClientWrapper(localPort, remoteAddress);
+            var client = UdpClientFactory.Create(localPort, remoteAddress);
             var sink = new UdpSink(client, remoteAddress, remotePort, formatter);
             return sinkConfiguration.Sink(sink, restrictedToMinimumLevel);
         }

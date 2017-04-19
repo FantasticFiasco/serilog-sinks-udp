@@ -2,10 +2,11 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp1.1</TargetFrameworks>
-    <AssemblyName>Serilog.Sinks.Udp.Tests</AssemblyName>
-    <PackageId>Serilog.Sinks.Udp.Tests</PackageId>
-    <Authors>Mattias Kindborg</Authors>
-    <Description>Tests for Serilog.Sinks.Udp.</Description>
+    <RootNamespace>Serilog</RootNamespace>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <TreatSpecificWarningsAsErrors />
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>../../Serilog.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="2.3.1" />
     <PackageReference Include="xunit" Version="2.2.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
     <PackageReference Include="Moq" Version="4.7.8" />
@@ -21,6 +24,12 @@
 
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
