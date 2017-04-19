@@ -46,15 +46,8 @@ namespace Serilog
 
             // Assert
             counter.Wait();
-        }
 
-        [Fact]
-        public void SentToCorrectEndPoint()
-        {
-            // Act
-            Logger.Write(Some.DebugEvent());
-
-            // Assert
+            // Verify that event is sent to the correct endpoint
             client.VerifySendAsync(RemoteAddress, RemotePort, Times.Once());
         }
 
