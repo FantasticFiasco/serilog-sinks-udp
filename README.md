@@ -22,9 +22,7 @@ Used in conjunction with [Serilog.Settings.Configuration](https://github.com/ser
 ```json
 {
   "Serilog": {
-    "MinimumLevel": {
-      "Default": "Debug",
-    },
+    "MinimumLevel": "Verbose",
     "WriteTo": [
       {
         "Name": "Udp",
