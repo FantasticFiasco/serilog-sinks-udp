@@ -6,6 +6,12 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+## 2.3.1 2017-04-24
+
+### Fixed
+
+- Package project URL
+
 ## 2.3.0 2017-04-14
 
 ### Added
