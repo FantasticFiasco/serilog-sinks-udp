@@ -17,7 +17,7 @@
     <PackageId>Serilog.Sinks.Udp</PackageId>
     <PackageTags>serilog;udp</PackageTags>
     <PackageIconUrl>http://serilog.net/images/serilog-sink-nuget.png</PackageIconUrl>
-    <PackageProjectUrl>http://serilog.net</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/FantasticFiasco/serilog-sinks-udp</PackageProjectUrl>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageReleaseNotes>For release notes, please see the change log on GitHub.</PackageReleaseNotes>
     <!-- Don't reference the full NETStandard.Library -->
