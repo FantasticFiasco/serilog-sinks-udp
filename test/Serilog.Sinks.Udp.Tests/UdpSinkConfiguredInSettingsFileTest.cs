@@ -11,7 +11,7 @@ namespace Serilog
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            RemoteAddress = IPAddress.Parse(configuration["Serilog:WriteTo:0:Args:remoteAddressAsString"]);
+            RemoteAddress = IPAddress.Parse(configuration["Serilog:WriteTo:0:Args:remoteAddress"]);
             RemotePort = int.Parse(configuration["Serilog:WriteTo:0:Args:remotePort"]);
 
             Logger = new LoggerConfiguration()
