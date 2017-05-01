@@ -107,6 +107,28 @@ namespace Serilog
         }
 
         /// <summary>
+        /// Extension method providing JSON support via
+        /// <a href="https://github.com/serilog/serilog-settings-configuration">Serilog.Settings.Configuration</a>.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static LoggerConfiguration Udp(
+            this LoggerSinkConfiguration sinkConfiguration,
+            string remoteAddress,
+            int remotePort,
+            ITextFormatter formatter,
+            int localPort = 0,
+            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum)
+        {
+            return Udp(
+                sinkConfiguration,
+                IPAddress.Parse(remoteAddress),
+                remotePort,
+                formatter,
+                localPort,
+                restrictedToMinimumLevel);
+        }
+
+        /// <summary>
         /// Adds a sink that sends log events as UDP packages over the network.
         /// </summary>
         /// <param name="sinkConfiguration">Logger sink configuration.</param>

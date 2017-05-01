@@ -1,14 +1,15 @@
-﻿using System.Net;
+﻿using System.Globalization;
+using System.Net;
 using Microsoft.Extensions.Configuration;
 
 namespace Serilog
 {
-    public class UdpSinkConfiguredInSettingsFileTest : SinkFixture
+    public class SettingsFileUsingOutputTemplateTest : SinkFixture
     {
-        public UdpSinkConfiguredInSettingsFileTest()
+        public SettingsFileUsingOutputTemplateTest()
         {
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
+                .AddJsonFile("output_template_appsettings.json")
                 .Build();
 
             RemoteAddress = IPAddress.Parse(configuration["Serilog:WriteTo:0:Args:remoteAddress"]);
@@ -17,6 +18,14 @@ namespace Serilog
             Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
                 .CreateLogger();
+        }
+
+        public class FormatProvider : CultureInfo
+        {
+            public FormatProvider()
+                : base("en-US")
+            {
+            }
         }
     }
 }

@@ -10,7 +10,7 @@
           "localPort": 0,
           "restrictedToMinimumLevel": "Verbose",
           "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}",
-          "formatProvider": "Serilog.Support.AmericanCultureInfo, Serilog.Sinks.Udp.Tests"
+          "formatProvider": "Serilog.SettingsFileUsingOutputTemplateTest+FormatProvider, Serilog.Sinks.Udp.Tests"
         }
       }
     ]
