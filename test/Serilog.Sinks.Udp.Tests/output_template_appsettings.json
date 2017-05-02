@@ -1,0 +1,18 @@
+﻿{
+  "Serilog": {
+    "MinimumLevel": "Verbose",
+    "WriteTo": [
+      {
+        "Name": "Udp",
+        "Args": {
+          "remoteAddress": "127.0.0.1",
+          "remotePort": 7071,
+          "localPort": 0,
+          "restrictedToMinimumLevel": "Verbose",
+          "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}",
+          "formatProvider": "Serilog.SettingsFileUsingOutputTemplateTest+FormatProvider, Serilog.Sinks.Udp.Tests"
+        }
+      }
+    ]
+  }
+}

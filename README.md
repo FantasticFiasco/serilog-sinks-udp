@@ -18,7 +18,7 @@ Serilog.ILogger log = new LoggerConfiguration()
   .CreateLogger();
 ```
 
-Used in conjunction with [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) the sink can also be configured in the following way:
+Used in conjunction with [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) the same sink can be configured in the following way:
 ```json
 {
   "Serilog": {
@@ -27,8 +27,8 @@ Used in conjunction with [Serilog.Settings.Configuration](https://github.com/ser
       {
         "Name": "Udp",
         "Args": {
-          "remoteAddressAsString": "127.0.0.1",
-          "remotePort": "7071"
+          "remoteAddress": "127.0.0.1",
+          "remotePort": 7071
         } 
       }
     ]

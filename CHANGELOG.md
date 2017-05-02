@@ -6,6 +6,14 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+### Added
+
+- Full parity between code and JSON configuration of sink by introducing [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) support for extension method `Udp(IPAddress remoteAddress, int remotePort, ITextFormatter formatter, int localPort, LogEventLevel restrictedToMinimumLevel)`.
+
+### Changed
+
+- [BREAKING CHANGE] Renamed argument `remoteAddressAsString` to `remoteAddress`. JSON configuration using [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) will have to be updated accordingly.
+
 ## 2.3.1 2017-04-24
 
 ### Fixed
@@ -34,7 +42,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ### Added
 
-- Support for Serilog 2.0.0
+- [BREAKING CHANGE] Support for Serilog 2.0.0
 - Support for .NET Standard 1.5
 
 ## 1.1.0 2016-01-19
