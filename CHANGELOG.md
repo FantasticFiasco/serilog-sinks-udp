@@ -8,7 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ### Added
 
-- Support for JSON configuration of `Udp(IPAddress remoteAddress, int remotePort, ITextFormatter formatter, int localPort, LogEventLevel restrictedToMinimumLevel)` using [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration)
+- Full parity between code and JSON configuration of sink by introducing [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) support for extension method `Udp(IPAddress remoteAddress, int remotePort, ITextFormatter formatter, int localPort, LogEventLevel restrictedToMinimumLevel)`.
 
 ### Changed
 
