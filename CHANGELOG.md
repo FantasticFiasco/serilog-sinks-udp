@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+## 3.0.0 2017-05-02
+
 ### Added
 
 - Full parity between code and JSON configuration of sink by introducing [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) support for extension method `Udp(IPAddress remoteAddress, int remotePort, ITextFormatter formatter, int localPort, LogEventLevel restrictedToMinimumLevel)`.
