@@ -9,7 +9,7 @@ namespace Serilog
         public SettingsFileUsingOutputTemplateTest()
         {
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile("output_template_appsettings.json")
+                .AddJsonFile("appsettings_output_template.json")
                 .Build();
 
             RemoteAddress = IPAddress.Parse(configuration["Serilog:WriteTo:0:Args:remoteAddress"]);
