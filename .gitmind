@@ -1,0 +1,2 @@
+issue: https://github.com/FantasticFiasco/serilog-sinks-udp/issues/{0} #(\d+)
+tag: https://github.com/FantasticFiasco/serilog-sinks-udp/releases/tag/{0} (v\d+\.\d+\.\d+)
