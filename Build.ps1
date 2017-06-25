@@ -1,4 +1,4 @@
-$logo = (Invoke-WebRequest "https://raw.githubusercontent.com/FantasticFiasco/logo/master/logo.ansi").toString();
+$logo = (Invoke-WebRequest "https://raw.githubusercontent.com/FantasticFiasco/logo/master/logo.raw").toString();
 Write-Host "$logo" -ForegroundColor Cyan
 
 Push-Location $PSScriptRoot
