@@ -1,4 +1,5 @@
-echo "build: Build started"
+$logo = (Invoke-WebRequest "https://raw.githubusercontent.com/FantasticFiasco/logo/master/logo.ansi").toString();
+echo "$logo"
 
 Push-Location $PSScriptRoot
 
