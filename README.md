@@ -45,7 +45,7 @@ Used in conjunction with [Serilog.Settings.Configuration](https://github.com/ser
 
 Producing log events is only half the story. Unless you are consuming them in a matter that benefits you in development or production, there is really no need to produce them in the first place.
 
-In development I've been sending UDP packages to the loopback address, and use [Log2Console](https://log2console.codeplex.com/) to visualize them. It supports UDP receivers, and allows me to filter and search according to my needs.
+In development I've been sending UDP packages to the loopback address, and use [Log2Console](https://github.com/Statyk7/log2console) to visualize them. It supports UDP receivers, and allows me to filter and search according to my needs.
 
 Taking it to the next level is when you as a team agree on sending the log events to a multicast address, making them accessible to all team members. This can be beneficial for Quality Assurance who wishes to monitor log events from all instances of your running application.
 
