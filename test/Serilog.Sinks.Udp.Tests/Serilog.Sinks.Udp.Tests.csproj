@@ -7,7 +7,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <TreatSpecificWarningsAsErrors />
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>../../Serilog.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>../../serilog.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
