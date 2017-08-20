@@ -1,4 +1,4 @@
-# Serilog.Sinks.Udp
+# Serilog.Sinks.Udp - A Serilog sink sending UDP packages over the network
 
 [![Build status](https://ci.appveyor.com/api/projects/status/p7gx5eltx8u0op7d/branch/master?svg=true)](https://ci.appveyor.com/project/FantasticFiasco/serilog-sinks-udp)
 [![NuGet Version](http://img.shields.io/nuget/v/Serilog.Sinks.Udp.svg?style=flat)](https://www.nuget.org/packages/Serilog.Sinks.Udp/)
@@ -7,10 +7,8 @@
 [![Join the chat at https://gitter.im/serilog/serilog](https://img.shields.io/gitter/room/serilog/serilog.svg)](https://gitter.im/serilog/serilog)
 [![Help](https://img.shields.io/badge/stackoverflow-serilog-orange.svg)](http://stackoverflow.com/questions/tagged/serilog)
 
-A [Serilog](http://serilog.net/) sink that sends UDP packages over the network.
-
-**Package** - [Serilog.Sinks.Udp](https://www.nuget.org/packages/serilog.sinks.udp)
-| **Platforms** - .NET 4.5, .NETStandard 1.3
+__Package__ - [Serilog.Sinks.Udp](https://www.nuget.org/packages/serilog.sinks.udp)
+| __Platforms__ - .NET 4.5, .NETStandard 1.3, .NET Standard 2.0
 
 ### Getting started
 
