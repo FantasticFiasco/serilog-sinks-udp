@@ -14,10 +14,8 @@
 
 using Serilog.Events;
 using Serilog.Formatting;
-using System;
 using System.IO;
 using System.Xml;
-using System.Reflection;
 
 namespace Serilog.Sinks.Udp.TextFormatters
 {
@@ -61,7 +59,8 @@ namespace Serilog.Sinks.Udp.TextFormatters
 
         private static void WriteTimestamp(LogEvent logEvent, TextWriter output)
         {
-            var milliseconds = logEvent.Timestamp.ToUnixTimeMilliseconds();
+            // Milliseconds since 1970-01-01
+            var milliseconds = logEvent.Timestamp.UtcDateTime.Ticks / 10000L - 62135596800000L;
             output.Write($" timestamp=\"{XmlConvert.ToString(milliseconds)}\"");
         }
 
@@ -123,7 +122,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
                 return;
             }
 
-            output.Write($"<log4j:throwable>{logEvent.Exception.ToString()}</log4j:throwable>");
+            output.Write($"<log4j:throwable>{logEvent.Exception}</log4j:throwable>");
         }
     }
 }
