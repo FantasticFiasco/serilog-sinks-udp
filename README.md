@@ -47,6 +47,23 @@ In development I've been sending UDP packages to the loopback address, and use [
 
 Taking it to the next level is when you as a team agree on sending the log events to a multicast address, making them accessible to all team members. This can be beneficial for Quality Assurance who wishes to monitor log events from all instances of your running application.
 
+### Event formatters
+
+The event formatter is an output template on steroids. It has the responsibility of turning a single log event into a textual representation. It can serialize the log event into JSON, XML or anything else that matches the expectations of the receiver.
+
+The sink comes pre-loaded with one XML based event formatter matching the log4j schema expected by Log2Console.
+
+#### `Log4jTextFormatter`
+
+The log event is formatted according to the log4j XML schema expected by Log2Console.
+
+```xml
+<log4j:event logger="Some.Serilog.Context" timestamp="1184286222308" level="ERROR" thread="1">
+  <log4j:message>Something failed</log4j:message>
+  <log4j:throwable>An exception describing the failure<log4j:throwable>
+</log4j:event>
+```
+
 ### Install via NuGet
 
 If you want to include the UDP sink in your project, you can [install it directly from NuGet](https://www.nuget.org/packages/Serilog.Sinks.UDP/).

@@ -20,7 +20,7 @@ namespace Serilog.Sinks.Udp.Private
     /// <summary>
     /// Interface responsible for sending UDP messages.
     /// </summary>
-    internal interface IUdpClient
+    public interface IUdpClient
     {
         /// <summary>
         /// Sends a UDP datagram asynchronously to a remote host.
