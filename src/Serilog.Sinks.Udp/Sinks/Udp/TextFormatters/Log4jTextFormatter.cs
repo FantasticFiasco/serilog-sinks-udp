@@ -20,7 +20,7 @@ using System.Xml;
 namespace Serilog.Sinks.Udp.TextFormatters
 {
     /// <summary>
-    /// Text formatter serializing log events into log4j complient XML.
+    /// Text formatter serializing log events into log4j complaint XML.
     /// </summary>
     public class Log4jTextFormatter : ITextFormatter
     {
