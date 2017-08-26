@@ -29,7 +29,7 @@ namespace Serilog.Support
             }
         }
 
-        public void Wait(int timeoutInSeconds = 10)
+        public void Wait(int timeoutInSeconds = 20)
         {
             var timeout = TimeSpan.FromSeconds(timeoutInSeconds);
             var success = resetEvent.Wait(timeout);

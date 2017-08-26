@@ -35,13 +35,17 @@ namespace Serilog.Support
             return new DateTimeOffset(Instant());
         }
 
-        internal static LogEvent LogEvent(DateTimeOffset? timestamp = null, LogEventLevel level = LogEventLevel.Information)
+        internal static LogEvent LogEvent(
+            DateTimeOffset? timestamp = null,
+            LogEventLevel level = LogEventLevel.Information,
+            MessageTemplate messageTemplate = null,
+            Exception exception = null)
         {
             return new LogEvent(
                 timestamp ?? OffsetInstant(),
                 level,
-                null,
-                MessageTemplate(),
+                exception,
+                messageTemplate ?? MessageTemplate(),
                 Enumerable.Empty<LogEventProperty>());
         }
 

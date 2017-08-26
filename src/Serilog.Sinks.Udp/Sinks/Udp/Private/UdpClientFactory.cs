@@ -20,12 +20,12 @@ namespace Serilog.Sinks.Udp.Private
     /// <summary>
     /// Factory class acting as a singleton producing instances of <see cref="IUdpClient"/>.
     /// </summary>
-    internal static class UdpClientFactory
+    public static class UdpClientFactory
     {
         /// <summary>
         /// Gets or sets the factory creating instances of <see cref="IUdpClient"/>.
         /// </summary>
-        internal static Func<int, IPAddress, IUdpClient> Create { get; set; }
+        public static Func<int, IPAddress, IUdpClient> Create { get; set; }
             = (localPort, remoteAddress) => new UdpClientWrapper(localPort, remoteAddress);
     }
 }
