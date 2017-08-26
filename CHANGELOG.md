@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+### Added
+
+- Text formatter complient with log4j XML schema, thus compatible with [Log2Console](https://github.com/Statyk7/log2console) 
+
 ## [3.1.0] - 2017-08-20
 
 ### Added
