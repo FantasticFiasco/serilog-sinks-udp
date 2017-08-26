@@ -102,9 +102,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         {
             if (logEvent.Properties.TryGetValue(ThreadIdPropertyName, out LogEventPropertyValue threadId))
             {
-                output.Write(" thread=\"");
-                threadId.Render(output);
-                output.Write("\"");
+                output.Write($" thread=\"{((ScalarValue)threadId).Value}\"");
             }
         }
 

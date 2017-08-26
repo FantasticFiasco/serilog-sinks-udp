@@ -38,14 +38,14 @@ namespace Serilog.Support
         internal static LogEvent LogEvent(
             DateTimeOffset? timestamp = null,
             LogEventLevel level = LogEventLevel.Information,
-            MessageTemplate messageTemplate = null,
+            string message = "Some message",
             Exception exception = null)
         {
             return new LogEvent(
                 timestamp ?? OffsetInstant(),
                 level,
                 exception,
-                messageTemplate ?? MessageTemplate(),
+                new MessageTemplateParser().Parse(message),
                 Enumerable.Empty<LogEventProperty>());
         }
 

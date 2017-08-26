@@ -67,7 +67,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         {
             // Arrange
             var logEvent = Some.LogEvent();
-            logEvent.AddOrUpdateProperty(new LogEventProperty("ThreadId", new ScalarValue(1)));
+            logEvent.AddOrUpdateProperty(new LogEventProperty("ThreadId", new ScalarValue("1")));
 
             // Act
             formatter.Format(logEvent, output);
@@ -80,8 +80,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         public void Message()
         {
             // Arrange
-            var messageTemplate = new MessageTemplateParser().Parse("Some message");
-            var logEvent = Some.LogEvent(messageTemplate: messageTemplate);
+            var logEvent = Some.LogEvent(message: "Some message");
 
             // Act
             formatter.Format(logEvent, output);
