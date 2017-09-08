@@ -1,54 +1,40 @@
 #---------------------------------#
-#         version format          #
+#      general configuration      #
 #---------------------------------#
-version: 1.1.{build}
 
+# version format
+version: '{build}'
+
+# do not build on tags (GitHub and BitBucket)
+skip_tags: true
 
 #---------------------------------#
 #    environment configuration    #
 #---------------------------------#
-os: Windows Server 2012 R2
 
-
-#---------------------------------#
-#            patching             #
-#---------------------------------#
-assembly_info:
-  patch: true
-  file: src\Serilog.Sinks.Udp\Properties\AssemblyInfo.cs
-  assembly_version: '{version}.0'
-  assembly_file_version: '{version}.0'
-  assembly_informational_version: '{version}'
-
+# build worker image (VM template)
+image: Visual Studio 2017
 
 #---------------------------------#
-#              build              #
+#       build configuration       #
 #---------------------------------#
-pull_requests:
-  do_not_increment_build_number: true
 
-skip_tags: true
-
+# build Configuration, i.e. Debug, Release, etc.
 configuration: Release
 
-build:
-  publish_nuget: true
-  verbosity: minimal
-
-
-#---------------------------------#
-#              nuget              #
-#---------------------------------#
-nuget:
-  project_feed: true
-
+# to run your custom scripts instead of automatic MSBuild
+build_script:
+- ps: ./build/build.ps1
 
 #---------------------------------#
-#         notifications           #
+#       tests configuration       #
 #---------------------------------#
-notifications:
-  # Email
-  - provider: Email
-    to:
-      - mattias.kindborg@email.com
-    on_build_status_changed: true
+
+test: off
+
+#---------------------------------#
+#      artifacts configuration    #
+#---------------------------------#
+
+artifacts:
+- path: artifacts/Serilog.*.nupkg
