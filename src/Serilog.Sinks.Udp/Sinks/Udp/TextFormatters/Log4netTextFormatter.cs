@@ -15,17 +15,20 @@
 using Serilog.Events;
 using Serilog.Formatting;
 using System.IO;
-using System.Xml;
 
 namespace Serilog.Sinks.Udp.TextFormatters
 {
     /// <summary>
-    /// Text formatter serializing log events into log4j complient XML.
+    /// Text formatter serializing log events into log4net complient XML.
     /// </summary>
-    public class Log4jTextFormatter : ITextFormatter
+    public class Log4netTextFormatter : ITextFormatter
     {
         private static readonly string SourceContextPropertyName = "SourceContext";
         private static readonly string ThreadIdPropertyName = "ThreadId";
+        private static readonly string MachineNamePropertyName = "MachineName";
+        private static readonly string UserNamePropertyName = "EnvironmentUserName";
+        private static readonly string MethodPropertyName = "Method";
+        private static readonly string ProcessNamePropertyName = "ProcessName";
 
         /// <summary>
         /// Format the log event into the output.
@@ -34,19 +37,53 @@ namespace Serilog.Sinks.Udp.TextFormatters
         /// <param name="output">The output.</param>
         public void Format(LogEvent logEvent, TextWriter output)
         {
-            output.Write("<log4j:event");
+            output.Write("<log4net:event");
 
             WriteLogger(logEvent, output);
-            WriteTimestamp(logEvent, output);
+            WriteEventTime(logEvent, output);
             WriteLevel(logEvent, output);
             WriteThread(logEvent, output);
-
+            WriteUserName(logEvent, output);
+            WriteProcessName(logEvent, output);
             output.Write(">");
+
+            output.Write("<log4net:locationInfo");
+            WriteLocationInfoClass(logEvent, output);
+            WriteLocationInfoMethod(logEvent, output);
+            output.Write("/>");
+
+            output.Write("<log4net:properties>");
+            WriteHostName(logEvent, output);
+            output.Write("</log4net:properties>");
 
             WriteMessage(logEvent, output);
             WriteException(logEvent, output);
 
-            output.Write("</log4j:event>");
+            output.Write("</log4net:event>");
+        }
+
+        private static void WriteProcessName(LogEvent logEvent, TextWriter output)
+        {
+            if (logEvent.Properties.TryGetValue(ProcessNamePropertyName, out LogEventPropertyValue processName))
+            {
+                output.Write($" domain=\"{((ScalarValue)processName).Value}\"");
+            }
+        }
+
+        private static void WriteLocationInfoClass(LogEvent logEvent, TextWriter output)
+        {
+            if (logEvent.Properties.TryGetValue(SourceContextPropertyName, out LogEventPropertyValue sourceContext))
+            {
+                output.Write($" class=\"{((ScalarValue)sourceContext).Value}\"");
+            }
+        }
+
+        private static void WriteLocationInfoMethod(LogEvent logEvent, TextWriter output)
+        {
+            if (logEvent.Properties.TryGetValue(MethodPropertyName, out LogEventPropertyValue methodName))
+            {
+                output.Write($" method=\"{((ScalarValue)methodName).Value}\"");
+            }
         }
 
         private static void WriteLogger(LogEvent logEvent, TextWriter output)
@@ -57,11 +94,26 @@ namespace Serilog.Sinks.Udp.TextFormatters
             }
         }
 
-        private static void WriteTimestamp(LogEvent logEvent, TextWriter output)
+        private static void WriteUserName(LogEvent logEvent, TextWriter output)
         {
-            // Milliseconds since 1970-01-01
-            var milliseconds = logEvent.Timestamp.UtcDateTime.Ticks / 10000L - 62135596800000L;
-            output.Write($" timestamp=\"{XmlConvert.ToString(milliseconds)}\"");
+            if (logEvent.Properties.TryGetValue(UserNamePropertyName, out LogEventPropertyValue userName))
+            {
+                output.Write($" username=\"{((ScalarValue)userName).Value}\"");
+            }
+        }
+
+        private static void WriteHostName(LogEvent logEvent, TextWriter output)
+        {
+            if (logEvent.Properties.TryGetValue(MachineNamePropertyName, out LogEventPropertyValue machineName))
+            {
+                output.Write($" <log4net:data name=\"log4net:HostName\" value=\"{((ScalarValue)machineName).Value}\"></log4net:data>");
+            }
+        }
+
+        private static void WriteEventTime(LogEvent logEvent, TextWriter output)
+        {
+            var eventTime = logEvent.Timestamp;
+            output.Write($" timestamp=\"{eventTime.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz")}\"");
         }
 
         private static void WriteLevel(LogEvent logEvent, TextWriter output)
@@ -108,9 +160,9 @@ namespace Serilog.Sinks.Udp.TextFormatters
 
         private static void WriteMessage(LogEvent logEvent, TextWriter output)
         {
-            output.Write("<log4j:message>");
+            output.Write("<log4net:message>");
             logEvent.RenderMessage(output);
-            output.Write("</log4j:message>");
+            output.Write("</log4net:message>");
         }
 
         private static void WriteException(LogEvent logEvent, TextWriter output)
@@ -120,7 +172,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
                 return;
             }
 
-            output.Write($"<log4j:throwable>{logEvent.Exception}</log4j:throwable>");
+            output.Write($"<log4net:throwable>{logEvent.Exception}</log4net:throwable>");
         }
     }
 }
