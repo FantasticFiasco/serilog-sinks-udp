@@ -6,11 +6,15 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+### Added
+
+- Text formatter complient with log4net XML schema, thus compatible with [Log4View](http://www.log4view.com) (contribution by [jvanrhyn](https://github.com/jvanrhyn))
+
 ## [3.2.0] - 2017-08-26
 
 ### Added
 
-- Text formatter complaint with log4j XML schema, thus compatible with [Log2Console](https://github.com/Statyk7/log2console) 
+- Text formatter complient with log4j XML schema, thus compatible with [Log2Console](https://github.com/Statyk7/log2console) 
 
 ## [3.1.0] - 2017-08-20
 

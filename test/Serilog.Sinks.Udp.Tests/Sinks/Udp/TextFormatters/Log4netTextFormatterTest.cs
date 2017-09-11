@@ -8,14 +8,14 @@ using System.Xml.Linq;
 
 namespace Serilog.Sinks.Udp.TextFormatters
 {
-    public class Log4jTextFormatterTest
+    public class Log4netTextFormatterTest
     {
-        private readonly Log4jTextFormatter formatter;
+        private readonly Log4netTextFormatter formatter;
         private readonly TextWriter output;
 
-        public Log4jTextFormatterTest()
+        public Log4netTextFormatterTest()
         {
-            formatter = new Log4jTextFormatter();
+            formatter = new Log4netTextFormatter();
             output = new StringWriter();
         }
 
@@ -41,7 +41,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
 
             // Assert
             var timestamp = Deserialize().Root.Attribute("timestamp").Value;
-            long.TryParse(timestamp, out long _).ShouldBeTrue();
+            DateTime.TryParse(timestamp, out DateTime _).ShouldBeTrue();
         }
 
         [Theory]
@@ -75,6 +75,76 @@ namespace Serilog.Sinks.Udp.TextFormatters
         }
 
         [Fact]
+        public void Username()
+        {
+            // Arrange
+            var logEvent = Some.LogEvent();
+            logEvent.AddOrUpdateProperty(new LogEventProperty("EnvironmentUserName", new ScalarValue("some user")));
+
+            // Act
+            formatter.Format(logEvent, output);
+
+            // Assert
+            Deserialize().Root.Attribute("username").Value.ShouldBe("some user");
+        }
+
+        [Fact]
+        public void Domain()
+        {
+            // Arrange
+            var logEvent = Some.LogEvent();
+            logEvent.AddOrUpdateProperty(new LogEventProperty("ProcessName", new ScalarValue("some domain")));
+
+            // Act
+            formatter.Format(logEvent, output);
+
+            // Assert
+            Deserialize().Root.Attribute("domain").Value.ShouldBe("some domain");
+        }
+
+        [Fact]
+        public void Class()
+        {
+            // Arrange
+            var logEvent = Some.LogEvent();
+            logEvent.AddOrUpdateProperty(new LogEventProperty("SourceContext", new ScalarValue("source context")));
+
+            // Act
+            formatter.Format(logEvent, output);
+
+            // Assert
+            Deserialize().Root.Element("locationInfo").Attribute("class").Value.ShouldBe("source context");
+        }
+
+        [Fact]
+        public void Method()
+        {
+            // Arrange
+            var logEvent = Some.LogEvent();
+            logEvent.AddOrUpdateProperty(new LogEventProperty("Method", new ScalarValue("Void Method()")));
+
+            // Act
+            formatter.Format(logEvent, output);
+
+            // Assert
+            Deserialize().Root.Element("locationInfo").Attribute("method").Value.ShouldBe("Void Method()");
+        }
+        
+        [Fact]
+        public void MachineName()
+        {
+            // Arrange
+            var logEvent = Some.LogEvent();
+            logEvent.AddOrUpdateProperty(new LogEventProperty("MachineName", new ScalarValue("MachineName")));
+
+            // Act
+            formatter.Format(logEvent, output);
+
+            // Assert
+            Deserialize().Root.Element("properties").Element("data").Attribute("value").Value.ShouldBe("MachineName");
+        }
+
+        [Fact]
         public void Message()
         {
             // Arrange
@@ -102,7 +172,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
 
         private XDocument Deserialize()
         {
-            var xmlWithoutNamespaces = output.ToString().Replace("log4j:", string.Empty);
+            var xmlWithoutNamespaces = output.ToString().Replace("log4net:", string.Empty);
             return XDocument.Parse(xmlWithoutNamespaces);
         }
     }
