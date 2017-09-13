@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+## [3.3.0] - 2017-09-13
+
 ### Added
 
 - Text formatter complient with log4net XML schema, thus compatible with [Log4View](http://www.log4view.com) (contribution by [jvanrhyn](https://github.com/jvanrhyn))
