@@ -20,6 +20,7 @@ using Serilog.Events;
 using Serilog.Formatting;
 using Serilog.Formatting.Display;
 using Serilog.Sinks.Udp.Private;
+using Serilog.Core;
 
 namespace Serilog
 {
@@ -117,7 +118,8 @@ namespace Serilog
             int remotePort,
             ITextFormatter formatter,
             int localPort = 0,
-            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum)
+            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
+            LoggingLevelSwitch levelSwitch = null)
         {
             return Udp(
                 sinkConfiguration,
@@ -125,7 +127,8 @@ namespace Serilog
                 remotePort,
                 formatter,
                 localPort,
-                restrictedToMinimumLevel);
+                restrictedToMinimumLevel,
+                levelSwitch);
         }
 
         /// <summary>
@@ -152,6 +155,7 @@ namespace Serilog
         /// The minimum level for events passed through the sink. The default is
         /// <see cref="LevelAlias.Minimum"/>.
         /// </param>
+        /// <param name="levelSwitch">Level switch to change logging level at runtime</param>
         /// <returns>Logger configuration, allowing configuration to continue.</returns>
         public static LoggerConfiguration Udp(
             this LoggerSinkConfiguration sinkConfiguration,
@@ -159,14 +163,15 @@ namespace Serilog
             int remotePort,
             ITextFormatter formatter,
             int localPort = 0,
-            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum)
+            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
+            LoggingLevelSwitch levelSwitch = null)
         {
             if (sinkConfiguration == null)
                 throw new ArgumentNullException(nameof(sinkConfiguration));
 
             var client = UdpClientFactory.Create(localPort, remoteAddress);
             var sink = new UdpSink(client, remoteAddress, remotePort, formatter);
-            return sinkConfiguration.Sink(sink, restrictedToMinimumLevel);
+            return sinkConfiguration.Sink(sink, restrictedToMinimumLevel, levelSwitch);
         }
     }
 }
