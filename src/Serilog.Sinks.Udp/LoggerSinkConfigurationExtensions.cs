@@ -42,6 +42,7 @@ namespace Serilog
             int remotePort,
             int localPort = 0,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
+            LoggingLevelSwitch levelSwitch = null,
             string outputTemplate = DefaultOutputTemplate,
             IFormatProvider formatProvider = null)
         {
@@ -51,10 +52,11 @@ namespace Serilog
                 remotePort,
                 localPort,
                 restrictedToMinimumLevel,
+                levelSwitch,
                 outputTemplate,
                 formatProvider);
         }
-        
+
         /// <summary>
         /// Adds a sink that sends log events as UDP packages over the network.
         /// </summary>
@@ -75,6 +77,9 @@ namespace Serilog
         /// The minimum level for events passed through the sink. The default is
         /// <see cref="LevelAlias.Minimum"/>.
         /// </param>
+        /// <param name="levelSwitch">
+        /// A switch allowing the pass-through minimum level to be changed at runtime.
+        /// </param>
         /// <param name="outputTemplate">
         /// A message template describing the format used to write to the sink. The default is
         /// "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}".
@@ -89,6 +94,7 @@ namespace Serilog
             int remotePort,
             int localPort = 0,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
+            LoggingLevelSwitch levelSwitch = null,
             string outputTemplate = DefaultOutputTemplate,
             IFormatProvider formatProvider = null)
         {
@@ -104,7 +110,8 @@ namespace Serilog
                 remotePort,
                 formatter,
                 localPort,
-                restrictedToMinimumLevel);
+                restrictedToMinimumLevel,
+                levelSwitch);
         }
 
         /// <summary>
@@ -155,7 +162,9 @@ namespace Serilog
         /// The minimum level for events passed through the sink. The default is
         /// <see cref="LevelAlias.Minimum"/>.
         /// </param>
-        /// <param name="levelSwitch">Level switch to change logging level at runtime</param>
+        /// <param name="levelSwitch">
+        /// A switch allowing the pass-through minimum level to be changed at runtime.
+        /// </param>
         /// <returns>Logger configuration, allowing configuration to continue.</returns>
         public static LoggerConfiguration Udp(
             this LoggerSinkConfiguration sinkConfiguration,
