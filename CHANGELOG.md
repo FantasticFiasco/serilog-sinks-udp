@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+## [4.0.0] - 2017-11-09
+
 ## Added
 
 - [BREAKING CHANGE] Option to specify a logging level switch (contribution by [alkampfergit](https://github.com/alkampfergit))
