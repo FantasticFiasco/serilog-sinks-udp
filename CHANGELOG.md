@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+## Added
+
+- [BREAKING CHANGE] Option to specify a logging level switch (contribution by [alkampfergit](https://github.com/alkampfergit))
+
 ## [3.3.0] - 2017-09-13
 
 ### Added
