@@ -10,6 +10,8 @@ namespace Serilog.Sinks.Udp.TextFormatters
 {
     public class Log4netTextFormatterTest
     {
+        private static readonly XNamespace Namespace = "http://logging.apache.org/log4net/schemas/log4net-events-1.2/";
+
         private readonly Log4netTextFormatter formatter;
         private readonly TextWriter output;
 
@@ -113,7 +115,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
             formatter.Format(logEvent, output);
 
             // Assert
-            Deserialize().Root.Element("locationInfo").Attribute("class").Value.ShouldBe("source context");
+            Deserialize().Root.Element(Namespace + "locationInfo").Attribute("class").Value.ShouldBe("source context");
         }
 
         [Fact]
@@ -127,7 +129,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
             formatter.Format(logEvent, output);
 
             // Assert
-            Deserialize().Root.Element("locationInfo").Attribute("method").Value.ShouldBe("Void Method()");
+            Deserialize().Root.Element(Namespace + "locationInfo").Attribute("method").Value.ShouldBe("Void Method()");
         }
         
         [Fact]
@@ -141,7 +143,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
             formatter.Format(logEvent, output);
 
             // Assert
-            Deserialize().Root.Element("properties").Element("data").Attribute("value").Value.ShouldBe("MachineName");
+            Deserialize().Root.Element(Namespace + "properties").Element(Namespace + "data").Attribute("value").Value.ShouldBe("MachineName");
         }
 
         [Fact]
@@ -154,7 +156,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
             formatter.Format(logEvent, output);
 
             // Assert
-            Deserialize().Root.Element("message").Value.ShouldBe("Some message");
+            Deserialize().Root.Element(Namespace + "message").Value.ShouldBe("Some message");
         }
 
         [Fact]
@@ -167,13 +169,12 @@ namespace Serilog.Sinks.Udp.TextFormatters
             formatter.Format(logEvent, output);
 
             // Assert
-            Deserialize().Root.Element("throwable").Value.ShouldNotBeNull();
+            Deserialize().Root.Element(Namespace + "throwable").Value.ShouldNotBeNull();
         }
 
         private XDocument Deserialize()
         {
-            var xmlWithoutNamespaces = output.ToString().Replace("log4net:", string.Empty);
-            return XDocument.Parse(xmlWithoutNamespaces);
+            return XDocument.Parse(output.ToString());
         }
     }
 }

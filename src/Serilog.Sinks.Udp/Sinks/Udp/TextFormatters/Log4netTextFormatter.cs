@@ -37,7 +37,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         /// <param name="output">The output.</param>
         public void Format(LogEvent logEvent, TextWriter output)
         {
-            output.Write("<log4net:event");
+            output.Write("<log4net:event xmlns:log4net=\"http://logging.apache.org/log4net/schemas/log4net-events-1.2/\"");
 
             WriteLogger(logEvent, output);
             WriteEventTime(logEvent, output);
