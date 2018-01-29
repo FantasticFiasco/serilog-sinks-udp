@@ -34,7 +34,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         /// <param name="output">The output.</param>
         public void Format(LogEvent logEvent, TextWriter output)
         {
-            output.Write("<log4j:event");
+            output.Write("<log4j:event xmlns:log4j=\"http://jakarta.apache.org/log4j/\"");
 
             WriteLogger(logEvent, output);
             WriteTimestamp(logEvent, output);

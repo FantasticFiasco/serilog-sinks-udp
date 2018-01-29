@@ -10,6 +10,8 @@ namespace Serilog.Sinks.Udp.TextFormatters
 {
     public class Log4jTextFormatterTest
     {
+        private static readonly XNamespace Namespace = "http://jakarta.apache.org/log4j/";
+
         private readonly Log4jTextFormatter formatter;
         private readonly TextWriter output;
 
@@ -84,7 +86,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
             formatter.Format(logEvent, output);
 
             // Assert
-            Deserialize().Root.Element("message").Value.ShouldBe("Some message");
+            Deserialize().Root.Element(Namespace + "message").Value.ShouldBe("Some message");
         }
 
         [Fact]
@@ -97,13 +99,12 @@ namespace Serilog.Sinks.Udp.TextFormatters
             formatter.Format(logEvent, output);
 
             // Assert
-            Deserialize().Root.Element("throwable").Value.ShouldNotBeNull();
+            Deserialize().Root.Element(Namespace + "throwable").Value.ShouldNotBeNull();
         }
 
         private XDocument Deserialize()
         {
-            var xmlWithoutNamespaces = output.ToString().Replace("log4j:", string.Empty);
-            return XDocument.Parse(xmlWithoutNamespaces);
+            return XDocument.Parse(output.ToString());
         }
     }
 }
