@@ -5,15 +5,17 @@
 # version format
 version: '{build}'
 
-# do not build on tags (GitHub and BitBucket)
-skip_tags: true
-
 #---------------------------------#
 #    environment configuration    #
 #---------------------------------#
 
 # build worker image (VM template)
 image: Visual Studio 2017
+
+# environment variables
+environment:
+  NUGET_API_KEY:
+    secure: kt4g3sjROiFwR07xq/OEV5N5zwG3LUErtHR7ZoaRKuPlinBnXVSVGKscMKGkCE13
 
 #---------------------------------#
 #       build configuration       #
