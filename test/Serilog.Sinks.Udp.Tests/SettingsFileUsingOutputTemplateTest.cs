@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
-using System.Net;
 using Microsoft.Extensions.Configuration;
+using Serilog.Sinks.Udp.Private;
 
 namespace Serilog
 {
@@ -12,7 +12,7 @@ namespace Serilog
                 .AddJsonFile("appsettings_output_template.json")
                 .Build();
 
-            RemoteAddress = IPAddress.Parse(configuration["Serilog:WriteTo:0:Args:remoteAddress"]);
+            RemoteAddress = configuration["Serilog:WriteTo:0:Args:remoteAddress"].ToIPAddress();
             RemotePort = int.Parse(configuration["Serilog:WriteTo:0:Args:remotePort"]);
 
             Logger = new LoggerConfiguration()

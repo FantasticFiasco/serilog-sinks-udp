@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+### :zap: Added
+
+- [#26](https://github.com/FantasticFiasco/serilog-sinks-udp/issues/26) Ability to specify a hostname instead of an IP address when configuring sink using [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) (contribution by [marekstachura](https://github.com/marekstachura))
+
 ## [4.0.1] - 2018-01-29
 
 ### :syringe: Fixed

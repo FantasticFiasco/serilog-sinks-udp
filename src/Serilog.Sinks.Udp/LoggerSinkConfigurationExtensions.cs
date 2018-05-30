@@ -21,6 +21,7 @@ using Serilog.Formatting;
 using Serilog.Formatting.Display;
 using Serilog.Sinks.Udp.Private;
 using Serilog.Core;
+using Serilog.Debugging;
 
 namespace Serilog
 {
@@ -48,7 +49,7 @@ namespace Serilog
         {
             return Udp(
                 sinkConfiguration,
-                IPAddress.Parse(remoteAddress),
+                remoteAddress.ToIPAddress(),
                 remotePort,
                 localPort,
                 restrictedToMinimumLevel,
@@ -130,7 +131,7 @@ namespace Serilog
         {
             return Udp(
                 sinkConfiguration,
-                IPAddress.Parse(remoteAddress),
+                remoteAddress.ToIPAddress(),
                 remotePort,
                 formatter,
                 localPort,
@@ -178,9 +179,17 @@ namespace Serilog
             if (sinkConfiguration == null)
                 throw new ArgumentNullException(nameof(sinkConfiguration));
 
-            var client = UdpClientFactory.Create(localPort, remoteAddress);
-            var sink = new UdpSink(client, remoteAddress, remotePort, formatter);
-            return sinkConfiguration.Sink(sink, restrictedToMinimumLevel, levelSwitch);
+            try
+            {
+                var client = UdpClientFactory.Create(localPort, remoteAddress);
+                var sink = new UdpSink(client, remoteAddress, remotePort, formatter);
+                return sinkConfiguration.Sink(sink, restrictedToMinimumLevel, levelSwitch);
+            }
+            catch (Exception e)
+            {
+                SelfLog.WriteLine("Unable to create UDP sink: {0}", e);
+                return sinkConfiguration.Sink(new NullSink(), LevelAlias.Maximum, null);
+            }
         }
     }
 }
