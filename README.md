@@ -39,6 +39,8 @@ Used in conjunction with [Serilog.Settings.Configuration](https://github.com/ser
 }
 ```
 
+Configuration using [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) enables the possibility to specify a hostname instead of an IP address as the remote address.
+
 ### Typical use case
 
 Producing log events is only half the story. Unless you are consuming them in a matter that benefits you in development or production, there is really no need to produce them in the first place.
