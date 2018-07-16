@@ -10,9 +10,20 @@
 __Package__ - [Serilog.Sinks.Udp](https://www.nuget.org/packages/serilog.sinks.udp)
 | __Platforms__ - .NET 4.5, .NETStandard 1.3
 
-### Getting started
+## Table of contents
 
-In the example shown, the sink will send UDP packages on the network to localhost on port 7071.
+- [Super simple to use](#super-simple-to-use)
+- [Typical use case](#typical-use-case)
+- [Event formatters](#event-formatters)
+- [Sample applications](#sample-applications)
+- [Install via NuGet](#install-via-nuget)
+- [Credit](#credit)
+
+---
+
+## Super simple to use
+
+In the following example, the sink will send UDP packages on the network to localhost on port 7071.
 
 ```csharp
 Serilog.ILogger log = new LoggerConfiguration()
@@ -41,7 +52,7 @@ Used in conjunction with [Serilog.Settings.Configuration](https://github.com/ser
 
 Configuration using [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) enables the possibility to specify a hostname instead of an IP address as the remote address.
 
-### Typical use case
+## Typical use case
 
 Producing log events is only half the story. Unless you are consuming them in a matter that benefits you in development or production, there is really no need to produce them in the first place.
 
@@ -49,13 +60,13 @@ In development I've been sending UDP packages to the loopback address, and use [
 
 Taking it to the next level is when you as a team agree on sending the log events to a multicast address, making them accessible to all team members. This can be beneficial for Quality Assurance who wishes to monitor log events from all instances of your running application.
 
-### Event formatters
+## Event formatters
 
 The event formatter is an output template on steroids. It has the responsibility of turning a single log event into a textual representation. It can serialize the log event into JSON, XML or anything else that matches the expectations of the receiver.
 
 The sink comes pre-loaded with two XML based event formatters. One is matching the log4j schema expected by Log2Console and the other is matching the log4net schema expected by [Log4View](http://www.log4view.com).
 
-#### `Log4jTextFormatter`
+### `Log4jTextFormatter`
 
 The log event is formatted according to the log4j XML schema expected by Log2Console.
 
@@ -66,7 +77,7 @@ The log event is formatted according to the log4j XML schema expected by Log2Con
 </log4j:event>
 ```
 
-#### `Log4netTextFormatter`
+### `Log4netTextFormatter`
 
 The log event is formatted according to the log4net XML schema expected by Log4View.
 
@@ -81,7 +92,13 @@ The log event is formatted according to the log4net XML schema expected by Log4V
 </log4net:event>
 ```
 
-### Install via NuGet
+## Sample applications
+
+The following sample applications demonstrate the usage of this sink in various circumstances:
+
+- [Serilog.Sinks.Udp - Sample in .NET Core](https://github.com/FantasticFiasco/serilog-sinks-udp-sample-dotnet-core) - Sample application producing log events in .NET Core
+
+## Install via NuGet
 
 If you want to include the UDP sink in your project, you can [install it directly from NuGet](https://www.nuget.org/packages/Serilog.Sinks.UDP/).
 
@@ -91,8 +108,8 @@ To install the sink, run the following command in the Package Manager Console:
 PM> Install-Package Serilog.Sinks.Udp
 ```
 
-### Credit
+## Credit
 
 Thank you [JetBrains](https://www.jetbrains.com/) for your important initiative to support the open source community with free licenses to your products.
 
-![JetBrains](./design/jetbrains.png)
+![JetBrains](./doc/resources/jetbrains.png)
