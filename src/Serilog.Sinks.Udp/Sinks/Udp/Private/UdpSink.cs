@@ -1,11 +1,11 @@
 ﻿// Copyright 2015-2018 Serilog Contributors
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,49 +30,29 @@ namespace Serilog.Sinks.Udp.Private
     /// </summary>
     internal class UdpSink : PeriodicBatchingSink
     {
-        private readonly IPEndPoint remoteEndPoint;
+        private readonly IUdpClient client;
+        private readonly string remoteAddress;
+        private readonly int remotePort;
         private readonly ITextFormatter formatter;
 
-        private IUdpClient client;
-
-        /// <summary>
-        /// Construct a <see cref="UdpSink"/>.
-        /// </summary>
-        /// <param name="client">
-        /// The UDP client responsible for sending multicast messages.
-        /// </param>
-        /// <param name="remoteAddress">
-        /// The <see cref="IPAddress"/> of the remote host or multicast group to which the UDP
-        /// client should sent the logging event.
-        /// </param>
-        /// <param name="remotePort">
-        /// The TCP port of the remote host or multicast group to which the UDP client should sent
-        /// the logging event.
-        /// </param>
-        /// <param name="formatter">Formatter used to convert log events to text.</param>
         public UdpSink(
             IUdpClient client,
-            IPAddress remoteAddress,
+            string remoteAddress,
             int remotePort,
             ITextFormatter formatter)
             : base(1000, TimeSpan.FromSeconds(0.5))
         {
-            if (remoteAddress == null)
-                throw new ArgumentNullException(nameof(remoteAddress));
-            if (remotePort < IPEndPoint.MinPort || remotePort > IPEndPoint.MaxPort)
-                throw new ArgumentOutOfRangeException(nameof(remotePort));
+            if (remotePort < IPEndPoint.MinPort || remotePort > IPEndPoint.MaxPort) throw new ArgumentOutOfRangeException(nameof(remotePort));
 
-            remoteEndPoint = new IPEndPoint(remoteAddress, remotePort);
-            this.formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
             this.client = client ?? throw new ArgumentNullException(nameof(client));
+            this.remoteAddress = remoteAddress ?? throw new ArgumentNullException(nameof(remoteAddress));
+            this.remotePort = remotePort;
+            this.formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
         }
 
         #region PeriodicBatchingSink Members
 
-        /// <summary>
-        /// Emit a batch of log events, running asynchronously.
-        /// </summary>
-        /// <param name="events">The events to emit.</param>
+        /// <inheritdoc />
         protected override async Task EmitBatchAsync(IEnumerable<LogEvent> events)
         {
             foreach (LogEvent logEvent in events)
@@ -90,7 +70,7 @@ namespace Serilog.Sinks.Udp.Private
                                 .ToCharArray());
 
                         await client
-                            .SendAsync(buffer, buffer.Length, remoteEndPoint)
+                            .SendAsync(buffer, buffer.Length, remoteAddress, remotePort)
                             .ConfigureAwait(false);
                     }
                 }
@@ -101,13 +81,7 @@ namespace Serilog.Sinks.Udp.Private
             }
         }
 
-        /// <summary>
-        /// Free resources held by the sink.
-        /// </summary>
-        /// <param name="disposing">
-        /// If true, called because the object is being disposed; if false, the object is being
-        /// disposed from the finalizer.
-        /// </param>
+        /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
@@ -121,10 +95,7 @@ namespace Serilog.Sinks.Udp.Private
                 client?.Close();
 #else
                 client?.Dispose();
-
 #endif
-                client = null;
-
             }
         }
 

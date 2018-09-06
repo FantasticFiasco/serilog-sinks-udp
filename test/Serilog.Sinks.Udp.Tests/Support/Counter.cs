@@ -13,8 +13,7 @@ namespace Serilog.Support
 
         public Counter(int expected)
         {
-            if (expected <= 0)
-                throw new ArgumentException("expected must be at least 1");
+            if (expected <= 0) throw new ArgumentException("expected must be at least 1");
 
             this.expected = expected;
             resetEvent = new ManualResetEventSlim();

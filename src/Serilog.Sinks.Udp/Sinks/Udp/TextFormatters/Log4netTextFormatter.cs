@@ -19,7 +19,7 @@ using System.IO;
 namespace Serilog.Sinks.Udp.TextFormatters
 {
     /// <summary>
-    /// Text formatter serializing log events into log4net complient XML.
+    /// Text formatter serializing log events into log4net compliant XML.
     /// </summary>
     public class Log4netTextFormatter : ITextFormatter
     {

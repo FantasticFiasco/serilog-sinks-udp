@@ -8,21 +8,21 @@ using System.Xml.Linq;
 
 namespace Serilog.Sinks.Udp.TextFormatters
 {
-    public class Log4netTextFormatterTest
+    public class Log4netTextFormatterShould
     {
         private static readonly XNamespace Namespace = "http://logging.apache.org/log4net/schemas/log4net-events-1.2/";
 
         private readonly Log4netTextFormatter formatter;
         private readonly TextWriter output;
 
-        public Log4netTextFormatterTest()
+        public Log4netTextFormatterShould()
         {
             formatter = new Log4netTextFormatter();
             output = new StringWriter();
         }
 
         [Fact]
-        public void Logger()
+        public void WriteLoggerAttribute()
         {
             // Arrange
             var logEvent = Some.LogEvent();
@@ -36,7 +36,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         }
 
         [Fact]
-        public void Timestamp()
+        public void WriteTimestampAttribute()
         {
             // Act
             formatter.Format(Some.LogEvent(), output);
@@ -53,7 +53,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         [InlineData(LogEventLevel.Warning, "WARN")]
         [InlineData(LogEventLevel.Error, "ERROR")]
         [InlineData(LogEventLevel.Fatal, "FATAL")]
-        public void Level(LogEventLevel actual, string expected)
+        public void WriteLevelAttribute(LogEventLevel actual, string expected)
         {
             // Act
             formatter.Format(Some.LogEvent(level: actual), output);
@@ -63,7 +63,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         }
 
         [Fact]
-        public void Thead()
+        public void WriteTheadAttribute()
         {
             // Arrange
             var logEvent = Some.LogEvent();
@@ -77,7 +77,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         }
 
         [Fact]
-        public void Username()
+        public void WriteUsernameAttribute()
         {
             // Arrange
             var logEvent = Some.LogEvent();
@@ -91,7 +91,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         }
 
         [Fact]
-        public void Domain()
+        public void WriteDomainAttribute()
         {
             // Arrange
             var logEvent = Some.LogEvent();
@@ -105,7 +105,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         }
 
         [Fact]
-        public void Class()
+        public void WriteClassAttribute()
         {
             // Arrange
             var logEvent = Some.LogEvent();
@@ -119,7 +119,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         }
 
         [Fact]
-        public void Method()
+        public void WriteMethodAttribute()
         {
             // Arrange
             var logEvent = Some.LogEvent();
@@ -133,7 +133,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         }
         
         [Fact]
-        public void MachineName()
+        public void WriteMachineNameAttribute()
         {
             // Arrange
             var logEvent = Some.LogEvent();
@@ -147,7 +147,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         }
 
         [Fact]
-        public void Message()
+        public void WriteMessageElement()
         {
             // Arrange
             var logEvent = Some.LogEvent(message: "Some message");
@@ -160,7 +160,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         }
 
         [Fact]
-        public void Exception()
+        public void WriteExceptionElement()
         {
             // Arrange
             var logEvent = Some.LogEvent(exception: new DivideByZeroException());

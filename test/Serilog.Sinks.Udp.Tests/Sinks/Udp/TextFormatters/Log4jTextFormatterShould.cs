@@ -8,21 +8,21 @@ using System.Xml.Linq;
 
 namespace Serilog.Sinks.Udp.TextFormatters
 {
-    public class Log4jTextFormatterTest
+    public class Log4jTextFormatterShould
     {
         private static readonly XNamespace Namespace = "http://jakarta.apache.org/log4j/";
 
         private readonly Log4jTextFormatter formatter;
         private readonly TextWriter output;
 
-        public Log4jTextFormatterTest()
+        public Log4jTextFormatterShould()
         {
             formatter = new Log4jTextFormatter();
             output = new StringWriter();
         }
 
         [Fact]
-        public void Logger()
+        public void WriteLoggerAttribute()
         {
             // Arrange
             var logEvent = Some.LogEvent();
@@ -36,7 +36,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         }
 
         [Fact]
-        public void Timestamp()
+        public void WriteTimestampAttribute()
         {
             // Act
             formatter.Format(Some.LogEvent(), output);
@@ -53,7 +53,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         [InlineData(LogEventLevel.Warning, "WARN")]
         [InlineData(LogEventLevel.Error, "ERROR")]
         [InlineData(LogEventLevel.Fatal, "FATAL")]
-        public void Level(LogEventLevel actual, string expected)
+        public void WriteLevelAttribute(LogEventLevel actual, string expected)
         {
             // Act
             formatter.Format(Some.LogEvent(level: actual), output);
@@ -63,7 +63,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         }
 
         [Fact]
-        public void Thead()
+        public void WriteTheadAttribute()
         {
             // Arrange
             var logEvent = Some.LogEvent();
@@ -77,7 +77,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         }
 
         [Fact]
-        public void Message()
+        public void WriteMessageElement()
         {
             // Arrange
             var logEvent = Some.LogEvent(message: "Some message");
@@ -90,7 +90,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
         }
 
         [Fact]
-        public void Exception()
+        public void WriteExceptionElement()
         {
             // Arrange
             var logEvent = Some.LogEvent(exception: new DivideByZeroException());

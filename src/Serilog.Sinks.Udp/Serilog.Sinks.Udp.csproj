@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <VersionPrefix>4.1.0</VersionPrefix>
     <AssemblyName>Serilog.Sinks.Udp</AssemblyName>
@@ -21,22 +20,17 @@
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageReleaseNotes>For release notes, please see the change log on GitHub.</PackageReleaseNotes>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="2.*" />
   </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
     <PackageReference Include="System.Net.NameResolution" Version="4.*" />
   </ItemGroup>
-
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <DefineConstants>$(DefineConstants);NET4</DefineConstants>
   </PropertyGroup>
-
 </Project>
