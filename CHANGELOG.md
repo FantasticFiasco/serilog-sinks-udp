@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+### :syringe: Fixed
+
+- [#29](https://github.com/FantasticFiasco/serilog-sinks-udp/issues/29) Fix remote hostname implementation bug (contribution by [Nisheeth Barthwal](https://github.com/nbaztec))
+
 ## [4.1.0] - 2018-06-06
 
 ### :zap: Added
@@ -32,13 +36,13 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ### :zap: Added
 
-- Text formatter complient with log4net XML schema, thus compatible with [Log4View](http://www.log4view.com) (contribution by [jvanrhyn](https://github.com/jvanrhyn))
+- Text formatter compliant with log4net XML schema, thus compatible with [Log4View](http://www.log4view.com) (contribution by [jvanrhyn](https://github.com/jvanrhyn))
 
 ## [3.2.0] - 2017-08-26
 
 ### :zap: Added
 
-- Text formatter complient with log4j XML schema, thus compatible with [Log2Console](https://github.com/Statyk7/log2console) 
+- Text formatter compliant with log4j XML schema, thus compatible with [Log2Console](https://github.com/Statyk7/log2console)
 
 ## [3.1.0] - 2017-08-20
 
