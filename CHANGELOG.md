@@ -14,7 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ### :zap: Added
 
-- [#26](https://github.com/FantasticFiasco/serilog-sinks-udp/issues/26) Ability to specify a hostname instead of an IP address when configuring sink using [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) (contribution by [marekstachura](https://github.com/marekstachura))
+- [#26](https://github.com/FantasticFiasco/serilog-sinks-udp/issues/26) Ability to specify a hostname instead of an IP address when configuring sink using [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) (contribution by [Marek Stachura](https://github.com/marekstachura))
 
 ## [4.0.1] - 2018-01-29
 
@@ -30,13 +30,13 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ### :zap: Added
 
-- [BREAKING CHANGE] Option to specify a logging level switch (contribution by [alkampfergit](https://github.com/alkampfergit))
+- [BREAKING CHANGE] Option to specify a logging level switch (contribution by [Gian Maria](https://github.com/alkampfergit))
 
 ## [3.3.0] - 2017-09-13
 
 ### :zap: Added
 
-- Text formatter compliant with log4net XML schema, thus compatible with [Log4View](http://www.log4view.com) (contribution by [jvanrhyn](https://github.com/jvanrhyn))
+- Text formatter compliant with log4net XML schema, thus compatible with [Log4View](http://www.log4view.com) (contribution by [Johan van Rhyn](https://github.com/jvanrhyn))
 
 ## [3.2.0] - 2017-08-26
 
@@ -70,13 +70,13 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ### :zap: Added
 
-- [#7](https://github.com/FantasticFiasco/serilog-sinks-udp/issues/7) - Support for .NET Standard 1.3 (contribution by [scottamartin](https://github.com/scottamartin))
+- [#7](https://github.com/FantasticFiasco/serilog-sinks-udp/issues/7) - Support for .NET Standard 1.3 (contribution by [Scott Martin](https://github.com/scottamartin))
 
 ## [2.2.0] - 2017-03-16
 
 ### :zap: Added
 
-- Support for [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) (contribution by [bonejon](https://github.com/bonejon))
+- Support for [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) (contribution by [Jon](https://github.com/bonejon))
 
 ## [2.1.0] - 2016-11-01
 
