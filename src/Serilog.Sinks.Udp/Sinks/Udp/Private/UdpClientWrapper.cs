@@ -32,6 +32,11 @@ namespace Serilog.Sinks.Udp.Private
                 : new UdpClient(localPort, AddressFamily.InterNetwork);
         }
 
+        public Task<int> SendAsync(byte[] datagram, int bytes, IPEndPoint endPoint)
+        {
+            return client.SendAsync(datagram, bytes, endPoint);
+        }
+
         public Task<int> SendAsync(byte[] datagram, int bytes, string hostname, int port)
         {
             return client.SendAsync(datagram, bytes, hostname, port);

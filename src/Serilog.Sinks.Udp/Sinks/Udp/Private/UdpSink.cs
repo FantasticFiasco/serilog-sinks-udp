@@ -15,7 +15,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Serilog.Debugging;
@@ -31,8 +30,7 @@ namespace Serilog.Sinks.Udp.Private
     internal class UdpSink : PeriodicBatchingSink
     {
         private readonly IUdpClient client;
-        private readonly string remoteAddress;
-        private readonly int remotePort;
+        private readonly RemoteEndPoint remoteEndPoint;
         private readonly ITextFormatter formatter;
 
         public UdpSink(
@@ -42,11 +40,8 @@ namespace Serilog.Sinks.Udp.Private
             ITextFormatter formatter)
             : base(1000, TimeSpan.FromSeconds(0.5))
         {
-            if (remotePort < IPEndPoint.MinPort || remotePort > IPEndPoint.MaxPort) throw new ArgumentOutOfRangeException(nameof(remotePort));
-
             this.client = client ?? throw new ArgumentNullException(nameof(client));
-            this.remoteAddress = remoteAddress ?? throw new ArgumentNullException(nameof(remoteAddress));
-            this.remotePort = remotePort;
+            remoteEndPoint = new RemoteEndPoint(remoteAddress, remotePort);
             this.formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
         }
 
@@ -69,9 +64,18 @@ namespace Serilog.Sinks.Udp.Private
                                 .Trim()
                                 .ToCharArray());
 
-                        await client
-                            .SendAsync(buffer, buffer.Length, remoteAddress, remotePort)
-                            .ConfigureAwait(false);
+                        if (remoteEndPoint.IPEndPoint != null)
+                        {
+                            await client
+                                .SendAsync(buffer, buffer.Length, remoteEndPoint.IPEndPoint)
+                                .ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            await client
+                                .SendAsync(buffer, buffer.Length, remoteEndPoint.Address, remoteEndPoint.Port)
+                                .ConfigureAwait(false);
+                        }
                     }
                 }
                 catch (Exception e)

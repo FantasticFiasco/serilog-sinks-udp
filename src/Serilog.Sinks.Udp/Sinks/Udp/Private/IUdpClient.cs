@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Serilog.Sinks.Udp.Private
@@ -21,6 +22,22 @@ namespace Serilog.Sinks.Udp.Private
     /// </summary>
     public interface IUdpClient
     {
+        /// <summary>
+        /// Sends a UDP datagram asynchronously to a remote host.
+        /// </summary>
+        /// <param name="datagram">
+        /// An array of type <see cref="byte"/> that specifies the UDP datagram that you intend to
+        /// send represented as an array of bytes.
+        /// </param>
+        /// <param name="bytes">
+        /// The number of bytes in the datagram.
+        /// </param>
+        /// <param name="endPoint">
+        /// An <see cref="IPEndPoint"/> that represents the host and port to which to send the datagram.
+        /// </param>
+        /// <returns></returns>
+        Task<int> SendAsync(byte[] datagram, int bytes, IPEndPoint endPoint);
+
         /// <summary>
         /// Sends a UDP datagram asynchronously to a remote host.
         /// </summary>

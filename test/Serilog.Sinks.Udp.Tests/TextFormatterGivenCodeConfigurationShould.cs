@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Serilog.Core;
+﻿using Serilog.Core;
 using Serilog.Support.TextFormatters;
 
 namespace Serilog
@@ -8,7 +7,7 @@ namespace Serilog
     {
         public TextFormatterGivenCodeConfigurationShould()
         {
-            var remoteAddress = IPAddress.Loopback.ToString();
+            var remoteAddress = "localhost";
             var remotePort = 7071;
 
             RemoteAddress = remoteAddress;

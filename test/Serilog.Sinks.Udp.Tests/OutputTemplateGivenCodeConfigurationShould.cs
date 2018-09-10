@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Serilog.Core;
+﻿using Serilog.Core;
 using Serilog.Support;
 
 namespace Serilog
@@ -10,7 +9,7 @@ namespace Serilog
 
         public OutputTemplateGivenCodeConfigurationShould()
         {
-            var remoteAddress = IPAddress.Loopback.ToString();
+            var remoteAddress = "localhost";
             var remotePort = 7071;
 
             RemoteAddress = remoteAddress;
