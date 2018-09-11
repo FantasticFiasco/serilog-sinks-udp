@@ -45,8 +45,7 @@ namespace Serilog.Sinks.Udp.Private
             var b = Encoding.UTF8.GetBytes(expectedData);
             await client.SendAsync(b, b.Length, remoteEndpoint);
 
-            b = receive.Result.Buffer;
-            var receivedData = Encoding.UTF8.GetString(b);
+            var receivedData = Encoding.UTF8.GetString(receive.Result.Buffer);
 
             receivedData.ShouldBe(expectedData);
         }
@@ -62,8 +61,7 @@ namespace Serilog.Sinks.Udp.Private
             var b = Encoding.UTF8.GetBytes(expectedData);
             await client.SendAsync(b, b.Length, remoteEndpoint);
 
-            b = receive.Result.Buffer;
-            var receivedData = Encoding.UTF8.GetString(b);
+            var receivedData = Encoding.UTF8.GetString(receive.Result.Buffer);
 
             receivedData.ShouldBe(expectedData);
         }
