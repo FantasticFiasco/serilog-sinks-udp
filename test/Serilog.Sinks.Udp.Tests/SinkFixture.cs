@@ -10,12 +10,12 @@ namespace Serilog
 {
     public abstract class SinkFixture : IDisposable
     {
+        private readonly Func<int, IUdpClient> originalFactory;
         private readonly UdpClientMock client;
-        private readonly Func<int, IUdpClient> originalFactoryCreate;
-
+        
         protected SinkFixture()
         {
-            originalFactoryCreate = UdpClientFactory.Create;
+            originalFactory = UdpClientFactory.Create;
 
             client = new UdpClientMock();
             UdpClientFactory.Create = _ => client.Object;
@@ -81,7 +81,8 @@ namespace Serilog
         public void Dispose()
         {
             Logger.Dispose();
-            UdpClientFactory.Create = originalFactoryCreate;
+
+            UdpClientFactory.Create = originalFactory;
         }
     }
 }

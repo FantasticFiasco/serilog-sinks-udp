@@ -31,7 +31,7 @@ namespace Serilog.Sinks.Udp.Private
                 ? new UdpClient(AddressFamily.InterNetworkV6)
                 : new UdpClient(localPort, AddressFamily.InterNetworkV6);
 
-            // Allow for IPv4 Mapped addresses over IPv6
+            // Allow for IPv4 mapped addresses over IPv6
             client.Client.DualMode = true;
         }
 
