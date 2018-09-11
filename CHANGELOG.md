@@ -8,8 +8,12 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ### :syringe: Fixed
 
-- [#31](https://github.com/FantasticFiasco/serilog-sinks-udp/issues/30) Enable IPv6 dual mode operation for IPv4 mapped addresses bug (contribution by [Nisheeth Barthwal](https://github.com/nbaztec))
 - [#29](https://github.com/FantasticFiasco/serilog-sinks-udp/issues/29) Fix remote hostname implementation bug (contribution by [Nisheeth Barthwal](https://github.com/nbaztec))
+- [#31](https://github.com/FantasticFiasco/serilog-sinks-udp/issues/30) Enable IPv6 dual mode operation for IPv4 mapped addresses (contribution by [Nisheeth Barthwal](https://github.com/nbaztec))
+
+#### Breaking change
+
+Please note that this release contains breaking changes. UDP packages are now sent using a socket in [dual mode](https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.dualmode?view=netstandard-1.3), which tunnels IPv4 traffic over IPv6. For more information regarding dual mode, please see the [ASP.NET blog](https://blogs.msdn.microsoft.com/webdev/2013/01/08/dual-mode-sockets-never-create-an-ipv4-socket-again/). For questions regarding operating systems and IPv6 support, please see the [comparison of IPv6 support in operating systems](https://en.wikipedia.org/wiki/Comparison_of_IPv6_support_in_operating_systems).
 
 ## [4.1.0] - 2018-06-06
 
