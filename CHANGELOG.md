@@ -8,7 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ### :syringe: Fixed
 
-- [#30](https://github.com/FantasticFiasco/serilog-sinks-udp/issues/30) Enable IPv6 dual mode operation for IPv4 mapped addresses bug (contribution by [Nisheeth Barthwal](https://github.com/nbaztec))
+- [#31](https://github.com/FantasticFiasco/serilog-sinks-udp/issues/30) Enable IPv6 dual mode operation for IPv4 mapped addresses bug (contribution by [Nisheeth Barthwal](https://github.com/nbaztec))
 - [#29](https://github.com/FantasticFiasco/serilog-sinks-udp/issues/29) Fix remote hostname implementation bug (contribution by [Nisheeth Barthwal](https://github.com/nbaztec))
 
 ## [4.1.0] - 2018-06-06
