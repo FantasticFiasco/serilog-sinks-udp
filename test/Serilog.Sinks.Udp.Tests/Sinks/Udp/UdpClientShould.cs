@@ -11,7 +11,7 @@ namespace Serilog.Sinks.Udp.Private
     public class UdpClientShould : IDisposable
     {
 
-        private const int  serverIpV4Port = 30457;
+        private const int serverIpV4Port = 30457;
         private const int serverIpV6Port = 30458;
 
         private readonly UdpClient serverIpV4;
