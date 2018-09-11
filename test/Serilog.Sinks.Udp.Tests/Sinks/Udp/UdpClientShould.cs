@@ -19,7 +19,6 @@ namespace Serilog.Sinks.Udp.Private
 
         public UdpClientShould()
         {
-            Console.WriteLine("creating");
             serverIpV4 = new UdpClient(serverIpV4Port, AddressFamily.InterNetwork);
             serverIpV4.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 5000);
 
@@ -29,7 +28,6 @@ namespace Serilog.Sinks.Udp.Private
 
         public void Dispose()
         {
-            Console.WriteLine("done");
             serverIpV4.Close();
             serverIpV6.Close();
         }
