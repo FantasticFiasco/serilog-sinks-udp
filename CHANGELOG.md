@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+## [5.0.0] - 2018-09-13
+
 ### :syringe: Fixed
 
 - [#29](https://github.com/FantasticFiasco/serilog-sinks-udp/issues/29) Fix remote hostname implementation bug (contribution by [Nisheeth Barthwal](https://github.com/nbaztec))

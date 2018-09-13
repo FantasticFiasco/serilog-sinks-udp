@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <VersionPrefix>4.1.0</VersionPrefix>
+    <VersionPrefix>5.0.0</VersionPrefix>
     <AssemblyName>Serilog.Sinks.Udp</AssemblyName>
     <Description>A Serilog sink sending UDP packages over the network.</Description>
     <TargetFrameworks>net45;netstandard1.3</TargetFrameworks>
