@@ -28,8 +28,11 @@ namespace Serilog.Sinks.Udp.Private
             if (localPort < IPEndPoint.MinPort || localPort > IPEndPoint.MaxPort) throw new ArgumentOutOfRangeException(nameof(localPort));
 
             client = localPort == 0
-                ? new UdpClient(AddressFamily.InterNetwork)
-                : new UdpClient(localPort, AddressFamily.InterNetwork);
+                ? new UdpClient(AddressFamily.InterNetworkV6)
+                : new UdpClient(localPort, AddressFamily.InterNetworkV6);
+
+            // Allow for IPv4 mapped addresses over IPv6
+            client.Client.DualMode = true;
         }
 
         public Task<int> SendAsync(byte[] datagram, int bytes, IPEndPoint endPoint)
