@@ -16,6 +16,7 @@ __Package__ - [Serilog.Sinks.Udp](https://www.nuget.org/packages/serilog.sinks.u
 - [Typical use case](#typical-use-case)
 - [Event formatters](#event-formatters)
 - [Sample applications](#sample-applications)
+- [Considerations](#considerations)
 - [Install via NuGet](#install-via-nuget)
 - [Credit](#credit)
 
@@ -97,6 +98,12 @@ The log event is formatted according to the log4net XML schema expected by Log4V
 The following sample applications demonstrate the usage of this sink in various circumstances:
 
 - [Serilog.Sinks.Udp - Sample in .NET Core](https://github.com/FantasticFiasco/serilog-sinks-udp-sample-dotnet-core) - Sample application producing log events in .NET Core
+
+## Considerations
+
+This sink is using sockets in [dual mode](https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.dualmode?view=netstandard-1.3), which tunnels IPv4 traffic over IPv6. This means that IPv6 is a prerequisite for using this sink. For questions regarding operating systems and IPv6 support, please see the [comparison of IPv6 support in operating systems](https://en.wikipedia.org/wiki/Comparison_of_IPv6_support_in_operating_systems).
+
+For more information regarding sockets in dual mode, please see the [ASP.NET blog](https://blogs.msdn.microsoft.com/webdev/2013/01/08/dual-mode-sockets-never-create-an-ipv4-socket-again/). 
 
 ## Install via NuGet
 
