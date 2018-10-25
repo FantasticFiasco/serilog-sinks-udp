@@ -3,8 +3,6 @@
     <TargetFrameworks>netcoreapp2.0</TargetFrameworks>
     <RootNamespace>Serilog</RootNamespace>
     <IsPackable>false</IsPackable>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <TreatSpecificWarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../../src/Serilog.Sinks.Udp/Serilog.Sinks.Udp.csproj" />
