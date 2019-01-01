@@ -1,4 +1,4 @@
-﻿// Copyright 2015-2018 Serilog Contributors
+﻿// Copyright 2015-2019 Serilog Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ namespace Serilog
         /// cause the UDP client not to bind to a local port.
         /// </param>
         /// <param name="restrictedToMinimumLevel">
-        /// The minimum level for events passed through the sink. The default is 
+        /// The minimum level for events passed through the sink. The default is
         /// <see cref="LevelAlias.Minimum"/>.
         /// </param>
         /// <param name="levelSwitch">
