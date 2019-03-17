@@ -18,6 +18,7 @@ __Package__ - [Serilog.Sinks.Udp](https://www.nuget.org/packages/serilog.sinks.u
 - [Sample applications](#sample-applications)
 - [Considerations](#considerations)
 - [Install via NuGet](#install-via-nuget)
+- [Donations](#donations)
 - [Credit](#credit)
 
 ---
@@ -44,7 +45,7 @@ Used in conjunction with [Serilog.Settings.Configuration](https://github.com/ser
         "Args": {
           "remoteAddress": "127.0.0.1",
           "remotePort": 7071
-        } 
+        }
       }
     ]
   }
@@ -104,7 +105,7 @@ The following sample applications demonstrate the usage of this sink in various 
 
 This sink is using sockets in [dual mode](https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.dualmode?view=netstandard-1.3), which tunnels IPv4 traffic over IPv6. This means that IPv6 is a prerequisite for using this sink. For questions regarding operating systems and IPv6 support, please see the [comparison of IPv6 support in operating systems](https://en.wikipedia.org/wiki/Comparison_of_IPv6_support_in_operating_systems).
 
-For more information regarding sockets in dual mode, please see the [ASP.NET blog](https://blogs.msdn.microsoft.com/webdev/2013/01/08/dual-mode-sockets-never-create-an-ipv4-socket-again/). 
+For more information regarding sockets in dual mode, please see the [ASP.NET blog](https://blogs.msdn.microsoft.com/webdev/2013/01/08/dual-mode-sockets-never-create-an-ipv4-socket-again/).
 
 ## Install via NuGet
 
@@ -115,6 +116,12 @@ To install the sink, run the following command in the Package Manager Console:
 ```
 PM> Install-Package Serilog.Sinks.Udp
 ```
+
+## Donations
+
+If this project has helped you to stay productive and save money, you can buy me a cup of coffee :)
+
+[![PayPal Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/FantasticFiasco)
 
 ## Credit
 
