@@ -67,6 +67,7 @@ namespace Serilog
         /// <param name="formatProvider">
         /// Supplies culture-specific formatting information, or null.
         /// </param>
+        /// <param name="useIpv6">Use Ipv6 dual socket mode</param>
         /// <returns>
         /// Logger configuration, allowing configuration to continue.
         /// </returns>
@@ -78,7 +79,8 @@ namespace Serilog
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
             LoggingLevelSwitch levelSwitch = null,
             string outputTemplate = DefaultOutputTemplate,
-            IFormatProvider formatProvider = null)
+            IFormatProvider formatProvider = null,
+            bool useIpv6 = true)
         {
             if (sinkConfiguration == null) throw new ArgumentNullException(nameof(sinkConfiguration));
             if (outputTemplate == null) throw new ArgumentNullException(nameof(outputTemplate));
@@ -185,6 +187,7 @@ namespace Serilog
         /// <param name="levelSwitch">
         /// A switch allowing the pass-through minimum level to be changed at runtime.
         /// </param>
+        /// <param name="useIpv6">Use Ipv6 dual socket mode</param>
         /// <returns>
         /// Logger configuration, allowing configuration to continue.
         /// </returns>
@@ -195,13 +198,14 @@ namespace Serilog
             ITextFormatter formatter,
             int localPort = 0,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
-            LoggingLevelSwitch levelSwitch = null)
+            LoggingLevelSwitch levelSwitch = null,
+            bool useIpv6 = true)
         {
             if (sinkConfiguration == null) throw new ArgumentNullException(nameof(sinkConfiguration));
 
             try
             {
-                var client = UdpClientFactory.Create(localPort);
+                var client = UdpClientFactory.Create(localPort, useIpv6);
                 var sink = new UdpSink(client, remoteAddress, remotePort, formatter);
 
                 return sinkConfiguration.Sink(sink, restrictedToMinimumLevel, levelSwitch);
@@ -242,6 +246,7 @@ namespace Serilog
         /// <param name="levelSwitch">
         /// A switch allowing the pass-through minimum level to be changed at runtime.
         /// </param>
+        /// <param name="useIpv6">Use Ipv6 dual socket mode</param>
         /// <returns>
         /// Logger configuration, allowing configuration to continue.
         /// </returns>
@@ -252,7 +257,8 @@ namespace Serilog
             ITextFormatter formatter,
             int localPort = 0,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
-            LoggingLevelSwitch levelSwitch = null)
+            LoggingLevelSwitch levelSwitch = null,
+            bool useIpv6 = true)
         {
             return Udp(
                 sinkConfiguration,
@@ -261,7 +267,8 @@ namespace Serilog
                 formatter,
                 localPort,
                 restrictedToMinimumLevel,
-                levelSwitch
+                levelSwitch,
+                useIpv6
             );
         }
     }
