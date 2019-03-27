@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+### :syringe: Fixed
+
+- [#42](https://github.com/FantasticFiasco/serilog-sinks-udp/pull/42) Revert to support IPv4 on networks without IPv6 (contribution by [brettdavis-bmw](https://github.com/brettdavis-bmw))
+
 ## [5.0.1] - 2019-01-07
 
 ### :zap: Added
