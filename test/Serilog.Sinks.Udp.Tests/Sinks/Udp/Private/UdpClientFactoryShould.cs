@@ -16,7 +16,7 @@ namespace Serilog.Sinks.Udp.Private
 
         public UdpClientFactoryShould()
         {
-            client = UdpClientFactory.Create(0);
+            client = UdpClientFactory.Create(0, true);
         }
 
         [Theory]

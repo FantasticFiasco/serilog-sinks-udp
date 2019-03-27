@@ -24,7 +24,7 @@ namespace Serilog.Sinks.Udp.Private
         /// <summary>
         /// Gets or sets the factory creating instances of <see cref="IUdpClient"/>.
         /// </summary>
-        public static Func<int, IUdpClient> Create { get; set; }
-            = localPort => new UdpClientWrapper(localPort);
+        public static Func<int, bool, IUdpClient> Create { get; set; }
+            = (localPort, useIpv6) => new UdpClientWrapper(localPort, useIpv6);
     }
 }
