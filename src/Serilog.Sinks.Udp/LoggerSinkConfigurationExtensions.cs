@@ -67,7 +67,7 @@ namespace Serilog
         /// <param name="formatProvider">
         /// Supplies culture-specific formatting information, or null.
         /// </param>
-        /// <param name="useIpv6">Use Ipv6 dual socket mode</param>
+        /// <param name="useIpv6">Use Ipv6 dual socket mode.</param>
         /// <returns>
         /// Logger configuration, allowing configuration to continue.
         /// </returns>
@@ -94,7 +94,8 @@ namespace Serilog
                 formatter,
                 localPort,
                 restrictedToMinimumLevel,
-                levelSwitch);
+                levelSwitch,
+                useIpv6);
         }
 
         /// <summary>
@@ -187,7 +188,7 @@ namespace Serilog
         /// <param name="levelSwitch">
         /// A switch allowing the pass-through minimum level to be changed at runtime.
         /// </param>
-        /// <param name="useIpv6">Use Ipv6 dual socket mode</param>
+        /// <param name="useIpv6">Use Ipv6 dual socket mode.</param>
         /// <returns>
         /// Logger configuration, allowing configuration to continue.
         /// </returns>
@@ -246,7 +247,7 @@ namespace Serilog
         /// <param name="levelSwitch">
         /// A switch allowing the pass-through minimum level to be changed at runtime.
         /// </param>
-        /// <param name="useIpv6">Use Ipv6 dual socket mode</param>
+        /// <param name="useIpv6">Use Ipv6 dual socket mode.</param>
         /// <returns>
         /// Logger configuration, allowing configuration to continue.
         /// </returns>
