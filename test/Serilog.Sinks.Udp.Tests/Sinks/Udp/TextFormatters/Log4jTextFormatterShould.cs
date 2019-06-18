@@ -106,6 +106,9 @@ namespace Serilog.Sinks.Udp.TextFormatters
         [InlineData("<", "&lt;")]
         [InlineData(">", "&gt;")]
         [InlineData("&", "&amp;")]
+        // The following characters should not be escaped in the error message
+        [InlineData("\"", "\"")]
+        [InlineData("'", "'")]
         public void WriteEscapedExceptionElement(string message, string expected)
         {
             // Arrange
