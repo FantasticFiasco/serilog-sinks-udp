@@ -102,6 +102,22 @@ namespace Serilog.Sinks.Udp.TextFormatters
             Deserialize().Root.Element(Namespace + "throwable").Value.ShouldNotBeNull();
         }
 
+        [Theory]
+        [InlineData("<", "&lt;")]
+        [InlineData(">", "&gt;")]
+        [InlineData("&", "&amp;")]
+        public void WriteEscapedExceptionElement(string message, string expected)
+        {
+            // Arrange
+            var logEvent = Some.LogEvent(exception: new DivideByZeroException(message));
+
+            // Act
+            formatter.Format(logEvent, output);
+
+            // Assert
+            output.ToString().ShouldContain($"<log4j:throwable>System.DivideByZeroException: {expected}</log4j:throwable>");
+        }
+
         private XDocument Deserialize()
         {
             return XDocument.Parse(output.ToString());

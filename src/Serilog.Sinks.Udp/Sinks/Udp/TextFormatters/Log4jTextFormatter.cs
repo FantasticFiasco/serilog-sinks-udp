@@ -120,7 +120,40 @@ namespace Serilog.Sinks.Udp.TextFormatters
                 return;
             }
 
-            output.Write($"<log4j:throwable>{logEvent.Exception}</log4j:throwable>");
+            output.Write("<log4j:throwable>");
+            EscapeXmlPropertyValue(output, logEvent.Exception.ToString());
+            output.Write("</log4j:throwable>");
+        }
+
+        /// <remarks>
+        /// This method has been influenced by
+        /// https://weblog.west-wind.com/posts/2018/Nov/30/Returning-an-XML-Encoded-String-in-NET
+        /// and does not support XML attribute values. The method in the article does, but this
+        /// doesn't.
+        /// </remarks>
+        private static void EscapeXmlPropertyValue(TextWriter output, string text)
+        {
+            foreach (var character in text)
+            {
+                switch (character)
+                {
+                    case '<':
+                        output.Write("&lt;");
+                        break;
+
+                    case '>':
+                        output.Write("&gt;");
+                        break;
+
+                    case '&':
+                        output.Write("&amp;");
+                        break;
+
+                    default:
+                        output.Write(character);
+                        break;
+                }
+            }
         }
     }
 }
