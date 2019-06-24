@@ -202,7 +202,6 @@ namespace Serilog
         /// <param name="levelSwitch">
         /// A switch allowing the pass-through minimum level to be changed at runtime.
         /// </param>
-        /// <param name="useIpv6">Use Ipv6 dual socket mode.</param>
         /// <returns>
         /// Logger configuration, allowing configuration to continue.
         /// </returns>
@@ -214,8 +213,7 @@ namespace Serilog
             int localPort = 0,
             InternetProtocol internetProtocol = InternetProtocol.Version6,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
-            LoggingLevelSwitch levelSwitch = null,
-            bool useIpv6 = true)
+            LoggingLevelSwitch levelSwitch = null)
         {
             if (sinkConfiguration == null) throw new ArgumentNullException(nameof(sinkConfiguration));
 
@@ -266,7 +264,6 @@ namespace Serilog
         /// <param name="levelSwitch">
         /// A switch allowing the pass-through minimum level to be changed at runtime.
         /// </param>
-        /// <param name="useIpv6">Use Ipv6 dual socket mode.</param>
         /// <returns>
         /// Logger configuration, allowing configuration to continue.
         /// </returns>
@@ -278,8 +275,7 @@ namespace Serilog
             int localPort = 0,
             InternetProtocol internetProtocol = InternetProtocol.Version6,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
-            LoggingLevelSwitch levelSwitch = null,
-            bool useIpv6 = true)
+            LoggingLevelSwitch levelSwitch = null)
         {
             return Udp(
                 sinkConfiguration,
@@ -289,8 +285,7 @@ namespace Serilog
                 localPort,
                 internetProtocol,
                 restrictedToMinimumLevel,
-                levelSwitch,
-                useIpv6
+                levelSwitch
             );
         }
     }

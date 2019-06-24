@@ -25,10 +25,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings_output_template.json">
+    <None Update="appsettings_output_template_ipv4.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="appsettings_text_formatter.json">
+    <None Update="appsettings_output_template_ipv6.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings_text_formatter_ipv4.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings_text_formatter_ipv6.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

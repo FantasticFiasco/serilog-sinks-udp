@@ -3,13 +3,13 @@ using Serilog.Support;
 
 namespace Serilog
 {
-    public class OutputTemplateGivenCodeConfigurationShould : SinkFixture
+    public class OutputTemplateGivenCodeConfigurationAndIPv6Should : SinkFixture
     {
         private const string OutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message} - {Exception}";
 
-        public OutputTemplateGivenCodeConfigurationShould()
+        public OutputTemplateGivenCodeConfigurationAndIPv6Should()
         {
-            var remoteAddress = "localhost";
+            var remoteAddress = "::1";
             var remotePort = 7071;
 
             RemoteAddress = remoteAddress;

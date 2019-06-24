@@ -3,12 +3,12 @@ using Serilog.Core;
 
 namespace Serilog
 {
-    public class OutputTemplateGivenAppSettingsShould : SinkFixture
+    public class OutputTemplateGivenAppSettingsAndIPv6Should : SinkFixture
     {
-        public OutputTemplateGivenAppSettingsShould()
+        public OutputTemplateGivenAppSettingsAndIPv6Should()
         {
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings_output_template.json")
+                .AddJsonFile("appsettings_output_template_ipv6.json")
                 .Build();
 
             RemoteAddress = configuration["Serilog:WriteTo:0:Args:remoteAddress"];

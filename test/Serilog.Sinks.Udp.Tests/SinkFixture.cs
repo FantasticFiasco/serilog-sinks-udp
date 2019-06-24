@@ -19,7 +19,7 @@ namespace Serilog
             originalFactory = UdpClientFactory.Create;
 
             client = new UdpClientMock();
-            UdpClientFactory.Create = (port, useIpv6) => client.Object;
+            UdpClientFactory.Create = (_, __) => client.Object;
         }
 
         protected abstract string RemoteAddress { get; }
