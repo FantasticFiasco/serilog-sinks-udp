@@ -1,11 +1,12 @@
 ﻿using Serilog.Core;
+using Serilog.Sinks.Udp;
 using Serilog.Support.TextFormatters;
 
 namespace Serilog
 {
-    public class TextFormatterGivenCodeConfigurationShould : SinkFixture
+    public class TextFormatterGivenCodeConfigurationAndIPv6Should : SinkFixture
     {
-        public TextFormatterGivenCodeConfigurationShould()
+        public TextFormatterGivenCodeConfigurationAndIPv6Should()
         {
             var remoteAddress = "localhost";
             var remotePort = 7071;
@@ -16,7 +17,11 @@ namespace Serilog
             Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo
-                .Udp(remoteAddress, remotePort, new TextFormatter())
+                .Udp(
+                    remoteAddress,
+                    remotePort,
+                    new TextFormatter(),
+                    internetProtocol: InternetProtocol.Version6)
                 .CreateLogger();
         }
 

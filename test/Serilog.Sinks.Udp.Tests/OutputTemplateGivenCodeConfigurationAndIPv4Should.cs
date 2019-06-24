@@ -1,4 +1,5 @@
 ﻿using Serilog.Core;
+using Serilog.Sinks.Udp;
 using Serilog.Support;
 
 namespace Serilog
@@ -9,7 +10,7 @@ namespace Serilog
 
         public OutputTemplateGivenCodeConfigurationAndIPv4Should()
         {
-            var remoteAddress = "127.0.0.1";
+            var remoteAddress = "localhost";
             var remotePort = 7071;
 
             RemoteAddress = remoteAddress;
@@ -18,7 +19,12 @@ namespace Serilog
             Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo
-                .Udp(remoteAddress, remotePort, outputTemplate: OutputTemplate, formatProvider: new FormatProvider())
+                .Udp(
+                    remoteAddress,
+                    remotePort,
+                    internetProtocol: InternetProtocol.Version4,
+                    outputTemplate: OutputTemplate,
+                    formatProvider: new FormatProvider())
                 .CreateLogger();
         }
 

@@ -1,14 +1,12 @@
 ﻿using Serilog.Core;
 using Serilog.Sinks.Udp;
-using Serilog.Support;
+using Serilog.Support.TextFormatters;
 
 namespace Serilog
 {
-    public class OutputTemplateGivenCodeConfigurationAndIPv6Should : SinkFixture
+    public class TextFormatterGivenCodeConfigurationAndIPv4Should : SinkFixture
     {
-        private const string OutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message} - {Exception}";
-
-        public OutputTemplateGivenCodeConfigurationAndIPv6Should()
+        public TextFormatterGivenCodeConfigurationAndIPv4Should()
         {
             var remoteAddress = "localhost";
             var remotePort = 7071;
@@ -22,9 +20,8 @@ namespace Serilog
                 .Udp(
                     remoteAddress,
                     remotePort,
-                    internetProtocol: InternetProtocol.Version6,
-                    outputTemplate: OutputTemplate,
-                    formatProvider: new FormatProvider())
+                    new TextFormatter(),
+                    internetProtocol: InternetProtocol.Version4)
                 .CreateLogger();
         }
 
