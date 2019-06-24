@@ -23,20 +23,25 @@ namespace Serilog.Sinks.Udp.Private
     {
         private readonly UdpClient client;
 
-        public UdpClientWrapper(int localPort, bool useIpv6)
+        public UdpClientWrapper(int localPort, InternetProtocol internetProtocol)
         {
             if (localPort < IPEndPoint.MinPort || localPort > IPEndPoint.MaxPort) throw new ArgumentOutOfRangeException(nameof(localPort));
-            var addressFamily = useIpv6 ? AddressFamily.InterNetworkV6 : AddressFamily.InterNetwork;
+
+
+            var addressFamily = ToAddressFamily(internetProtocol);
+
             client = localPort == 0
                 ? new UdpClient(addressFamily)
                 : new UdpClient(localPort, addressFamily);
 
             // Allow for IPv4 mapped addresses over IPv6
-            if (useIpv6)
+            if (internetProtocol == InternetProtocol.Version6)
             {
                 client.Client.DualMode = true;
             }
         }
+
+        public Socket Client => client.Client;
 
         public Task<int> SendAsync(byte[] datagram, int bytes, IPEndPoint endPoint)
         {
@@ -59,5 +64,20 @@ namespace Serilog.Sinks.Udp.Private
             client.Dispose();
         }
 #endif
+
+        private static AddressFamily ToAddressFamily(InternetProtocol internetProtocol)
+        {
+            switch (internetProtocol)
+            {
+                case InternetProtocol.Version4:
+                    return AddressFamily.InterNetwork;
+
+                case InternetProtocol.Version6:
+                    return AddressFamily.InterNetworkV6;
+
+                default:
+                    throw new ArgumentException($"Internet protocol {internetProtocol} is not supported.");
+            }
+        }
     }
 }

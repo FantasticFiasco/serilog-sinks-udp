@@ -21,6 +21,7 @@ using Serilog.Formatting.Display;
 using Serilog.Sinks.Udp.Private;
 using Serilog.Core;
 using Serilog.Debugging;
+using Serilog.Sinks.Udp;
 
 namespace Serilog
 {
@@ -53,6 +54,10 @@ namespace Serilog
         /// The TCP port from which the UDP client will communicate. The default is 0 and will
         /// cause the UDP client not to bind to a local port.
         /// </param>
+        /// <param name="internetProtocol">
+        /// The internet protocol addressing scheme of the socket. Default value is
+        /// <see cref="InternetProtocol.Version6"/>.
+        /// </param>
         /// <param name="restrictedToMinimumLevel">
         /// The minimum level for events passed through the sink. The default is
         /// <see cref="LevelAlias.Minimum"/>.
@@ -67,7 +72,6 @@ namespace Serilog
         /// <param name="formatProvider">
         /// Supplies culture-specific formatting information, or null.
         /// </param>
-        /// <param name="useIpv6">Use Ipv6 dual socket mode.</param>
         /// <returns>
         /// Logger configuration, allowing configuration to continue.
         /// </returns>
@@ -76,11 +80,11 @@ namespace Serilog
             string remoteAddress,
             int remotePort,
             int localPort = 0,
+            InternetProtocol internetProtocol = InternetProtocol.Version6,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
             LoggingLevelSwitch levelSwitch = null,
             string outputTemplate = DefaultOutputTemplate,
-            IFormatProvider formatProvider = null,
-            bool useIpv6 = true)
+            IFormatProvider formatProvider = null)
         {
             if (sinkConfiguration == null) throw new ArgumentNullException(nameof(sinkConfiguration));
             if (outputTemplate == null) throw new ArgumentNullException(nameof(outputTemplate));
@@ -93,9 +97,9 @@ namespace Serilog
                 remotePort,
                 formatter,
                 localPort,
+                internetProtocol,
                 restrictedToMinimumLevel,
-                levelSwitch,
-                useIpv6);
+                levelSwitch);
         }
 
         /// <summary>
@@ -115,6 +119,10 @@ namespace Serilog
         /// <param name="localPort">
         /// The TCP port from which the UDP client will communicate. The default is 0 and will
         /// cause the UDP client not to bind to a local port.
+        /// </param>
+        /// <param name="internetProtocol">
+        /// The internet protocol addressing scheme of the socket. Default value is
+        /// <see cref="InternetProtocol.Version6"/>.
         /// </param>
         /// <param name="restrictedToMinimumLevel">
         /// The minimum level for events passed through the sink. The default is
@@ -138,6 +146,7 @@ namespace Serilog
             IPAddress remoteAddress,
             int remotePort,
             int localPort = 0,
+            InternetProtocol internetProtocol = InternetProtocol.Version6,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
             LoggingLevelSwitch levelSwitch = null,
             string outputTemplate = DefaultOutputTemplate,
@@ -148,6 +157,7 @@ namespace Serilog
                 remoteAddress.ToString(),
                 remotePort,
                 localPort,
+                internetProtocol,
                 restrictedToMinimumLevel,
                 levelSwitch,
                 outputTemplate,
@@ -181,6 +191,10 @@ namespace Serilog
         /// The TCP port from which the UDP client will communicate. The default is 0 and will
         /// cause the UDP client not to bind to a local port.
         /// </param>
+        /// <param name="internetProtocol">
+        /// The internet protocol addressing scheme of the socket. Default value is
+        /// <see cref="InternetProtocol.Version6"/>.
+        /// </param>
         /// <param name="restrictedToMinimumLevel">
         /// The minimum level for events passed through the sink. The default is
         /// <see cref="LevelAlias.Minimum"/>.
@@ -198,6 +212,7 @@ namespace Serilog
             int remotePort,
             ITextFormatter formatter,
             int localPort = 0,
+            InternetProtocol internetProtocol = InternetProtocol.Version6,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
             LoggingLevelSwitch levelSwitch = null,
             bool useIpv6 = true)
@@ -206,7 +221,7 @@ namespace Serilog
 
             try
             {
-                var client = UdpClientFactory.Create(localPort, useIpv6);
+                var client = UdpClientFactory.Create(localPort, internetProtocol);
                 var sink = new UdpSink(client, remoteAddress, remotePort, formatter);
 
                 return sinkConfiguration.Sink(sink, restrictedToMinimumLevel, levelSwitch);
@@ -240,6 +255,10 @@ namespace Serilog
         /// The TCP port from which the UDP client will communicate. The default is 0 and will
         /// cause the UDP client not to bind to a local port.
         /// </param>
+        /// <param name="internetProtocol">
+        /// The internet protocol addressing scheme of the socket. Default value is
+        /// <see cref="InternetProtocol.Version6"/>.
+        /// </param>
         /// <param name="restrictedToMinimumLevel">
         /// The minimum level for events passed through the sink. The default is
         /// <see cref="LevelAlias.Minimum"/>.
@@ -257,6 +276,7 @@ namespace Serilog
             int remotePort,
             ITextFormatter formatter,
             int localPort = 0,
+            InternetProtocol internetProtocol = InternetProtocol.Version6,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
             LoggingLevelSwitch levelSwitch = null,
             bool useIpv6 = true)
@@ -267,6 +287,7 @@ namespace Serilog
                 remotePort,
                 formatter,
                 localPort,
+                internetProtocol,
                 restrictedToMinimumLevel,
                 levelSwitch,
                 useIpv6

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System.Net;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace Serilog.Sinks.Udp.Private
@@ -22,6 +23,11 @@ namespace Serilog.Sinks.Udp.Private
     /// </summary>
     public interface IUdpClient
     {
+        /// <summary>
+        /// Gets the underlying network <see cref="Socket"/>.
+        /// </summary>
+        Socket Client { get; }
+
         /// <summary>
         /// Sends a UDP datagram asynchronously to a remote host.
         /// </summary>

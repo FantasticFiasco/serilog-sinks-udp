@@ -6,13 +6,13 @@ namespace Serilog.Sinks.Udp
     public enum InternetProtocol
     {
         /// <summary>
-        /// Sink sending network packages to address defined in IP version 4.
+        /// Sink is using the IPv4 (Internet Protocol version 4) addressing scheme of the socket.
         /// </summary>
         Version4,
 
         /// <summary>
-        /// Sink sending network packages to address defined in IP version 6.
+        /// Sink is using the IPv6 (Internet Protocol version 6) addressing scheme of the socket.
         /// </summary>
-        Version5
+        Version6
     }
 }

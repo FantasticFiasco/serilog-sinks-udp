@@ -12,25 +12,42 @@ namespace Serilog.Sinks.Udp.Private
         private static readonly string Payload = "test";
         private static readonly byte[] PayloadAsBytes = Encoding.UTF8.GetBytes(Payload);
 
-        private readonly IUdpClient client;
+        private IUdpClient client;
 
-        public UdpClientFactoryShould()
+        [Theory]
+        [InlineData(InternetProtocol.Version4, AddressFamily.InterNetwork)]
+        [InlineData(InternetProtocol.Version6, AddressFamily.InterNetworkV6)]
+        public void SupportInternetProtocols(InternetProtocol internetProtocol, AddressFamily expectedAddressFamily)
         {
-            client = UdpClientFactory.Create(0, true);
+            // Act
+            client = UdpClientFactory.Create(0, internetProtocol);
+
+            // Assert
+            client.Client.AddressFamily.ShouldBe(expectedAddressFamily);
+        }
+
+        [Fact]
+        public void UseDualModeOnInternetProtocolVersion6()
+        {
+            // Act
+            client = UdpClientFactory.Create(0, InternetProtocol.Version6);
+
+            // Assert
+            client.Client.DualMode.ShouldBeTrue();
         }
 
         [Theory]
-        [InlineData("127.0.0.1")]
-        [InlineData("::1")]
-        public async void CreateUdpClientAndSendOnAddress(string address)
+        [InlineData(InternetProtocol.Version4, "127.0.0.1")]
+        [InlineData(InternetProtocol.Version6, "::1")]
+        public async void SendPayload(InternetProtocol internetProtocol, string address)
         {
             // Arrange
+            client = UdpClientFactory.Create(0, internetProtocol);
+
             var ipAddress = IPAddress.Parse(address);
-            
+
             using (var server = new UdpClient(0, ipAddress.AddressFamily))
             {
-                server.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 5000);
-
                 var receiveTask = server.ReceiveAsync();
 
                 // Act
@@ -40,7 +57,8 @@ namespace Serilog.Sinks.Udp.Private
                     new IPEndPoint(ipAddress, ((IPEndPoint)server.Client.LocalEndPoint).Port));
 
                 // Assert
-                Encoding.UTF8.GetString((await receiveTask).Buffer).ShouldBe(Payload);
+                var receivedData = (await receiveTask).Buffer;
+                Encoding.UTF8.GetString(receivedData).ShouldBe(Payload);
             }
         }
 
