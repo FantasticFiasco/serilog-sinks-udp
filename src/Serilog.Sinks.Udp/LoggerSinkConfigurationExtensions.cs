@@ -33,8 +33,8 @@ namespace Serilog
         private const string DefaultOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}";
 
         // NOTE:
-        //   This overload accepting the remote address as a string must be first one in the
-        //   class, otherwise Serilog.Settings.Configuration won't find it.
+        //   This overload accepting the remote address as a string must be above the oen accepting
+        //   IPAddress, otherwise is Serilog.Settings.Configuration unable to find it.
 
         /// <summary>
         /// Adds a sink that sends log events as UDP packages over the network.
@@ -166,8 +166,8 @@ namespace Serilog
         }
 
         // NOTE:
-        //   This overload accepting the remote address as a string must be first one in the
-        //   class, otherwise Serilog.Settings.Configuration won't find it.
+        //   This overload accepting the remote address as a string must be above the oen accepting
+        //   IPAddress, otherwise is Serilog.Settings.Configuration unable to find it.
 
         /// <summary>
         /// Adds a sink that sends log events as UDP packages over the network.
