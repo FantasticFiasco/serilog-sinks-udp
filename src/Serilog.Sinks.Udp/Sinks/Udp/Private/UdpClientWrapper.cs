@@ -27,7 +27,6 @@ namespace Serilog.Sinks.Udp.Private
         {
             if (localPort < IPEndPoint.MinPort || localPort > IPEndPoint.MaxPort) throw new ArgumentOutOfRangeException(nameof(localPort));
 
-
             var addressFamily = ToAddressFamily(internetProtocol);
 
             client = localPort == 0
