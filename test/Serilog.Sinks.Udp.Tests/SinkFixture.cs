@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Net.Sockets;
 using Moq;
 using Serilog.Core;
 using Serilog.Events;
-using Serilog.Sinks.Udp;
 using Serilog.Sinks.Udp.Private;
 using Serilog.Support;
 using Xunit;
@@ -11,7 +11,7 @@ namespace Serilog
 {
     public abstract class SinkFixture : IDisposable
     {
-        private readonly Func<int, InternetProtocol, IUdpClient> originalFactory;
+        private readonly Func<int, AddressFamily, IUdpClient> originalFactory;
         private readonly UdpClientMock client;
 
         protected SinkFixture()

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System;
+using System.Net.Sockets;
 
 namespace Serilog.Sinks.Udp.Private
 {
@@ -24,7 +25,7 @@ namespace Serilog.Sinks.Udp.Private
         /// <summary>
         /// Gets or sets the factory creating instances of <see cref="IUdpClient"/>.
         /// </summary>
-        public static Func<int, InternetProtocol, IUdpClient> Create { get; set; }
-            = (localPort, internetProtocol) => new UdpClientWrapper(localPort, internetProtocol);
+        public static Func<int, AddressFamily, IUdpClient> Create { get; set; }
+            = (localPort, family) => new UdpClientWrapper(localPort, family);
     }
 }

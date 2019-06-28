@@ -1,5 +1,5 @@
-﻿using Serilog.Core;
-using Serilog.Sinks.Udp;
+﻿using System.Net.Sockets;
+using Serilog.Core;
 using Serilog.Support.TextFormatters;
 
 namespace Serilog
@@ -20,8 +20,8 @@ namespace Serilog
                 .Udp(
                     remoteAddress,
                     remotePort,
-                    new TextFormatter(),
-                    internetProtocol: InternetProtocol.Version6)
+                    AddressFamily.InterNetworkV6,
+                    new TextFormatter())
                 .CreateLogger();
         }
 

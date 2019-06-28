@@ -14,35 +14,24 @@ namespace Serilog.Sinks.Udp.Private
 
         private IUdpClient client;
 
-        [Theory]
-        [InlineData(InternetProtocol.Version4, AddressFamily.InterNetwork)]
-        [InlineData(InternetProtocol.Version6, AddressFamily.InterNetworkV6)]
-        public void SupportInternetProtocols(InternetProtocol internetProtocol, AddressFamily expectedAddressFamily)
-        {
-            // Act
-            client = UdpClientFactory.Create(0, internetProtocol);
-
-            // Assert
-            client.Client.AddressFamily.ShouldBe(expectedAddressFamily);
-        }
 
         [Fact]
         public void UseDualModeOnInternetProtocolVersion6()
         {
             // Act
-            client = UdpClientFactory.Create(0, InternetProtocol.Version6);
+            client = UdpClientFactory.Create(0, AddressFamily.InterNetworkV6);
 
             // Assert
             client.Client.DualMode.ShouldBeTrue();
         }
 
         [Theory]
-        [InlineData(InternetProtocol.Version4, "127.0.0.1")]
-        [InlineData(InternetProtocol.Version6, "::1")]
-        public async void SendPayload(InternetProtocol internetProtocol, string address)
+        [InlineData("127.0.0.1", AddressFamily.InterNetwork)]
+        [InlineData("::1", AddressFamily.InterNetworkV6)]
+        public async void SendPayload(string address, AddressFamily family)
         {
             // Arrange
-            client = UdpClientFactory.Create(0, internetProtocol);
+            client = UdpClientFactory.Create(0, family);
 
             var ipAddress = IPAddress.Parse(address);
 
