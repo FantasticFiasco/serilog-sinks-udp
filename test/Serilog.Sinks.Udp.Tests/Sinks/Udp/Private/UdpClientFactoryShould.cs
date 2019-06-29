@@ -16,7 +16,7 @@ namespace Serilog.Sinks.Udp.Private
 
 
         [Fact]
-        public void UseDualModeOnInternetProtocolVersion6()
+        public void UseDualModeOnInterNetworkV6()
         {
             // Act
             client = UdpClientFactory.Create(0, AddressFamily.InterNetworkV6);
