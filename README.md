@@ -30,11 +30,12 @@ In the following example, the sink will send UDP packages on the network to loca
 ```csharp
 Serilog.ILogger log = new LoggerConfiguration()
   .MinimumLevel.Verbose()
-  .WriteTo.Udp(IPAddress.Loopback, 7071)
+  .WriteTo.Udp("localhost", 7071, AddressFamily.InterNetwork)
   .CreateLogger();
 ```
 
-Used in conjunction with [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) the same sink can be configured in the following way:
+Used in conjunction with [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) the same sink can be configured in the following way.
+
 ```json
 {
   "Serilog": {
@@ -43,16 +44,15 @@ Used in conjunction with [Serilog.Settings.Configuration](https://github.com/ser
       {
         "Name": "Udp",
         "Args": {
-          "remoteAddress": "127.0.0.1",
-          "remotePort": 7071
+          "remoteAddress": "localhost",
+          "remotePort": 7071,
+          "family": "InterNetwork"
         }
       }
     ]
   }
 }
 ```
-
-Configuration using [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) enables the possibility to specify a hostname instead of an IP address as the remote address.
 
 ## Typical use case
 
@@ -100,12 +100,6 @@ The following sample applications demonstrate the usage of this sink in various 
 
 - [Serilog.Sinks.Udp - Sample in .NET Core](https://github.com/FantasticFiasco/serilog-sinks-udp-sample-dotnet-core) - Sample application producing log events in .NET Core
 - [Serilog.Sinks.Udp - Sample in .NET Framework](https://github.com/FantasticFiasco/serilog-sinks-udp-sample-dotnet-framework) - Sample application producing log events in .NET Framework
-
-## Considerations
-
-This sink is using sockets in [dual mode](https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.dualmode?view=netstandard-1.3), which tunnels IPv4 traffic over IPv6. This means that IPv6 is a prerequisite for using this sink. For questions regarding operating systems and IPv6 support, please see the [comparison of IPv6 support in operating systems](https://en.wikipedia.org/wiki/Comparison_of_IPv6_support_in_operating_systems).
-
-For more information regarding sockets in dual mode, please see the [ASP.NET blog](https://blogs.msdn.microsoft.com/webdev/2013/01/08/dual-mode-sockets-never-create-an-ipv4-socket-again/).
 
 ## Install via NuGet
 
