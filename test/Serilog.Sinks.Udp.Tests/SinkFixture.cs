@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Sockets;
 using Moq;
 using Serilog.Core;
 using Serilog.Events;
@@ -10,15 +11,15 @@ namespace Serilog
 {
     public abstract class SinkFixture : IDisposable
     {
-        private readonly Func<int, bool, IUdpClient> originalFactory;
+        private readonly Func<int, AddressFamily, IUdpClient> originalFactory;
         private readonly UdpClientMock client;
-        
+
         protected SinkFixture()
         {
             originalFactory = UdpClientFactory.Create;
 
             client = new UdpClientMock();
-            UdpClientFactory.Create = (port, useIpv6) => client.Object;
+            UdpClientFactory.Create = (_, __) => client.Object;
         }
 
         protected abstract string RemoteAddress { get; }

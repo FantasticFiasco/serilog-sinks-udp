@@ -23,20 +23,22 @@ namespace Serilog.Sinks.Udp.Private
     {
         private readonly UdpClient client;
 
-        public UdpClientWrapper(int localPort, bool useIpv6)
+        public UdpClientWrapper(int localPort, AddressFamily family)
         {
             if (localPort < IPEndPoint.MinPort || localPort > IPEndPoint.MaxPort) throw new ArgumentOutOfRangeException(nameof(localPort));
-            var addressFamily = useIpv6 ? AddressFamily.InterNetworkV6 : AddressFamily.InterNetwork;
+
             client = localPort == 0
-                ? new UdpClient(addressFamily)
-                : new UdpClient(localPort, addressFamily);
+                ? new UdpClient(family)
+                : new UdpClient(localPort, family);
 
             // Allow for IPv4 mapped addresses over IPv6
-            if (useIpv6)
+            if (family == AddressFamily.InterNetworkV6)
             {
                 client.Client.DualMode = true;
             }
         }
+
+        public Socket Client => client.Client;
 
         public Task<int> SendAsync(byte[] datagram, int bytes, IPEndPoint endPoint)
         {

@@ -1,13 +1,14 @@
-﻿using Serilog.Core;
+﻿using System.Net.Sockets;
+using Serilog.Core;
 using Serilog.Support;
 
 namespace Serilog
 {
-    public class OutputTemplateGivenCodeConfigurationShould : SinkFixture
+    public class OutputTemplateGivenCodeConfigurationAndIPv6Should : SinkFixture
     {
         private const string OutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message} - {Exception}";
 
-        public OutputTemplateGivenCodeConfigurationShould()
+        public OutputTemplateGivenCodeConfigurationAndIPv6Should()
         {
             var remoteAddress = "localhost";
             var remotePort = 7071;
@@ -18,7 +19,12 @@ namespace Serilog
             Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo
-                .Udp(remoteAddress, remotePort, outputTemplate: OutputTemplate, formatProvider: new FormatProvider())
+                .Udp(
+                    remoteAddress,
+                    remotePort,
+                    AddressFamily.InterNetworkV6,
+                    outputTemplate: OutputTemplate,
+                    formatProvider: new FormatProvider())
                 .CreateLogger();
         }
 

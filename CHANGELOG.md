@@ -11,6 +11,71 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 - [#42](https://github.com/FantasticFiasco/serilog-sinks-udp/pull/42) Revert to support IPv4 on networks without IPv6 (contribution by [brettdavis-bmw](https://github.com/brettdavis-bmw))
 - [#45](https://github.com/FantasticFiasco/serilog-sinks-udp/pull/45) Correctly XML escape exception message serialized by `Log4jTextFormatter`
 
+### :dizzy: Changed
+
+- [BREAKING CHANGE] The API for creating a sink has changed. The sink was originally intended for IPv4 addresses, but has along the way gotten support for host names and IPv6 addresses. These changes calls for a small redesign of the API, benefiting the majority of the consumers using application settings instead of code configuration. The following chapters will describe your migration path.
+
+#### Migrate sink created by code
+
+Lets assume you have configured the sink using code, and your code looks something like this.
+
+```csharp
+Serilog.ILogger log = new LoggerConfiguration()
+  .MinimumLevel.Verbose()
+  .WriteTo.Udp(IPAddress.Loopback, 7071)
+  .CreateLogger();
+```
+
+The `Udp` extension is no longer accepting `IPAddress` as first argument, and you are now required to specify the address family your remote address is targeting. Lets change the code above to conform to the new API.
+
+```csharp
+Serilog.ILogger log = new LoggerConfiguration()
+  .MinimumLevel.Verbose()
+  .WriteTo.Udp("localhost", 7071, AddressFamily.InterNetwork)
+  .CreateLogger();
+```
+
+#### Migrate sink created by application settings
+
+Lets assume you have configured the sink using application settings, and your configuration looks something like this.
+
+```json
+{
+  "Serilog": {
+    "MinimumLevel": "Verbose",
+    "WriteTo": [
+      {
+        "Name": "Udp",
+        "Args": {
+          "remoteAddress": "localhost",
+          "remotePort": 7071
+        }
+      }
+    ]
+  }
+}
+```
+
+You are now required to specify the address family your remote address is targeting. Lets change the configuration above to conform to the new API.
+
+```json
+{
+  "Serilog": {
+    "MinimumLevel": "Verbose",
+    "WriteTo": [
+      {
+        "Name": "Udp",
+        "Args": {
+          "remoteAddress": "localhost",
+          "remotePort": 7071,
+          "family": "InterNetwork"
+        }
+      }
+    ]
+  }
+}
+```
+
 ## [5.0.1] - 2019-01-07
 
 ### :zap: Added

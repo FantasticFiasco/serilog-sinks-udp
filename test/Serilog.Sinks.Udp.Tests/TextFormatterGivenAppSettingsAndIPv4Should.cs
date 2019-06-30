@@ -3,12 +3,12 @@ using Serilog.Core;
 
 namespace Serilog
 {
-    public class TextFormatterGivenAppSettingsShould : SinkFixture
+    public class TextFormatterGivenAppSettingsAndIPv4Should : SinkFixture
     {
-        public TextFormatterGivenAppSettingsShould()
+        public TextFormatterGivenAppSettingsAndIPv4Should()
         {
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings_text_formatter.json")
+                .AddJsonFile("appsettings_text_formatter_ipv4.json")
                 .Build();
 
             RemoteAddress = configuration["Serilog:WriteTo:0:Args:remoteAddress"];
