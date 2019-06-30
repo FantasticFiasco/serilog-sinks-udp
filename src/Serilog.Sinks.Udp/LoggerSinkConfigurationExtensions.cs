@@ -39,7 +39,7 @@ namespace Serilog
         /// </param>
         /// <param name="remoteAddress">
         /// The IP address or hostname of the remote host or multicast group to which the UDP
-        /// client should sent the logging event, e.g. "10.0.0.100" or "www.log-receiver.com".
+        /// client should sent the log events, e.g. "10.0.0.100" or "www.log-receiver.com".
         /// </param>
         /// <param name="remotePort">
         /// The TCP port of the remote host or multicast group to which the UDP client should sent
@@ -106,7 +106,7 @@ namespace Serilog
         /// </param>
         /// <param name="remoteAddress">
         /// The IP address or hostname of the remote host or multicast group to which the UDP
-        /// client should sent the logging event, e.g. "10.0.0.100" or "www.log-receiver.com".
+        /// client should sent the log events, e.g. "10.0.0.100" or "www.log-receiver.com".
         /// </param>
         /// <param name="remotePort">
         /// The TCP port of the remote host or multicast group to which the UDP client should sent
