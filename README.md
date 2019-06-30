@@ -8,7 +8,7 @@
 [![Help](https://img.shields.io/badge/stackoverflow-serilog-orange.svg)](http://stackoverflow.com/questions/tagged/serilog)
 
 __Package__ - [Serilog.Sinks.Udp](https://www.nuget.org/packages/serilog.sinks.udp)
-| __Platforms__ - .NET Framework 4.5, .NET Framework 4.6.1, .NET Standard 1.3, .NET Standard 2.0
+| __Platforms__ - .NET Framework 4.5/4.6.1, .NET Standard 1.3/2.0
 
 ## Table of contents
 
