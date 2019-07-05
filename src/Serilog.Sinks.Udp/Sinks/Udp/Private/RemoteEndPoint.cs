@@ -36,6 +36,14 @@ namespace Serilog.Sinks.Udp.Private
 
         public int Port { get; }
 
+        /// <summary>
+        /// It's a very small performance optimization to parse the IP address and use it instead
+        /// of having the HTTP client trying to resolve the address and figure out that it isn't a
+        /// hostname at all but instead an ordinary IP address.
+        ///
+        /// A small optimization indeed, but one that was requested by one of the consumers of the
+        /// package.
+        /// </summary>
         public IPEndPoint IPEndPoint { get; }
     }
 }

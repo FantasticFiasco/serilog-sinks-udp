@@ -35,6 +35,29 @@ namespace Serilog.Sinks.Udp.TextFormatters
             Deserialize().Root.Attribute("logger").Value.ShouldBe("source context");
         }
 
+        [Theory]
+        [InlineData("Some < source context", "Some &lt; source context")]
+        [InlineData("Some > source context", "Some &gt; source context")]
+        [InlineData("Some & source context", "Some &amp; source context")]
+        // The following characters should be escaped in a XML attribute
+        [InlineData("Some \" source context", "Some &quot; source context")]
+        [InlineData("Some ' source context", "Some &apos; source context")]
+        public void WriteEscapedLoggerAttribute(string sourceContext, string expected)
+        {
+            // Arrange
+            var logEvent = Some.LogEvent();
+            logEvent.AddOrUpdateProperty(new LogEventProperty("SourceContext", new ScalarValue(sourceContext)));
+
+            // Act
+            formatter.Format(logEvent, output);
+
+            // Assert
+            output.ToString().ShouldContain($" logger=\"{expected}\"");
+
+            // Lets make sure that the escaped XML can be deserialized back into its original form
+            Deserialize().Root.Attribute("logger").Value.ShouldBe(sourceContext);
+        }
+
         [Fact]
         public void WriteTimestampAttribute()
         {
@@ -76,6 +99,29 @@ namespace Serilog.Sinks.Udp.TextFormatters
             Deserialize().Root.Attribute("thread").Value.ShouldBe("1");
         }
 
+        [Theory]
+        [InlineData("Some < thread", "Some &lt; thread")]
+        [InlineData("Some > thread", "Some &gt; thread")]
+        [InlineData("Some & thread", "Some &amp; thread")]
+        // The following characters should be escaped in a XML attribute
+        [InlineData("Some \" thread", "Some &quot; thread")]
+        [InlineData("Some ' thread", "Some &apos; thread")]
+        public void WriteEscapedTheadAttribute(string thread, string expected)
+        {
+            // Arrange
+            var logEvent = Some.LogEvent();
+            logEvent.AddOrUpdateProperty(new LogEventProperty("ThreadId", new ScalarValue(thread)));
+
+            // Act
+            formatter.Format(logEvent, output);
+
+            // Assert
+            output.ToString().ShouldContain($" thread=\"{expected}\"");
+
+            // Lets make sure that the escaped XML can be deserialized back into its original form
+            Deserialize().Root.Attribute("thread").Value.ShouldBe(thread);
+        }
+
         [Fact]
         public void WriteUsernameAttribute()
         {
@@ -90,18 +136,64 @@ namespace Serilog.Sinks.Udp.TextFormatters
             Deserialize().Root.Attribute("username").Value.ShouldBe("some user");
         }
 
-        [Fact]
-        public void WriteDomainAttribute()
+        [Theory]
+        [InlineData("Some < username", "Some &lt; username")]
+        [InlineData("Some > username", "Some &gt; username")]
+        [InlineData("Some & username", "Some &amp; username")]
+        // The following characters should be escaped in a XML attribute
+        [InlineData("Some \" username", "Some &quot; username")]
+        [InlineData("Some ' username", "Some &apos; username")]
+        public void WriteEscapedUsernameAttribute(string username, string expected)
         {
             // Arrange
             var logEvent = Some.LogEvent();
-            logEvent.AddOrUpdateProperty(new LogEventProperty("ProcessName", new ScalarValue("some domain")));
+            logEvent.AddOrUpdateProperty(new LogEventProperty("EnvironmentUserName", new ScalarValue(username)));
 
             // Act
             formatter.Format(logEvent, output);
 
             // Assert
-            Deserialize().Root.Attribute("domain").Value.ShouldBe("some domain");
+            output.ToString().ShouldContain($" username=\"{expected}\"");
+
+            // Lets make sure that the escaped XML can be deserialized back into its original form
+            Deserialize().Root.Attribute("username").Value.ShouldBe(username);
+        }
+
+        [Fact]
+        public void WriteDomainAttribute()
+        {
+            // Arrange
+            var logEvent = Some.LogEvent();
+            logEvent.AddOrUpdateProperty(new LogEventProperty("ProcessName", new ScalarValue("process name")));
+
+            // Act
+            formatter.Format(logEvent, output);
+
+            // Assert
+            Deserialize().Root.Attribute("domain").Value.ShouldBe("process name");
+        }
+
+        [Theory]
+        [InlineData("Some < process name", "Some &lt; process name")]
+        [InlineData("Some > process name", "Some &gt; process name")]
+        [InlineData("Some & process name", "Some &amp; process name")]
+        // The following characters should be escaped in a XML attribute
+        [InlineData("Some \" process name", "Some &quot; process name")]
+        [InlineData("Some ' process name", "Some &apos; process name")]
+        public void WriteEscapedDomainAttribute(string processName, string expected)
+        {
+            // Arrange
+            var logEvent = Some.LogEvent();
+            logEvent.AddOrUpdateProperty(new LogEventProperty("ProcessName", new ScalarValue(processName)));
+
+            // Act
+            formatter.Format(logEvent, output);
+
+            // Assert
+            output.ToString().ShouldContain($" domain=\"{expected}\"");
+
+            // Lets make sure that the escaped XML can be deserialized back into its original form
+            Deserialize().Root.Attribute("domain").Value.ShouldBe(processName);
         }
 
         [Fact]
@@ -118,6 +210,29 @@ namespace Serilog.Sinks.Udp.TextFormatters
             Deserialize().Root.Element(Namespace + "locationInfo").Attribute("class").Value.ShouldBe("source context");
         }
 
+        [Theory]
+        [InlineData("Some < source context", "Some &lt; source context")]
+        [InlineData("Some > source context", "Some &gt; source context")]
+        [InlineData("Some & source context", "Some &amp; source context")]
+        // The following characters should be escaped in a XML attribute
+        [InlineData("Some \" source context", "Some &quot; source context")]
+        [InlineData("Some ' source context", "Some &apos; source context")]
+        public void WriteEscapedClassAttribute(string sourceContext, string expected)
+        {
+            // Arrange
+            var logEvent = Some.LogEvent();
+            logEvent.AddOrUpdateProperty(new LogEventProperty("SourceContext", new ScalarValue(sourceContext)));
+
+            // Act
+            formatter.Format(logEvent, output);
+
+            // Assert
+            output.ToString().ShouldContain($" class=\"{expected}\"");
+
+            // Lets make sure that the escaped XML can be deserialized back into its original form
+            Deserialize().Root.Element(Namespace + "locationInfo").Attribute("class").Value.ShouldBe(sourceContext);
+        }
+
         [Fact]
         public void WriteMethodAttribute()
         {
@@ -131,9 +246,32 @@ namespace Serilog.Sinks.Udp.TextFormatters
             // Assert
             Deserialize().Root.Element(Namespace + "locationInfo").Attribute("method").Value.ShouldBe("Void Method()");
         }
-        
+
+        [Theory]
+        [InlineData("Some < method", "Some &lt; method")]
+        [InlineData("Some > method", "Some &gt; method")]
+        [InlineData("Some & method", "Some &amp; method")]
+        // The following characters should be escaped in a XML attribute
+        [InlineData("Some \" method", "Some &quot; method")]
+        [InlineData("Some ' method", "Some &apos; method")]
+        public void WriteEscapedMethodAttribute(string method, string expected)
+        {
+            // Arrange
+            var logEvent = Some.LogEvent();
+            logEvent.AddOrUpdateProperty(new LogEventProperty("Method", new ScalarValue(method)));
+
+            // Act
+            formatter.Format(logEvent, output);
+
+            // Assert
+            output.ToString().ShouldContain($" method=\"{expected}\"");
+
+            // Lets make sure that the escaped XML can be deserialized back into its original form
+            Deserialize().Root.Element(Namespace + "locationInfo").Attribute("method").Value.ShouldBe(method);
+        }
+
         [Fact]
-        public void WriteMachineNameAttribute()
+        public void WriteHostNameAttribute()
         {
             // Arrange
             var logEvent = Some.LogEvent();
@@ -144,6 +282,29 @@ namespace Serilog.Sinks.Udp.TextFormatters
 
             // Assert
             Deserialize().Root.Element(Namespace + "properties").Element(Namespace + "data").Attribute("value").Value.ShouldBe("MachineName");
+        }
+
+        [Theory]
+        [InlineData("Some < hostname", "Some &lt; hostname")]
+        [InlineData("Some > hostname", "Some &gt; hostname")]
+        [InlineData("Some & hostname", "Some &amp; hostname")]
+        // The following characters should be escaped in a XML attribute
+        [InlineData("Some \" hostname", "Some &quot; hostname")]
+        [InlineData("Some ' hostname", "Some &apos; hostname")]
+        public void WriteEscapedHostNameAttribute(string hostname, string expected)
+        {
+            // Arrange
+            var logEvent = Some.LogEvent();
+            logEvent.AddOrUpdateProperty(new LogEventProperty("MachineName", new ScalarValue(hostname)));
+
+            // Act
+            formatter.Format(logEvent, output);
+
+            // Assert
+            output.ToString().ShouldContain($" <log4net:data name=\"log4net:HostName\" value=\"{expected}\"></log4net:data>");
+
+            // Lets make sure that the escaped XML can be deserialized back into its original form
+            Deserialize().Root.Element(Namespace + "properties").Element(Namespace + "data").Attribute("value").Value.ShouldBe(hostname);
         }
 
         [Fact]
@@ -159,6 +320,28 @@ namespace Serilog.Sinks.Udp.TextFormatters
             Deserialize().Root.Element(Namespace + "message").Value.ShouldBe("Some message");
         }
 
+        [Theory]
+        [InlineData("Some < message", "Some &lt; message")]
+        [InlineData("Some > message", "Some &gt; message")]
+        [InlineData("Some & message", "Some &amp; message")]
+        // The following characters should not be escaped in a XML element
+        [InlineData("Some \" message", "Some \" message")]
+        [InlineData("Some ' message", "Some ' message")]
+        public void WriteEscapedMessageElement(string message, string expected)
+        {
+            // Arrange
+            var logEvent = Some.LogEvent(message: message);
+
+            // Act
+            formatter.Format(logEvent, output);
+
+            // Assert
+            output.ToString().ShouldContain($"<log4net:message>{expected}</log4net:message>");
+
+            // Lets make sure that the escaped XML can be deserialized back into its original form
+            Deserialize().Root.Element(Namespace + "message").Value.ShouldBe(message);
+        }
+
         [Fact]
         public void WriteExceptionElement()
         {
@@ -170,6 +353,28 @@ namespace Serilog.Sinks.Udp.TextFormatters
 
             // Assert
             Deserialize().Root.Element(Namespace + "throwable").Value.ShouldNotBeNull();
+        }
+
+        [Theory]
+        [InlineData("Some < message", "Some &lt; message")]
+        [InlineData("Some > message", "Some &gt; message")]
+        [InlineData("Some & message", "Some &amp; message")]
+        // The following characters should not be escaped in a XML element
+        [InlineData("Some \" message", "Some \" message")]
+        [InlineData("Some ' message", "Some ' message")]
+        public void WriteEscapedExceptionElement(string message, string expected)
+        {
+            // Arrange
+            var logEvent = Some.LogEvent(exception: new DivideByZeroException(message));
+
+            // Act
+            formatter.Format(logEvent, output);
+
+            // Assert
+            output.ToString().ShouldContain($"<log4net:throwable>System.DivideByZeroException: {expected}</log4net:throwable>");
+
+            // Lets make sure that the escaped XML can be deserialized back into its original form
+            Deserialize().Root.Element(Namespace + "throwable").Value.ShouldBe($"System.DivideByZeroException: {message}");
         }
 
         private XDocument Deserialize()
