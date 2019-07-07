@@ -42,6 +42,9 @@ namespace Serilog.Sinks.Udp.TextFormatters
         // The following characters should be escaped in a XML attribute
         [InlineData("Some \" source context", "Some &quot; source context")]
         [InlineData("Some ' source context", "Some &apos; source context")]
+        [InlineData("Some \n source context", "Some &#xA; source context")]
+        [InlineData("Some \r source context", "Some &#xD; source context")]
+        [InlineData("Some \t source context", "Some &#x9; source context")]
         public void WriteEscapedLoggerAttribute(string sourceContext, string expected)
         {
             // Arrange
@@ -106,6 +109,9 @@ namespace Serilog.Sinks.Udp.TextFormatters
         // The following characters should be escaped in a XML attribute
         [InlineData("Some \" thread", "Some &quot; thread")]
         [InlineData("Some ' thread", "Some &apos; thread")]
+        [InlineData("Some \n thread", "Some &#xA; thread")]
+        [InlineData("Some \r thread", "Some &#xD; thread")]
+        [InlineData("Some \t thread", "Some &#x9; thread")]
         public void WriteEscapedTheadAttribute(string thread, string expected)
         {
             // Arrange
@@ -142,6 +148,9 @@ namespace Serilog.Sinks.Udp.TextFormatters
         // The following characters should not be escaped in a XML element
         [InlineData("Some \" message", "Some \" message")]
         [InlineData("Some ' message", "Some ' message")]
+        [InlineData("Some \n message", "Some \n message")]
+        [InlineData("Some \r message", "Some \r message")]
+        [InlineData("Some \t message", "Some \t message")]
         public void WriteEscapedMessageElement(string message, string expected)
         {
             // Arrange
@@ -153,7 +162,12 @@ namespace Serilog.Sinks.Udp.TextFormatters
             // Assert
             output.ToString().ShouldContain($"<log4j:message>{expected}</log4j:message>");
 
-            // Lets make sure that the escaped XML can be deserialized back into its original form
+            // Lets make sure that the escaped XML can be deserialized back into its original form.
+            //
+            // "\r" are deserialized into "\n" by the .NET XML serializer, thus we need to
+            // compensate for that.
+            message = message.Replace("\r", "\n");
+
             Deserialize().Root.Element(Namespace + "message").Value.ShouldBe(message);
         }
 
@@ -177,6 +191,9 @@ namespace Serilog.Sinks.Udp.TextFormatters
         // The following characters should not be escaped in a XML element
         [InlineData("Some \" message", "Some \" message")]
         [InlineData("Some ' message", "Some ' message")]
+        [InlineData("Some \n message", "Some \n message")]
+        [InlineData("Some \r message", "Some \r message")]
+        [InlineData("Some \t message", "Some \t message")]
         public void WriteEscapedExceptionElement(string message, string expected)
         {
             // Arrange
@@ -188,7 +205,12 @@ namespace Serilog.Sinks.Udp.TextFormatters
             // Assert
             output.ToString().ShouldContain($"<log4j:throwable>System.DivideByZeroException: {expected}</log4j:throwable>");
 
-            // Lets make sure that the escaped XML can be deserialized back into its original form
+            // Lets make sure that the escaped XML can be deserialized back into its original form.
+            //
+            // "\r" are deserialized into "\n" by the .NET XML serializer, thus we need to
+            // compensate for that.
+            message = message.Replace("\r", "\n");
+
             Deserialize().Root.Element(Namespace + "throwable").Value.ShouldBe($"System.DivideByZeroException: {message}");
         }
 
