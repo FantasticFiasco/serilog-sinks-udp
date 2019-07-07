@@ -10,7 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 - [#42](https://github.com/FantasticFiasco/serilog-sinks-udp/pull/42) Revert to support IPv4 on networks without IPv6 (contribution by [brettdavis-bmw](https://github.com/brettdavis-bmw))
 - [#45](https://github.com/FantasticFiasco/serilog-sinks-udp/issues/45) Correctly XML escape exception message serialized by `Log4jTextFormatter`
-- [#51](https://github.com/FantasticFiasco/serilog-sinks-udp/issues/51) Correctly XML escape exception all properties serialized by `Log4jTextFormatter` and `Log4netTextFormatter`
+- [#51](https://github.com/FantasticFiasco/serilog-sinks-udp/issues/51) Correctly XML escape all properties serialized by `Log4jTextFormatter` and `Log4netTextFormatter`
 
 ### :dizzy: Changed
 
