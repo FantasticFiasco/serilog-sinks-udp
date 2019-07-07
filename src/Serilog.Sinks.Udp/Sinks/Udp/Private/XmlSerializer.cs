@@ -17,6 +17,10 @@ using System.Text;
 
 namespace Serilog.Sinks.Udp.Private
 {
+    /// <remarks>
+    /// The methods in this class where influenced by
+    /// https://weblog.west-wind.com/posts/2018/Nov/30/Returning-an-XML-Encoded-String-in-NET.
+    /// </remarks>
     internal class XmlSerializer
     {
         private const char LtCharacter = '<';
@@ -41,10 +45,6 @@ namespace Serilog.Sinks.Udp.Private
         private const string SerializedCr = "&#xD;";
         private const string SerializedTab = "&#x9;";
 
-        /// <remarks>
-        /// This method has been copied from
-        /// https://weblog.west-wind.com/posts/2018/Nov/30/Returning-an-XML-Encoded-String-in-NET.
-        /// </remarks>
         internal void SerializeXmlValue(TextWriter output, string text, bool isAttribute)
         {
             foreach (var character in text)
