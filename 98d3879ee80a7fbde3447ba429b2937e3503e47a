@@ -12,3 +12,7 @@ f1072c4c4508 master
 77160433d3a5 chore/directory-build-props
 d2c12de421f7 chore/source-link
 8b33554b4635 master
+504994d473f2 fix/escape-xml
+c4970d54876a fix/issue-45
+83d0dd0ec7e9 master
+fac6e33374aa docs/api-changes
