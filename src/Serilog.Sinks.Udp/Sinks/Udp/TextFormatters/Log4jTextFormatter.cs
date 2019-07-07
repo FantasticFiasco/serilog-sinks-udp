@@ -28,6 +28,16 @@ namespace Serilog.Sinks.Udp.TextFormatters
         private static readonly string SourceContextPropertyName = "SourceContext";
         private static readonly string ThreadIdPropertyName = "ThreadId";
 
+        private readonly XmlSerializer xmlSerializer;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Log4jTextFormatter"/> class.
+        /// </summary>
+        public Log4jTextFormatter()
+        {
+            xmlSerializer = new XmlSerializer();
+        }
+
         /// <summary>
         /// Format the log event into the output.
         /// </summary>
@@ -50,12 +60,12 @@ namespace Serilog.Sinks.Udp.TextFormatters
             output.Write("</log4j:event>");
         }
 
-        private static void WriteLogger(LogEvent logEvent, TextWriter output)
+        private void WriteLogger(LogEvent logEvent, TextWriter output)
         {
             if (logEvent.Properties.TryGetValue(SourceContextPropertyName, out var sourceContext))
             {
                 var sourceContextValue = ((ScalarValue)sourceContext).Value.ToString();
-                output.Write($" logger=\"{XmlSerializer.SerializeXmlValue(sourceContextValue, true)}\"");
+                output.Write($" logger=\"{xmlSerializer.SerializeXmlValue(sourceContextValue, true)}\"");
             }
         }
 
@@ -100,23 +110,23 @@ namespace Serilog.Sinks.Udp.TextFormatters
             output.Write($" level=\"{level}\"");
         }
 
-        private static void WriteThread(LogEvent logEvent, TextWriter output)
+        private void WriteThread(LogEvent logEvent, TextWriter output)
         {
             if (logEvent.Properties.TryGetValue(ThreadIdPropertyName, out var threadId))
             {
                 var threadIdValue = ((ScalarValue)threadId).Value.ToString();
-                output.Write($" thread=\"{XmlSerializer.SerializeXmlValue(threadIdValue, true)}\"");
+                output.Write($" thread=\"{xmlSerializer.SerializeXmlValue(threadIdValue, true)}\"");
             }
         }
 
-        private static void WriteMessage(LogEvent logEvent, TextWriter output)
+        private void WriteMessage(LogEvent logEvent, TextWriter output)
         {
             output.Write("<log4j:message>");
-            XmlSerializer.SerializeXmlValue(output, logEvent.RenderMessage(), false);
+            xmlSerializer.SerializeXmlValue(output, logEvent.RenderMessage(), false);
             output.Write("</log4j:message>");
         }
 
-        private static void WriteException(LogEvent logEvent, TextWriter output)
+        private void WriteException(LogEvent logEvent, TextWriter output)
         {
             if (logEvent.Exception == null)
             {
@@ -124,7 +134,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
             }
 
             output.Write("<log4j:throwable>");
-            XmlSerializer.SerializeXmlValue(output, logEvent.Exception.ToString(), false);
+            xmlSerializer.SerializeXmlValue(output, logEvent.Exception.ToString(), false);
             output.Write("</log4j:throwable>");
         }
     }

@@ -17,7 +17,7 @@ using System.Text;
 
 namespace Serilog.Sinks.Udp.Private
 {
-    internal static class XmlSerializer
+    internal class XmlSerializer
     {
         private const char LtCharacter = '<';
         private const char GtCharacter = '>';
@@ -45,7 +45,7 @@ namespace Serilog.Sinks.Udp.Private
         /// This method has been copied from
         /// https://weblog.west-wind.com/posts/2018/Nov/30/Returning-an-XML-Encoded-String-in-NET.
         /// </remarks>
-        internal static void SerializeXmlValue(TextWriter output, string text, bool isAttribute)
+        internal void SerializeXmlValue(TextWriter output, string text, bool isAttribute)
         {
             foreach (var character in text)
             {
@@ -53,7 +53,7 @@ namespace Serilog.Sinks.Udp.Private
             }
         }
 
-        internal static string SerializeXmlValue(string text, bool isAttribute)
+        internal string SerializeXmlValue(string text, bool isAttribute)
         {
             var builder = new StringBuilder();
 

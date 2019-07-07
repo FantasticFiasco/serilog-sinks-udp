@@ -31,6 +31,15 @@ namespace Serilog.Sinks.Udp.TextFormatters
         private static readonly string MethodPropertyName = "Method";
         private static readonly string MachineNamePropertyName = "MachineName";
 
+        private readonly XmlSerializer xmlSerializer;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Log4netTextFormatter"/> class.
+        /// </summary>
+        public Log4netTextFormatter()
+        {
+            xmlSerializer = new XmlSerializer();
+        }
 
         /// <summary>
         /// Format the log event into the output.
@@ -64,12 +73,12 @@ namespace Serilog.Sinks.Udp.TextFormatters
             output.Write("</log4net:event>");
         }
 
-        private static void WriteLogger(LogEvent logEvent, TextWriter output)
+        private void WriteLogger(LogEvent logEvent, TextWriter output)
         {
             if (logEvent.Properties.TryGetValue(SourceContextPropertyName, out var sourceContext))
             {
                 var sourceContextValue = ((ScalarValue)sourceContext).Value.ToString();
-                output.Write($" logger=\"{XmlSerializer.SerializeXmlValue(sourceContextValue, true)}\"");
+                output.Write($" logger=\"{xmlSerializer.SerializeXmlValue(sourceContextValue, true)}\"");
             }
         }
 
@@ -113,68 +122,68 @@ namespace Serilog.Sinks.Udp.TextFormatters
             output.Write($" level=\"{level}\"");
         }
 
-        private static void WriteThread(LogEvent logEvent, TextWriter output)
+        private void WriteThread(LogEvent logEvent, TextWriter output)
         {
             if (logEvent.Properties.TryGetValue(ThreadIdPropertyName, out var threadId))
             {
                 var threadIdValue = ((ScalarValue)threadId).Value.ToString();
-                output.Write($" thread=\"{XmlSerializer.SerializeXmlValue(threadIdValue, true)}\"");
+                output.Write($" thread=\"{xmlSerializer.SerializeXmlValue(threadIdValue, true)}\"");
             }
         }
 
-        private static void WriteUserName(LogEvent logEvent, TextWriter output)
+        private void WriteUserName(LogEvent logEvent, TextWriter output)
         {
             if (logEvent.Properties.TryGetValue(UserNamePropertyName, out var userName))
             {
                 var userNameValue = ((ScalarValue)userName).Value.ToString();
-                output.Write($" username=\"{XmlSerializer.SerializeXmlValue(userNameValue, true)}\"");
+                output.Write($" username=\"{xmlSerializer.SerializeXmlValue(userNameValue, true)}\"");
             }
         }
 
-        private static void WriteProcessName(LogEvent logEvent, TextWriter output)
+        private void WriteProcessName(LogEvent logEvent, TextWriter output)
         {
             if (logEvent.Properties.TryGetValue(ProcessNamePropertyName, out var processName))
             {
                 var processNameValue = ((ScalarValue)processName).Value.ToString();
-                output.Write($" domain=\"{XmlSerializer.SerializeXmlValue(processNameValue, true)}\"");
+                output.Write($" domain=\"{xmlSerializer.SerializeXmlValue(processNameValue, true)}\"");
             }
         }
 
-        private static void WriteLocationInfoClass(LogEvent logEvent, TextWriter output)
+        private void WriteLocationInfoClass(LogEvent logEvent, TextWriter output)
         {
             if (logEvent.Properties.TryGetValue(SourceContextPropertyName, out var sourceContext))
             {
                 var sourceContextValue = ((ScalarValue)sourceContext).Value.ToString();
-                output.Write($" class=\"{XmlSerializer.SerializeXmlValue(sourceContextValue, true)}\"");
+                output.Write($" class=\"{xmlSerializer.SerializeXmlValue(sourceContextValue, true)}\"");
             }
         }
 
-        private static void WriteLocationInfoMethod(LogEvent logEvent, TextWriter output)
+        private void WriteLocationInfoMethod(LogEvent logEvent, TextWriter output)
         {
             if (logEvent.Properties.TryGetValue(MethodPropertyName, out var methodName))
             {
                 var methodNameValue = ((ScalarValue)methodName).Value.ToString();
-                output.Write($" method=\"{XmlSerializer.SerializeXmlValue(methodNameValue, true)}\"");
+                output.Write($" method=\"{xmlSerializer.SerializeXmlValue(methodNameValue, true)}\"");
             }
         }
 
-        private static void WriteHostName(LogEvent logEvent, TextWriter output)
+        private void WriteHostName(LogEvent logEvent, TextWriter output)
         {
             if (logEvent.Properties.TryGetValue(MachineNamePropertyName, out var machineName))
             {
                 var machineNameValue = ((ScalarValue)machineName).Value.ToString();
-                output.Write($" <log4net:data name=\"log4net:HostName\" value=\"{XmlSerializer.SerializeXmlValue(machineNameValue, true)}\"></log4net:data>");
+                output.Write($" <log4net:data name=\"log4net:HostName\" value=\"{xmlSerializer.SerializeXmlValue(machineNameValue, true)}\"></log4net:data>");
             }
         }
 
-        private static void WriteMessage(LogEvent logEvent, TextWriter output)
+        private void WriteMessage(LogEvent logEvent, TextWriter output)
         {
             output.Write("<log4net:message>");
-            XmlSerializer.SerializeXmlValue(output, logEvent.RenderMessage(), false);
+            xmlSerializer.SerializeXmlValue(output, logEvent.RenderMessage(), false);
             output.Write("</log4net:message>");
         }
 
-        private static void WriteException(LogEvent logEvent, TextWriter output)
+        private void WriteException(LogEvent logEvent, TextWriter output)
         {
             if (logEvent.Exception == null)
             {
@@ -182,7 +191,7 @@ namespace Serilog.Sinks.Udp.TextFormatters
             }
 
             output.Write("<log4net:throwable>");
-            XmlSerializer.SerializeXmlValue(output, logEvent.Exception.ToString(), false);
+            xmlSerializer.SerializeXmlValue(output, logEvent.Exception.ToString(), false);
             output.Write("</log4net:throwable>");
         }
     }
