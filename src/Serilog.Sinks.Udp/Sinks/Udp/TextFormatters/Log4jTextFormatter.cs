@@ -1,11 +1,11 @@
 ﻿// Copyright 2015-2019 Serilog Contributors
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,16 +16,27 @@ using Serilog.Events;
 using Serilog.Formatting;
 using System.IO;
 using System.Xml;
+using Serilog.Sinks.Udp.Private;
 
 namespace Serilog.Sinks.Udp.TextFormatters
 {
     /// <summary>
-    /// Text formatter serializing log events into log4j complient XML.
+    /// Text formatter serializing log events into log4j compliant XML.
     /// </summary>
     public class Log4jTextFormatter : ITextFormatter
     {
         private static readonly string SourceContextPropertyName = "SourceContext";
         private static readonly string ThreadIdPropertyName = "ThreadId";
+
+        private readonly XmlSerializer xmlSerializer;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Log4jTextFormatter"/> class.
+        /// </summary>
+        public Log4jTextFormatter()
+        {
+            xmlSerializer = new XmlSerializer();
+        }
 
         /// <summary>
         /// Format the log event into the output.
@@ -49,11 +60,12 @@ namespace Serilog.Sinks.Udp.TextFormatters
             output.Write("</log4j:event>");
         }
 
-        private static void WriteLogger(LogEvent logEvent, TextWriter output)
+        private void WriteLogger(LogEvent logEvent, TextWriter output)
         {
-            if (logEvent.Properties.TryGetValue(SourceContextPropertyName, out LogEventPropertyValue sourceContext))
+            if (logEvent.Properties.TryGetValue(SourceContextPropertyName, out var sourceContext))
             {
-                output.Write($" logger=\"{((ScalarValue)sourceContext).Value}\"");
+                var sourceContextValue = ((ScalarValue)sourceContext).Value.ToString();
+                output.Write($" logger=\"{xmlSerializer.SerializeXmlValue(sourceContextValue, true)}\"");
             }
         }
 
@@ -98,22 +110,23 @@ namespace Serilog.Sinks.Udp.TextFormatters
             output.Write($" level=\"{level}\"");
         }
 
-        private static void WriteThread(LogEvent logEvent, TextWriter output)
+        private void WriteThread(LogEvent logEvent, TextWriter output)
         {
-            if (logEvent.Properties.TryGetValue(ThreadIdPropertyName, out LogEventPropertyValue threadId))
+            if (logEvent.Properties.TryGetValue(ThreadIdPropertyName, out var threadId))
             {
-                output.Write($" thread=\"{((ScalarValue)threadId).Value}\"");
+                var threadIdValue = ((ScalarValue)threadId).Value.ToString();
+                output.Write($" thread=\"{xmlSerializer.SerializeXmlValue(threadIdValue, true)}\"");
             }
         }
 
-        private static void WriteMessage(LogEvent logEvent, TextWriter output)
+        private void WriteMessage(LogEvent logEvent, TextWriter output)
         {
             output.Write("<log4j:message>");
-            logEvent.RenderMessage(output);
+            xmlSerializer.SerializeXmlValue(output, logEvent.RenderMessage(), false);
             output.Write("</log4j:message>");
         }
 
-        private static void WriteException(LogEvent logEvent, TextWriter output)
+        private void WriteException(LogEvent logEvent, TextWriter output)
         {
             if (logEvent.Exception == null)
             {
@@ -121,39 +134,8 @@ namespace Serilog.Sinks.Udp.TextFormatters
             }
 
             output.Write("<log4j:throwable>");
-            EscapeXmlPropertyValue(output, logEvent.Exception.ToString());
+            xmlSerializer.SerializeXmlValue(output, logEvent.Exception.ToString(), false);
             output.Write("</log4j:throwable>");
-        }
-
-        /// <remarks>
-        /// This method has been influenced by
-        /// https://weblog.west-wind.com/posts/2018/Nov/30/Returning-an-XML-Encoded-String-in-NET
-        /// and does not support XML attribute values. The method in the article does, but this
-        /// doesn't.
-        /// </remarks>
-        private static void EscapeXmlPropertyValue(TextWriter output, string text)
-        {
-            foreach (var character in text)
-            {
-                switch (character)
-                {
-                    case '<':
-                        output.Write("&lt;");
-                        break;
-
-                    case '>':
-                        output.Write("&gt;");
-                        break;
-
-                    case '&':
-                        output.Write("&amp;");
-                        break;
-
-                    default:
-                        output.Write(character);
-                        break;
-                }
-            }
         }
     }
 }
