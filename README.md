@@ -34,7 +34,7 @@ Serilog.ILogger log = new LoggerConfiguration()
   .CreateLogger();
 ```
 
-Used in conjunction with [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) the same sink can be configured in the following way.
+Used in conjunction with [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) the sink can be configured in `appsettings.json`.
 
 ```json
 {
@@ -52,6 +52,22 @@ Used in conjunction with [Serilog.Settings.Configuration](https://github.com/ser
     ]
   }
 }
+```
+
+Used in conjunction with [Serilog.Settings.AppSettings](https://github.com/serilog/serilog-settings-appsettings) the sink can be configured in XML `<appSettings>`.
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <appSettings>
+    <add key="serilog:minimum-level" value="Verbose" />
+    <add key="serilog:using:Udp" value="Serilog.Sinks.Udp" />
+    <add key="serilog:write-to:Udp" />
+    <add key="serilog:write-to:Udp.remoteAddress" value="localhost" />
+    <add key="serilog:write-to:Udp.remotePort" value="7071" />
+    <add key="serilog:write-to:Udp.family" value="InterNetwork" />
+  </appSettings>
+</configuration>
 ```
 
 ## Typical use case
