@@ -1,2 +1,8 @@
 UDP
 IPv4
+Serilog
+formatters
+localhost
+multicast
+formatter
+JSON

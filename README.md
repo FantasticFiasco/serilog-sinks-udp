@@ -8,7 +8,7 @@
 [![Help](https://img.shields.io/badge/stackoverflow-serilog-orange.svg)](http://stackoverflow.com/questions/tagged/serilog)
 
 __Package__ - [Serilog.Sinks.Udp](https://www.nuget.org/packages/serilog.sinks.udp)
-| __Platforms__ - .NET 4.5, .NETStandard 1.3
+| __Platforms__ - .NET Framework 4.5/4.6.1, .NET Standard 1.3/2.0
 
 ## Table of contents
 
@@ -30,11 +30,12 @@ In the following example, the sink will send UDP packages on the network to loca
 ```csharp
 Serilog.ILogger log = new LoggerConfiguration()
   .MinimumLevel.Verbose()
-  .WriteTo.Udp(IPAddress.Loopback, 7071)
+  .WriteTo.Udp("localhost", 7071, AddressFamily.InterNetwork)
   .CreateLogger();
 ```
 
-Used in conjunction with [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) the same sink can be configured in the following way:
+Used in conjunction with [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) the same sink can be configured in the following way.
+
 ```json
 {
   "Serilog": {
@@ -43,8 +44,9 @@ Used in conjunction with [Serilog.Settings.Configuration](https://github.com/ser
       {
         "Name": "Udp",
         "Args": {
-          "remoteAddress": "127.0.0.1",
-          "remotePort": 7071
+          "remoteAddress": "localhost",
+          "remotePort": 7071,
+          "family": "InterNetwork"
         }
       }
     ]
@@ -52,13 +54,11 @@ Used in conjunction with [Serilog.Settings.Configuration](https://github.com/ser
 }
 ```
 
-Configuration using [Serilog.Settings.Configuration](https://github.com/serilog/serilog-settings-configuration) enables the possibility to specify a hostname instead of an IP address as the remote address.
-
 ## Typical use case
 
 Producing log events is only half the story. Unless you are consuming them in a matter that benefits you in development or production, there is really no need to produce them in the first place.
 
-In development I've been sending UDP packages to the loopback address, and use [Log2Console](https://github.com/Statyk7/log2console) to visualize them. It supports UDP receivers, and allows me to filter and search according to my needs.
+In development I've been sending UDP packages to the loopback address, and used [Log2Console](https://github.com/Statyk7/log2console) to visualize them. It supports UDP receivers, and allows me to filter and search according to my needs.
 
 Taking it to the next level is when you as a team agree on sending the log events to a multicast address, making them accessible to all team members. This can be beneficial for Quality Assurance who wishes to monitor log events from all instances of your running application.
 
@@ -100,12 +100,6 @@ The following sample applications demonstrate the usage of this sink in various 
 
 - [Serilog.Sinks.Udp - Sample in .NET Core](https://github.com/FantasticFiasco/serilog-sinks-udp-sample-dotnet-core) - Sample application producing log events in .NET Core
 - [Serilog.Sinks.Udp - Sample in .NET Framework](https://github.com/FantasticFiasco/serilog-sinks-udp-sample-dotnet-framework) - Sample application producing log events in .NET Framework
-
-## Considerations
-
-This sink is using sockets in [dual mode](https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.dualmode?view=netstandard-1.3), which tunnels IPv4 traffic over IPv6. This means that IPv6 is a prerequisite for using this sink. For questions regarding operating systems and IPv6 support, please see the [comparison of IPv6 support in operating systems](https://en.wikipedia.org/wiki/Comparison_of_IPv6_support_in_operating_systems).
-
-For more information regarding sockets in dual mode, please see the [ASP.NET blog](https://blogs.msdn.microsoft.com/webdev/2013/01/08/dual-mode-sockets-never-create-an-ipv4-socket-again/).
 
 ## Install via NuGet
 
