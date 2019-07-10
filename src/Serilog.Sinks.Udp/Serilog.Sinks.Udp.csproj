@@ -21,6 +21,7 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <!-- SourceLink -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RepositoryUrl>https://github.com/FantasticFiasco/serilog-sinks-udp.git</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
