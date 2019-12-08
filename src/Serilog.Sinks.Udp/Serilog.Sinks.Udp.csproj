@@ -15,7 +15,7 @@
     <PackageTags>serilog;udp</PackageTags>
     <PackageIconUrl>https://serilog.net/images/serilog-sink-nuget.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/FantasticFiasco/serilog-sinks-udp</PackageProjectUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/FantasticFiasco/serilog-sinks-udp/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageReleaseNotes>For release notes, please see the change log on GitHub.</PackageReleaseNotes>
     <!-- Embed symbols in NuGet package -->
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
