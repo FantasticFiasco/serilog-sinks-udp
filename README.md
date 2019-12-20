@@ -113,7 +113,7 @@ The log event is formatted according to the log4net XML schema expected by Log4V
 
 ## Sample applications
 
-The following sample applications demonstrate the usage of this sink in various circumstances:
+The following sample applications demonstrate the usage of this sink in various contexts:
 
 - [Serilog.Sinks.Udp - Sample in .NET Core](https://github.com/FantasticFiasco/serilog-sinks-udp-sample-dotnet-core) - Sample application producing log events in .NET Core
 - [Serilog.Sinks.Udp - Sample in .NET Framework](https://github.com/FantasticFiasco/serilog-sinks-udp-sample-dotnet-framework) - Sample application producing log events in .NET Framework
