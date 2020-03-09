@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+### :syringe: Fixed
+
+- [#73](https://github.com/FantasticFiasco/serilog-sinks-udp/pull/73) [BREAKING CHANGE] Leading and trailing white-space characters are no longer removed from the payload before being sent over the network, thus respecting output templates that use those characters. (discovered by [@tagcode](https://github.com/tagcode))
+
 ## [6.0.0] - 2019-07-08
 
 ### :syringe: Fixed
