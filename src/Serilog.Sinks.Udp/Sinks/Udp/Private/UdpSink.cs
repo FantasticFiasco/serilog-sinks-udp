@@ -61,7 +61,6 @@ namespace Serilog.Sinks.Udp.Private
                         byte[] buffer = Encoding.UTF8.GetBytes(
                             stringWriter
                                 .ToString()
-                                .Trim()
                                 .ToCharArray());
 
                         if (remoteEndPoint.IPEndPoint != null)
