@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 ### :syringe: Fixed
 
 - Configure [SourceLink](https://github.com/dotnet/sourcelink) to embed untracked sources
+- Configure [SourceLink](https://github.com/dotnet/sourcelink) to use deterministic builds when running on AppVeyor
 
 ## [7.0.0] - 2020-03-09
 
