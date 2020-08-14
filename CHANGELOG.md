@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+### :syringe: Fixed
+
+- Configure [SourceLink](https://github.com/dotnet/sourcelink) to embed untracked sources
+
 ## [7.0.0] - 2020-03-09
 
 ### :syringe: Fixed
