@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+### :zap: Added
+
+- Support for .NET Standard 2.1 (contributed by [@augustoproiete](https://github.com/augustoproiete))
+
 ## [7.0.1] - 2020-08-14
 
 ### :syringe: Fixed
