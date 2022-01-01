@@ -27,4 +27,4 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           path: src/**/*.cs
-          transform: (?<=Copyright )(?<from>\d{4})?-?\d{4}
+          transform: (?<=\/\/ Copyright )(?<from>\d{4})?-?\d{4}
