@@ -27,7 +27,7 @@ namespace Serilog.Sinks.Udp.Private
     /// <summary>
     /// Send log events as UDP packages over the network.
     /// </summary>
-    internal class UdpSink : PeriodicBatchingSink
+    internal class UdpSink : IBatchedLogEventSink, IDisposable
     {
         private readonly IUdpClient client;
         private readonly RemoteEndPoint remoteEndPoint;
@@ -38,17 +38,15 @@ namespace Serilog.Sinks.Udp.Private
             string remoteAddress,
             int remotePort,
             ITextFormatter formatter)
-            : base(1000, TimeSpan.FromSeconds(0.5))
         {
             this.client = client ?? throw new ArgumentNullException(nameof(client));
             remoteEndPoint = new RemoteEndPoint(remoteAddress, remotePort);
             this.formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
         }
 
-        #region PeriodicBatchingSink Members
+        #region IBatchedLogEventSink Members
 
-        /// <inheritdoc />
-        protected override async Task EmitBatchAsync(IEnumerable<LogEvent> events)
+        public async Task EmitBatchAsync(IEnumerable<LogEvent> events)
         {
             foreach (LogEvent logEvent in events)
             {
@@ -84,15 +82,25 @@ namespace Serilog.Sinks.Udp.Private
             }
         }
 
-        /// <inheritdoc />
-        protected override void Dispose(bool disposing)
+        public Task OnEmptyBatchAsync()
         {
-            base.Dispose(disposing);
+            return Task.CompletedTask;
+        }
 
+        #endregion
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
             if (disposing)
             {
 #if NET4
-                // UdpClient does not implement IDisposable, but calling Close disables the
+                // IUdpClient does not implement IDisposable, but calling Close disables the
                 // underlying socket and releases all managed and unmanaged resources associated
                 // with the instance.
                 client?.Close();
@@ -101,7 +109,5 @@ namespace Serilog.Sinks.Udp.Private
 #endif
             }
         }
-
-        #endregion
     }
 }
