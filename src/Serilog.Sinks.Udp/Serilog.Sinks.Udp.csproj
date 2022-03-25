@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>Serilog.Sinks.Udp</AssemblyName>
     <Description>A Serilog sink sending UDP packages over the network.</Description>
-    <TargetFrameworks>net45;net461;netstandard1.3;netstandard2.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>net461;netstandard1.3;netstandard2.0;netstandard2.1</TargetFrameworks>
     <RootNamespace>Serilog</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <!-- Strong naming -->
@@ -26,12 +26,12 @@
     <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="2.*" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45' Or '$(TargetFramework)' == 'net461'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net45' Or '$(TargetFramework)' == 'net461'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
     <DefineConstants>$(DefineConstants);NET4</DefineConstants>
   </PropertyGroup>
 
