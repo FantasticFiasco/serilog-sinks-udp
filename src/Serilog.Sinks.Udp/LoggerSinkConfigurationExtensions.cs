@@ -150,7 +150,7 @@ namespace Serilog
             try
             {
                 var client = UdpClientFactory.Create(localPort, family);
-                var sink = new UdpSink(client, remoteAddress, remotePort, formatter);
+                var sink = new BatchingSink(new UdpSink(client, remoteAddress, remotePort, formatter));
 
                 return sinkConfiguration.Sink(sink, restrictedToMinimumLevel, levelSwitch);
             }
