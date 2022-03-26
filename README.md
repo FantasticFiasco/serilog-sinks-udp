@@ -1,3 +1,4 @@
+<!-- omit in toc -->
 # Serilog.Sinks.Udp - A Serilog sink sending UDP packages over the network
 
 [![Build status](https://ci.appveyor.com/api/projects/status/p7gx5eltx8u0op7d/branch/master?svg=true)](https://ci.appveyor.com/project/FantasticFiasco/serilog-sinks-udp)
@@ -9,15 +10,17 @@
 [![Help](https://img.shields.io/badge/stackoverflow-serilog-orange.svg)](http://stackoverflow.com/questions/tagged/serilog)
 
 __Package__ - [Serilog.Sinks.Udp](https://www.nuget.org/packages/serilog.sinks.udp)
-| __Platforms__ - .NET Framework 4.5/4.6.1, .NET Standard 1.3/2.0/2.1
+| __Platforms__ - .NET Framework 4.6.1, .NET Standard 1.3/2.0/2.1
 
+<!-- omit in toc -->
 ## Table of contents
 
 - [Super simple to use](#super-simple-to-use)
 - [Typical use case](#typical-use-case)
 - [Event formatters](#event-formatters)
+  - [`Log4jTextFormatter`](#log4jtextformatter)
+  - [`Log4netTextFormatter`](#log4nettextformatter)
 - [Sample applications](#sample-applications)
-- [Considerations](#considerations)
 - [Install via NuGet](#install-via-nuget)
 - [Donations](#donations)
 - [Credit](#credit)

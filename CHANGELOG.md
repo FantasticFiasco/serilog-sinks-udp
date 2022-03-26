@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+## [8.0.0] - 2022-03-26
+
 ### :skull: Removed
 
 - [BREAKING CHANGE] Support for .NET Framework 4.5 due to [deprecation as of January 12, 2016](https://docs.microsoft.com/en-us/lifecycle/products/microsoft-net-framework)
