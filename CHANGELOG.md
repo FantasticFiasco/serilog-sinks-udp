@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+### :dizzy: Changed
+
+- Update dependencies
+
 ## [8.0.0] - 2022-03-26
 
 ### :skull: Removed
