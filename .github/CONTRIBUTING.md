@@ -83,7 +83,7 @@ Update the following files:
 Commit the files with a git commit message saying `release v<major>.<minor>.<patch>`, and then run the following commands:
 
 ```
-git tag -a v<major>.<minor>.<patch> -m v<major>.<minor>.<patch> -s
+git tag -a v<major>.<minor>.<patch> -m v<major>.<minor>.<patch> --sign
 git push --follow-tags
 ```
 
