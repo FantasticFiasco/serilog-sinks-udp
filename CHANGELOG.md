@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+## [8.0.1] - 2022-11-20
+
 ### :dizzy: Changed
 
 - Update dependencies
