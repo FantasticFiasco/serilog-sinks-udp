@@ -14,6 +14,7 @@
 
 using System;
 using System.Net.Sockets;
+using System.Text;
 using Serilog.Configuration;
 using Serilog.Events;
 using Serilog.Formatting;
@@ -68,6 +69,7 @@ namespace Serilog
         /// <param name="formatProvider">
         /// Supplies culture-specific formatting information, or null.
         /// </param>
+        /// <param name="encoding">The string encoding sent over the network, if not specified, defaults to UTF-8.</param>
         /// <returns>
         /// Logger configuration, allowing configuration to continue.
         /// </returns>
@@ -80,7 +82,8 @@ namespace Serilog
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
             LoggingLevelSwitch levelSwitch = null,
             string outputTemplate = DefaultOutputTemplate,
-            IFormatProvider formatProvider = null)
+            IFormatProvider formatProvider = null,
+            Encoding encoding=null)
         {
             if (sinkConfiguration == null) throw new ArgumentNullException(nameof(sinkConfiguration));
             if (outputTemplate == null) throw new ArgumentNullException(nameof(outputTemplate));
@@ -95,7 +98,8 @@ namespace Serilog
                 formatter,
                 localPort,
                 restrictedToMinimumLevel,
-                levelSwitch);
+                levelSwitch,
+                encoding);
         }
 
         /// <summary>
@@ -132,6 +136,7 @@ namespace Serilog
         /// <param name="levelSwitch">
         /// A switch allowing the pass-through minimum level to be changed at runtime.
         /// </param>
+        /// <param name="encoding">The string encoding sent over the network, if not specified, defaults to UTF-8.</param>
         /// <returns>
         /// Logger configuration, allowing configuration to continue.
         /// </returns>
@@ -143,14 +148,15 @@ namespace Serilog
             ITextFormatter formatter,
             int localPort = 0,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
-            LoggingLevelSwitch levelSwitch = null)
+            LoggingLevelSwitch levelSwitch = null,
+            Encoding encoding=null)
         {
             if (sinkConfiguration == null) throw new ArgumentNullException(nameof(sinkConfiguration));
 
             try
             {
                 var client = UdpClientFactory.Create(localPort, family);
-                var sink = new BatchingSink(new UdpSink(client, remoteAddress, remotePort, formatter));
+                var sink = new BatchingSink(new UdpSink(client, remoteAddress, remotePort, formatter,encoding));
 
                 return sinkConfiguration.Sink(sink, restrictedToMinimumLevel, levelSwitch);
             }
