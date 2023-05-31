@@ -32,16 +32,19 @@ namespace Serilog.Sinks.Udp.Private
         private readonly IUdpClient client;
         private readonly RemoteEndPoint remoteEndPoint;
         private readonly ITextFormatter formatter;
+        private readonly Encoding encoding;
 
         public UdpSink(
             IUdpClient client,
             string remoteAddress,
             int remotePort,
-            ITextFormatter formatter)
+            ITextFormatter formatter,
+            Encoding encoding)
         {
             this.client = client ?? throw new ArgumentNullException(nameof(client));
             remoteEndPoint = new RemoteEndPoint(remoteAddress, remotePort);
             this.formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
+            this.encoding = encoding;
         }
 
         #region IBatchedLogEventSink Members
@@ -56,7 +59,7 @@ namespace Serilog.Sinks.Udp.Private
                     {
                         formatter.Format(logEvent, stringWriter);
 
-                        byte[] buffer = Encoding.UTF8.GetBytes(
+                        byte[] buffer = encoding.GetBytes(
                             stringWriter
                                 .ToString()
                                 .ToCharArray());
