@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+### :zap: Added
+
+- [BREAKING CHANGE] Support for specifying UDP datagram encoding (contributed by [@pedoc](https://github.com/pedoc))
+
 ## [8.0.1] - 2022-11-20
 
 ### :dizzy: Changed
