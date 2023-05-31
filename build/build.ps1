@@ -1,61 +1,96 @@
-$logo = (Invoke-WebRequest "https://raw.githubusercontent.com/FantasticFiasco/logo/master/logo.raw").toString();
-Write-Host "$logo" -ForegroundColor Green
+# -------------------------------------------------------------------------------------------------
+# COMMON FUNCTIONS
+# -------------------------------------------------------------------------------------------------
+function Print {
+    param (
+        [string]$Category,
+        [string]$Message
+    )
 
-Write-Host "build: Build started"
-Write-Host "build: dotnet cli v$(dotnet --version)"
-
-Push-Location $PSScriptRoot\..
-
-# Clean artifacts
-if (Test-Path .\artifacts)
-{
-    Write-Host "build: Cleaning .\artifacts"
-    Remove-Item .\artifacts -Force -Recurse
+    if ($Category) {
+        Write-Host "[$Category] $Message" -ForegroundColor Green
+    } else {
+        Write-Host "$Message" -ForegroundColor Green
+    }
 }
 
-$tagged_build = if ($env:APPVEYOR_REPO_TAG -eq "true") { $true } else { $false }
-Write-Host "build: Triggered by git tag: $tagged_build"
-
-$git_sha = $env:APPVEYOR_REPO_COMMIT.Substring(0, 7)
-Write-Host "build: Git SHA: $git_sha"
-
-# Build and pack
-foreach ($source in Get-ChildItem .\src\*)
-{
-    Push-Location $source
-
-    Write-Host "build: Packaging project in $source"
-
-    if ($tagged_build)
-    {
-        & dotnet build -c Release
-        & dotnet pack -c Release -o ..\..\artifacts --no-build
-    }
-    else
-    {
-        & dotnet build -c Release --version-suffix=$git_sha
-        & dotnet pack -c Release -o ..\..\artifacts --version-suffix=$git_sha --no-build
-    }
-
-    if ($LASTEXITCODE -ne 0)
-    {
+function AssertLastExitCode {
+    if ($LASTEXITCODE -ne 0) {
         exit 1
     }
-
-    Pop-Location
 }
+
+# -------------------------------------------------------------------------------------------------
+# LOGO
+# -------------------------------------------------------------------------------------------------
+$logo = (Invoke-WebRequest "https://raw.githubusercontent.com/FantasticFiasco/logo/master/logo.raw").toString();
+Print -Message $logo
+
+# -------------------------------------------------------------------------------------------------
+# VARIABLES
+# -------------------------------------------------------------------------------------------------
+$git_sha = "$env:APPVEYOR_REPO_COMMIT".TrimStart("0").substring(0, 7)
+$is_tagged_build = If ("$env:APPVEYOR_REPO_TAG" -eq "true") { $true } Else { $false }
+$is_pull_request = If ("$env:APPVEYOR_PULL_REQUEST_NUMBER" -eq "") { $false } Else { $true }
+Print "info" "git sha: $git_sha"
+Print "info" "is git tag: $is_tagged_build"
+Print "info" "is pull request: $is_pull_request"
+
+# -------------------------------------------------------------------------------------------------
+# BUILD
+# -------------------------------------------------------------------------------------------------
+Print "build" "build started"
+Print "build" "dotnet cli v$(dotnet --version)"
+
+[xml]$build_props = Get-Content -Path .\Directory.Build.props
+$version_prefix = $build_props.Project.PropertyGroup.VersionPrefix
+Print "info" "build props version prefix: $version_prefix"
+$version_suffix = $build_props.Project.PropertyGroup.VersionSuffix
+Print "info" "build props version suffix: $version_suffix"
+
+if ($is_tagged_build) {
+    Print "build" "build"
+    dotnet build -c Release
+    AssertLastExitCode
+
+    Print "build" "pack"
+    New-Item -ItemType Directory -Path .\artifacts
+    dotnet pack -c Release --no-build
+    AssertLastExitCode
+    Move-Item -Path .\src\Serilog.Sinks.Udp\bin\Release\*.nupkg -Destination .\artifacts
+    Move-Item -Path .\src\Serilog.Sinks.Udp\bin\Release\*.snupkg -Destination .\artifacts
+} else {
+    # Use git tag if version suffix isn't specified
+    if ($version_suffix -eq "") {
+        $version_suffix = $git_sha
+    }
+
+    Print "build" "build"
+    dotnet build -c Release --version-suffix=$version_suffix
+    AssertLastExitCode
+
+    Print "build" "pack"
+    New-Item -ItemType Directory -Path .\artifacts
+    dotnet pack -c Release --version-suffix=$version_suffix --no-build
+    AssertLastExitCode
+    Move-Item -Path .\src\Serilog.Sinks.Udp\bin\Release\*.nupkg -Destination .\artifacts
+    Move-Item -Path .\src\Serilog.Sinks.Udp\bin\Release\*.snupkg -Destination .\artifacts
+}
+
+# -------------------------------------------------------------------------------------------------
+# TEST
+# -------------------------------------------------------------------------------------------------
+Print "test" "test started"
 
 # Test
 foreach ($test in Get-ChildItem test/*Tests)
 {
     Push-Location $test
 
-    Write-Host "build: Testing project in $test"
+    Print "test" "testing project in $test"
 
     & dotnet test -c Release
-    if ($LASTEXITCODE -ne 0) { exit 2 }
+    AssertLastExitCode
 
     Pop-Location
 }
-
-Pop-Location
