@@ -44,7 +44,7 @@ namespace Serilog.Sinks.Udp.Private
             this.client = client ?? throw new ArgumentNullException(nameof(client));
             remoteEndPoint = new RemoteEndPoint(remoteAddress, remotePort);
             this.formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
-            this.encoding = encoding ?? Encoding.UTF8;
+            this.encoding = encoding;
         }
 
         #region IBatchedLogEventSink Members
