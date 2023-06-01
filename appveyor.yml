@@ -20,7 +20,7 @@ deploy:
     release: Release ${APPVEYOR_REPO_TAG_NAME}
     description: TODO
     auth_token:
-      secure: jFJL5c0XhkqkyH01r1SccqQpVdJGQ8AU0sT7Rg12f/QuO+RNa6870wyMjUWGeJZJ
+      secure: RBSibtWZTkJ/PqIp7/WOXBNHlNnJkdKon80KvI/zoGcpw8oouA1cZAK+qB1vTRnQ
     artifact: NuGet
     draft: true
     on:
