@@ -82,10 +82,10 @@ namespace Serilog
             AddressFamily family,
             int localPort = 0,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
-            LoggingLevelSwitch levelSwitch = null,
+            LoggingLevelSwitch? levelSwitch = null,
             string outputTemplate = DefaultOutputTemplate,
-            IFormatProvider formatProvider = null,
-            Encoding encoding = null)
+            IFormatProvider? formatProvider = null,
+            Encoding? encoding = null)
         {
             if (sinkConfiguration == null) throw new ArgumentNullException(nameof(sinkConfiguration));
             if (outputTemplate == null) throw new ArgumentNullException(nameof(outputTemplate));
@@ -152,12 +152,12 @@ namespace Serilog
             ITextFormatter formatter,
             int localPort = 0,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
-            LoggingLevelSwitch levelSwitch = null,
-            Encoding encoding = null)
+            LoggingLevelSwitch? levelSwitch = null,
+            Encoding? encoding = null)
         {
             if (sinkConfiguration == null) throw new ArgumentNullException(nameof(sinkConfiguration));
 
-            encoding = encoding ?? Encoding.UTF8;
+            encoding ??= Encoding.UTF8;
 
             try
             {
