@@ -44,6 +44,6 @@ namespace Serilog.Sinks.Udp.Private
         /// A small optimization indeed, but one that was requested by one of the consumers of the
         /// package.
         /// </summary>
-        public IPEndPoint IPEndPoint { get; }
+        public IPEndPoint? IPEndPoint { get; }
     }
 }
