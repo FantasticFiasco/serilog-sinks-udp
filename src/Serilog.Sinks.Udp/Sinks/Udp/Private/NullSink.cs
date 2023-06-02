@@ -15,16 +15,15 @@
 using Serilog.Core;
 using Serilog.Events;
 
-namespace Serilog.Sinks.Udp.Private
+namespace Serilog.Sinks.Udp.Private;
+
+/// <summary>
+/// An instance of this sink may be substituted when an instance of the <see cref="UdpSink"/>
+/// is unable to be constructed.
+/// </summary>
+internal class NullSink : ILogEventSink
 {
-    /// <summary>
-    /// An instance of this sink may be substituted when an instance of the <see cref="UdpSink"/>
-    /// is unable to be constructed.
-    /// </summary>
-    internal class NullSink : ILogEventSink
+    public void Emit(LogEvent logEvent)
     {
-        public void Emit(LogEvent logEvent)
-        {
-        }
     }
 }

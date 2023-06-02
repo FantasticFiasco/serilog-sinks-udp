@@ -22,95 +22,94 @@ using Serilog.Events;
 using Serilog.Formatting;
 using Serilog.Sinks.PeriodicBatching;
 
-namespace Serilog.Sinks.Udp.Private
+namespace Serilog.Sinks.Udp.Private;
+
+/// <summary>
+/// Send log events as UDP packages over the network.
+/// </summary>
+internal class UdpSink : IBatchedLogEventSink, IDisposable
 {
-    /// <summary>
-    /// Send log events as UDP packages over the network.
-    /// </summary>
-    internal class UdpSink : IBatchedLogEventSink, IDisposable
+    private readonly IUdpClient client;
+    private readonly RemoteEndPoint remoteEndPoint;
+    private readonly ITextFormatter formatter;
+    private readonly Encoding encoding;
+
+    public UdpSink(
+        IUdpClient client,
+        string remoteAddress,
+        int remotePort,
+        ITextFormatter formatter,
+        Encoding encoding)
     {
-        private readonly IUdpClient client;
-        private readonly RemoteEndPoint remoteEndPoint;
-        private readonly ITextFormatter formatter;
-        private readonly Encoding encoding;
+        this.client = client ?? throw new ArgumentNullException(nameof(client));
+        remoteEndPoint = new RemoteEndPoint(remoteAddress, remotePort);
+        this.formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
+        this.encoding = encoding;
+    }
 
-        public UdpSink(
-            IUdpClient client,
-            string remoteAddress,
-            int remotePort,
-            ITextFormatter formatter,
-            Encoding encoding)
+    #region IBatchedLogEventSink Members
+
+    public async Task EmitBatchAsync(IEnumerable<LogEvent> events)
+    {
+        foreach (LogEvent logEvent in events)
         {
-            this.client = client ?? throw new ArgumentNullException(nameof(client));
-            remoteEndPoint = new RemoteEndPoint(remoteAddress, remotePort);
-            this.formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
-            this.encoding = encoding;
-        }
-
-        #region IBatchedLogEventSink Members
-
-        public async Task EmitBatchAsync(IEnumerable<LogEvent> events)
-        {
-            foreach (LogEvent logEvent in events)
+            try
             {
-                try
+                using (var stringWriter = new StringWriter())
                 {
-                    using (var stringWriter = new StringWriter())
+                    formatter.Format(logEvent, stringWriter);
+
+                    byte[] buffer = encoding.GetBytes(
+                        stringWriter
+                            .ToString()
+                            .ToCharArray());
+
+                    if (remoteEndPoint.IPEndPoint != null)
                     {
-                        formatter.Format(logEvent, stringWriter);
-
-                        byte[] buffer = encoding.GetBytes(
-                            stringWriter
-                                .ToString()
-                                .ToCharArray());
-
-                        if (remoteEndPoint.IPEndPoint != null)
-                        {
-                            await client
-                                .SendAsync(buffer, buffer.Length, remoteEndPoint.IPEndPoint)
-                                .ConfigureAwait(false);
-                        }
-                        else
-                        {
-                            await client
-                                .SendAsync(buffer, buffer.Length, remoteEndPoint.Address, remoteEndPoint.Port)
-                                .ConfigureAwait(false);
-                        }
+                        await client
+                            .SendAsync(buffer, buffer.Length, remoteEndPoint.IPEndPoint)
+                            .ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        await client
+                            .SendAsync(buffer, buffer.Length, remoteEndPoint.Address, remoteEndPoint.Port)
+                            .ConfigureAwait(false);
                     }
                 }
-                catch (Exception e)
-                {
-                    SelfLog.WriteLine("Failed to send UDP package. {0}", e);
-                }
+            }
+            catch (Exception e)
+            {
+                SelfLog.WriteLine("Failed to send UDP package. {0}", e);
             }
         }
+    }
 
-        public Task OnEmptyBatchAsync()
+    public Task OnEmptyBatchAsync()
+    {
+        return Task.CompletedTask;
+    }
+
+    #endregion
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
         {
-            return Task.CompletedTask;
-        }
-
-        #endregion
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
 #if NET4
-                // IUdpClient does not implement IDisposable, but calling Close disables the
-                // underlying socket and releases all managed and unmanaged resources associated
-                // with the instance.
-                client?.Close();
+            // IUdpClient does not implement IDisposable, but calling Close disables the
+            // underlying socket and releases all managed and unmanaged resources associated
+            // with the instance.
+            client?.Close();
 #else
                 client?.Dispose();
 #endif
-            }
         }
     }
 }

@@ -1,12 +1,11 @@
 ﻿using System.Globalization;
 
-namespace Serilog.Support
+namespace Serilog.Support;
+
+public class FormatProvider : CultureInfo
 {
-    public class FormatProvider : CultureInfo
+    public FormatProvider()
+        : base("en-US")
     {
-        public FormatProvider()
-            : base("en-US")
-        {
-        }
     }
 }

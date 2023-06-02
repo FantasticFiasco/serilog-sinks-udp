@@ -15,18 +15,17 @@
 using System;
 using Serilog.Sinks.PeriodicBatching;
 
-namespace Serilog.Sinks.Udp.Private
+namespace Serilog.Sinks.Udp.Private;
+
+internal class BatchingSink : PeriodicBatchingSink
 {
-    internal class BatchingSink : PeriodicBatchingSink
+    public BatchingSink(IBatchedLogEventSink sink)
+        : base(
+            sink,
+            new PeriodicBatchingSinkOptions
+            {
+                BatchSizeLimit = 1000, Period = TimeSpan.FromSeconds(0.5)
+            })
     {
-        public BatchingSink(IBatchedLogEventSink sink)
-            : base(
-                sink,
-                new PeriodicBatchingSinkOptions
-                {
-                    BatchSizeLimit = 1000, Period = TimeSpan.FromSeconds(0.5)
-                })
-        {
-        }
     }
 }
