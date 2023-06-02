@@ -18,124 +18,123 @@ using System.IO;
 using System.Xml;
 using Serilog.Sinks.Udp.Private;
 
-namespace Serilog.Sinks.Udp.TextFormatters
+namespace Serilog.Sinks.Udp.TextFormatters;
+
+/// <summary>
+/// Text formatter serializing log events into log4j compliant XML.
+/// </summary>
+public class Log4jTextFormatter : ITextFormatter
 {
+    private static readonly string SourceContextPropertyName = "SourceContext";
+    private static readonly string ThreadIdPropertyName = "ThreadId";
+
+    private readonly XmlSerializer xmlSerializer;
+
     /// <summary>
-    /// Text formatter serializing log events into log4j compliant XML.
+    /// Initializes a new instance of the <see cref="Log4jTextFormatter"/> class.
     /// </summary>
-    public class Log4jTextFormatter : ITextFormatter
+    public Log4jTextFormatter()
     {
-        private static readonly string SourceContextPropertyName = "SourceContext";
-        private static readonly string ThreadIdPropertyName = "ThreadId";
+        xmlSerializer = new XmlSerializer();
+    }
 
-        private readonly XmlSerializer xmlSerializer;
+    /// <summary>
+    /// Format the log event into the output.
+    /// </summary>
+    /// <param name="logEvent">The event to format.</param>
+    /// <param name="output">The output.</param>
+    public void Format(LogEvent logEvent, TextWriter output)
+    {
+        output.Write("<log4j:event xmlns:log4j=\"http://jakarta.apache.org/log4j/\"");
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Log4jTextFormatter"/> class.
-        /// </summary>
-        public Log4jTextFormatter()
+        WriteLogger(logEvent, output);
+        WriteTimestamp(logEvent, output);
+        WriteLevel(logEvent, output);
+        WriteThread(logEvent, output);
+
+        output.Write(">");
+
+        WriteMessage(logEvent, output);
+        WriteException(logEvent, output);
+
+        output.Write("</log4j:event>");
+    }
+
+    private void WriteLogger(LogEvent logEvent, TextWriter output)
+    {
+        if (logEvent.Properties.TryGetValue(SourceContextPropertyName, out var sourceContext))
         {
-            xmlSerializer = new XmlSerializer();
+            var sourceContextValue = ((ScalarValue)sourceContext).Value.ToString();
+            output.Write($" logger=\"{xmlSerializer.SerializeXmlValue(sourceContextValue, true)}\"");
+        }
+    }
+
+    private static void WriteTimestamp(LogEvent logEvent, TextWriter output)
+    {
+        // Milliseconds since 1970-01-01
+        var milliseconds = logEvent.Timestamp.UtcDateTime.Ticks / 10000L - 62135596800000L;
+        output.Write($" timestamp=\"{XmlConvert.ToString(milliseconds)}\"");
+    }
+
+    private static void WriteLevel(LogEvent logEvent, TextWriter output)
+    {
+        string level;
+
+        switch (logEvent.Level)
+        {
+            case LogEventLevel.Fatal:
+                level = "FATAL";
+                break;
+
+            case LogEventLevel.Error:
+                level = "ERROR";
+                break;
+
+            case LogEventLevel.Warning:
+                level = "WARN";
+                break;
+
+            case LogEventLevel.Information:
+                level = "INFO";
+                break;
+
+            case LogEventLevel.Debug:
+                level = "DEBUG";
+                break;
+
+            default:
+                level = "TRACE";
+                break;
         }
 
-        /// <summary>
-        /// Format the log event into the output.
-        /// </summary>
-        /// <param name="logEvent">The event to format.</param>
-        /// <param name="output">The output.</param>
-        public void Format(LogEvent logEvent, TextWriter output)
+        output.Write($" level=\"{level}\"");
+    }
+
+    private void WriteThread(LogEvent logEvent, TextWriter output)
+    {
+        if (logEvent.Properties.TryGetValue(ThreadIdPropertyName, out var threadId))
         {
-            output.Write("<log4j:event xmlns:log4j=\"http://jakarta.apache.org/log4j/\"");
+            var threadIdValue = ((ScalarValue)threadId).Value.ToString();
+            output.Write($" thread=\"{xmlSerializer.SerializeXmlValue(threadIdValue, true)}\"");
+        }
+    }
 
-            WriteLogger(logEvent, output);
-            WriteTimestamp(logEvent, output);
-            WriteLevel(logEvent, output);
-            WriteThread(logEvent, output);
+    private void WriteMessage(LogEvent logEvent, TextWriter output)
+    {
+        output.Write("<log4j:message>");
+        xmlSerializer.SerializeXmlValue(output, logEvent.RenderMessage(), false);
+        output.Write("</log4j:message>");
+    }
 
-            output.Write(">");
-
-            WriteMessage(logEvent, output);
-            WriteException(logEvent, output);
-
-            output.Write("</log4j:event>");
+    private void WriteException(LogEvent logEvent, TextWriter output)
+    {
+        if (logEvent.Exception == null)
+        {
+            return;
         }
 
-        private void WriteLogger(LogEvent logEvent, TextWriter output)
-        {
-            if (logEvent.Properties.TryGetValue(SourceContextPropertyName, out var sourceContext))
-            {
-                var sourceContextValue = ((ScalarValue)sourceContext).Value.ToString();
-                output.Write($" logger=\"{xmlSerializer.SerializeXmlValue(sourceContextValue, true)}\"");
-            }
-        }
-
-        private static void WriteTimestamp(LogEvent logEvent, TextWriter output)
-        {
-            // Milliseconds since 1970-01-01
-            var milliseconds = logEvent.Timestamp.UtcDateTime.Ticks / 10000L - 62135596800000L;
-            output.Write($" timestamp=\"{XmlConvert.ToString(milliseconds)}\"");
-        }
-
-        private static void WriteLevel(LogEvent logEvent, TextWriter output)
-        {
-            string level;
-
-            switch (logEvent.Level)
-            {
-                case LogEventLevel.Fatal:
-                    level = "FATAL";
-                    break;
-
-                case LogEventLevel.Error:
-                    level = "ERROR";
-                    break;
-
-                case LogEventLevel.Warning:
-                    level = "WARN";
-                    break;
-
-                case LogEventLevel.Information:
-                    level = "INFO";
-                    break;
-
-                case LogEventLevel.Debug:
-                    level = "DEBUG";
-                    break;
-
-                default:
-                    level = "TRACE";
-                    break;
-            }
-
-            output.Write($" level=\"{level}\"");
-        }
-
-        private void WriteThread(LogEvent logEvent, TextWriter output)
-        {
-            if (logEvent.Properties.TryGetValue(ThreadIdPropertyName, out var threadId))
-            {
-                var threadIdValue = ((ScalarValue)threadId).Value.ToString();
-                output.Write($" thread=\"{xmlSerializer.SerializeXmlValue(threadIdValue, true)}\"");
-            }
-        }
-
-        private void WriteMessage(LogEvent logEvent, TextWriter output)
-        {
-            output.Write("<log4j:message>");
-            xmlSerializer.SerializeXmlValue(output, logEvent.RenderMessage(), false);
-            output.Write("</log4j:message>");
-        }
-
-        private void WriteException(LogEvent logEvent, TextWriter output)
-        {
-            if (logEvent.Exception == null)
-            {
-                return;
-            }
-
-            output.Write("<log4j:throwable>");
-            xmlSerializer.SerializeXmlValue(output, logEvent.Exception.ToString(), false);
-            output.Write("</log4j:throwable>");
-        }
+        output.Write("<log4j:throwable>");
+        xmlSerializer.SerializeXmlValue(output, logEvent.Exception.ToString(), false);
+        output.Write("</log4j:throwable>");
     }
 }

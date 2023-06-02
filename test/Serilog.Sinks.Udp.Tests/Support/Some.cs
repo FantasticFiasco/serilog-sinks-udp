@@ -4,64 +4,63 @@ using System.Threading;
 using Serilog.Events;
 using Serilog.Parsing;
 
-namespace Serilog.Support
+namespace Serilog.Support;
+
+internal static class Some
 {
-    internal static class Some
+    private static int counter;
+
+    internal static int Int()
     {
-        private static int counter;
+        return Interlocked.Increment(ref counter);
+    }
 
-        internal static int Int()
-        {
-            return Interlocked.Increment(ref counter);
-        }
+    internal static string String(string tag = null)
+    {
+        return (tag ?? "") + "__" + Int();
+    }
 
-        internal static string String(string tag = null)
-        {
-            return (tag ?? "") + "__" + Int();
-        }
+    internal static TimeSpan TimeSpan()
+    {
+        return System.TimeSpan.FromMinutes(Int());
+    }
 
-        internal static TimeSpan TimeSpan()
-        {
-            return System.TimeSpan.FromMinutes(Int());
-        }
+    internal static DateTime Instant()
+    {
+        return new DateTime(2012, 10, 28) + TimeSpan();
+    }
 
-        internal static DateTime Instant()
-        {
-            return new DateTime(2012, 10, 28) + TimeSpan();
-        }
+    internal static DateTimeOffset OffsetInstant()
+    {
+        return new DateTimeOffset(Instant());
+    }
 
-        internal static DateTimeOffset OffsetInstant()
-        {
-            return new DateTimeOffset(Instant());
-        }
+    internal static LogEvent LogEvent(
+        DateTimeOffset? timestamp = null,
+        LogEventLevel level = LogEventLevel.Information,
+        string message = "Some message",
+        Exception exception = null)
+    {
+        return new LogEvent(
+            timestamp ?? OffsetInstant(),
+            level,
+            exception,
+            new MessageTemplateParser().Parse(message),
+            Enumerable.Empty<LogEventProperty>());
+    }
 
-        internal static LogEvent LogEvent(
-            DateTimeOffset? timestamp = null,
-            LogEventLevel level = LogEventLevel.Information,
-            string message = "Some message",
-            Exception exception = null)
-        {
-            return new LogEvent(
-                timestamp ?? OffsetInstant(),
-                level,
-                exception,
-                new MessageTemplateParser().Parse(message),
-                Enumerable.Empty<LogEventProperty>());
-        }
+    internal static LogEvent InformationEvent(DateTimeOffset? timestamp = null)
+    {
+        return LogEvent(timestamp);
+    }
 
-        internal static LogEvent InformationEvent(DateTimeOffset? timestamp = null)
-        {
-            return LogEvent(timestamp);
-        }
+    internal static LogEvent DebugEvent(DateTimeOffset? timestamp = null)
+    {
+        return LogEvent(timestamp, LogEventLevel.Debug);
+    }
 
-        internal static LogEvent DebugEvent(DateTimeOffset? timestamp = null)
-        {
-            return LogEvent(timestamp, LogEventLevel.Debug);
-        }
-
-        internal static MessageTemplate MessageTemplate()
-        {
-            return new MessageTemplateParser().Parse(String());
-        }
+    internal static MessageTemplate MessageTemplate()
+    {
+        return new MessageTemplateParser().Parse(String());
     }
 }

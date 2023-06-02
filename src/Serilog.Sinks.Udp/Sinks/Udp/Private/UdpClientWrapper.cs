@@ -17,38 +17,38 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace Serilog.Sinks.Udp.Private
+namespace Serilog.Sinks.Udp.Private;
+
+internal class UdpClientWrapper : IUdpClient
 {
-    internal class UdpClientWrapper : IUdpClient
+    private readonly UdpClient client;
+
+    public UdpClientWrapper(int localPort, AddressFamily family)
     {
-        private readonly UdpClient client;
+        if (localPort < IPEndPoint.MinPort || localPort > IPEndPoint.MaxPort) throw new ArgumentOutOfRangeException(nameof(localPort));
 
-        public UdpClientWrapper(int localPort, AddressFamily family)
+        client = localPort == 0
+            ? new UdpClient(family)
+            : new UdpClient(localPort, family);
+
+        // Allow for IPv4 mapped addresses over IPv6
+        if (family == AddressFamily.InterNetworkV6)
         {
-            if (localPort < IPEndPoint.MinPort || localPort > IPEndPoint.MaxPort) throw new ArgumentOutOfRangeException(nameof(localPort));
-
-            client = localPort == 0
-                ? new UdpClient(family)
-                : new UdpClient(localPort, family);
-
-            // Allow for IPv4 mapped addresses over IPv6
-            if (family == AddressFamily.InterNetworkV6)
-            {
-                client.Client.DualMode = true;
-            }
+            client.Client.DualMode = true;
         }
+    }
 
-        public Socket Client => client.Client;
+    public Socket Client => client.Client;
 
-        public Task<int> SendAsync(byte[] datagram, int bytes, IPEndPoint endPoint)
-        {
-            return client.SendAsync(datagram, bytes, endPoint);
-        }
+    public Task<int> SendAsync(byte[] datagram, int bytes, IPEndPoint endPoint)
+    {
+        return client.SendAsync(datagram, bytes, endPoint);
+    }
 
-        public Task<int> SendAsync(byte[] datagram, int bytes, string hostname, int port)
-        {
-            return client.SendAsync(datagram, bytes, hostname, port);
-        }
+    public Task<int> SendAsync(byte[] datagram, int bytes, string hostname, int port)
+    {
+        return client.SendAsync(datagram, bytes, hostname, port);
+    }
 
 #if NET4
         public void Close()
@@ -56,10 +56,9 @@ namespace Serilog.Sinks.Udp.Private
             client.Close();
         }
 #else
-        public void Dispose()
-        {
-            client.Dispose();
-        }
-#endif
+    public void Dispose()
+    {
+        client.Dispose();
     }
+#endif
 }

@@ -15,35 +15,34 @@
 using System;
 using System.Net;
 
-namespace Serilog.Sinks.Udp.Private
+namespace Serilog.Sinks.Udp.Private;
+
+internal class RemoteEndPoint
 {
-    internal class RemoteEndPoint
+    public RemoteEndPoint(string address, int port)
     {
-        public RemoteEndPoint(string address, int port)
+        if (port < IPEndPoint.MinPort || port > IPEndPoint.MaxPort) throw new ArgumentOutOfRangeException(nameof(port));
+
+        Address = address ?? throw new ArgumentNullException(nameof(address));
+        Port = port;
+
+        if (IPAddress.TryParse(address, out var ipAddress))
         {
-            if (port < IPEndPoint.MinPort || port > IPEndPoint.MaxPort) throw new ArgumentOutOfRangeException(nameof(port));
-
-            Address = address ?? throw new ArgumentNullException(nameof(address));
-            Port = port;
-
-            if (IPAddress.TryParse(address, out var ipAddress))
-            {
-                IPEndPoint = new IPEndPoint(ipAddress, port);
-            }
+            IPEndPoint = new IPEndPoint(ipAddress, port);
         }
-
-        public string Address { get; }
-
-        public int Port { get; }
-
-        /// <summary>
-        /// It's a very small performance optimization to parse the IP address and use it instead
-        /// of having the HTTP client trying to resolve the address and figure out that it isn't a
-        /// hostname at all but instead an ordinary IP address.
-        ///
-        /// A small optimization indeed, but one that was requested by one of the consumers of the
-        /// package.
-        /// </summary>
-        public IPEndPoint? IPEndPoint { get; }
     }
+
+    public string Address { get; }
+
+    public int Port { get; }
+
+    /// <summary>
+    /// It's a very small performance optimization to parse the IP address and use it instead
+    /// of having the HTTP client trying to resolve the address and figure out that it isn't a
+    /// hostname at all but instead an ordinary IP address.
+    ///
+    /// A small optimization indeed, but one that was requested by one of the consumers of the
+    /// package.
+    /// </summary>
+    public IPEndPoint? IPEndPoint { get; }
 }

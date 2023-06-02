@@ -15,101 +15,100 @@
 using System.IO;
 using System.Text;
 
-namespace Serilog.Sinks.Udp.Private
+namespace Serilog.Sinks.Udp.Private;
+
+/// <remarks>
+/// The methods in this class where influenced by
+/// https://weblog.west-wind.com/posts/2018/Nov/30/Returning-an-XML-Encoded-String-in-NET.
+/// </remarks>
+internal class XmlSerializer
 {
-    /// <remarks>
-    /// The methods in this class where influenced by
-    /// https://weblog.west-wind.com/posts/2018/Nov/30/Returning-an-XML-Encoded-String-in-NET.
-    /// </remarks>
-    internal class XmlSerializer
+    private const char LtCharacter = '<';
+    private const char GtCharacter = '>';
+    private const char AmpCharacter = '&';
+    private const char QuotCharacter = '\"';
+    private const char AposCharacter = '\'';
+    private const char LfCharacter = '\n';
+    private const char CrCharacter = '\r';
+    private const char TabCharacter = '\t';
+
+    private const string LfString = "\n";
+    private const string CrString = "\r";
+    private const string TabString = "\t";
+
+    private const string SerializedLt = "&lt;";
+    private const string SerializedGt = "&gt;";
+    private const string SerializedAmp = "&amp;";
+    private const string SerializedQuot = "&quot;";
+    private const string SerializedApos = "&apos;";
+    private const string SerializedLf = "&#xA;";
+    private const string SerializedCr = "&#xD;";
+    private const string SerializedTab = "&#x9;";
+
+    internal void SerializeXmlValue(TextWriter output, string text, bool isAttribute)
     {
-        private const char LtCharacter = '<';
-        private const char GtCharacter = '>';
-        private const char AmpCharacter = '&';
-        private const char QuotCharacter = '\"';
-        private const char AposCharacter = '\'';
-        private const char LfCharacter = '\n';
-        private const char CrCharacter = '\r';
-        private const char TabCharacter = '\t';
-
-        private const string LfString = "\n";
-        private const string CrString = "\r";
-        private const string TabString = "\t";
-
-        private const string SerializedLt = "&lt;";
-        private const string SerializedGt = "&gt;";
-        private const string SerializedAmp = "&amp;";
-        private const string SerializedQuot = "&quot;";
-        private const string SerializedApos = "&apos;";
-        private const string SerializedLf = "&#xA;";
-        private const string SerializedCr = "&#xD;";
-        private const string SerializedTab = "&#x9;";
-
-        internal void SerializeXmlValue(TextWriter output, string text, bool isAttribute)
+        foreach (var character in text)
         {
-            foreach (var character in text)
-            {
-                output.Write(SerializeXmlValue(character, isAttribute));
-            }
+            output.Write(SerializeXmlValue(character, isAttribute));
+        }
+    }
+
+    internal string SerializeXmlValue(string text, bool isAttribute)
+    {
+        var builder = new StringBuilder();
+
+        foreach (var character in text)
+        {
+            builder.Append(SerializeXmlValue(character, isAttribute));
         }
 
-        internal string SerializeXmlValue(string text, bool isAttribute)
+        return builder.ToString();
+    }
+
+    private static string SerializeXmlValue(char character, bool isAttribute)
+    {
+        if (character == LtCharacter)
         {
-            var builder = new StringBuilder();
-
-            foreach (var character in text)
-            {
-                builder.Append(SerializeXmlValue(character, isAttribute));
-            }
-
-            return builder.ToString();
+            return SerializedLt;
         }
 
-        private static string SerializeXmlValue(char character, bool isAttribute)
+        if (character == GtCharacter)
         {
-            if (character == LtCharacter)
-            {
-                return SerializedLt;
-            }
-
-            if (character == GtCharacter)
-            {
-                return SerializedGt;
-            }
-
-            if (character == AmpCharacter)
-            {
-                return SerializedAmp;
-            }
-
-            // Special handling for quotes
-            if (isAttribute && character == QuotCharacter)
-            {
-                return SerializedQuot;
-            }
-
-            if (isAttribute && character == AposCharacter)
-            {
-                return SerializedApos;
-            }
-
-            // Legal sub-chr32 characters
-            if (character == LfCharacter)
-            {
-                return isAttribute ? SerializedLf : LfString;
-            }
-
-            if (character == CrCharacter)
-            {
-                return isAttribute ? SerializedCr : CrString;
-            }
-
-            if (character == TabCharacter)
-            {
-                return isAttribute ? SerializedTab : TabString;
-            }
-
-            return character.ToString();
+            return SerializedGt;
         }
+
+        if (character == AmpCharacter)
+        {
+            return SerializedAmp;
+        }
+
+        // Special handling for quotes
+        if (isAttribute && character == QuotCharacter)
+        {
+            return SerializedQuot;
+        }
+
+        if (isAttribute && character == AposCharacter)
+        {
+            return SerializedApos;
+        }
+
+        // Legal sub-chr32 characters
+        if (character == LfCharacter)
+        {
+            return isAttribute ? SerializedLf : LfString;
+        }
+
+        if (character == CrCharacter)
+        {
+            return isAttribute ? SerializedCr : CrString;
+        }
+
+        if (character == TabCharacter)
+        {
+            return isAttribute ? SerializedTab : TabString;
+        }
+
+        return character.ToString();
     }
 }
