@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using Serilog.Events;
 using Serilog.Formatting;
 using System.IO;
@@ -22,6 +23,7 @@ namespace Serilog.Sinks.Udp.TextFormatters;
 /// <summary>
 /// Text formatter serializing log events into log4net compliant XML.
 /// </summary>
+[Obsolete("Consider using the Log4NetTextFormatter class from the Serilog.Formatting.Log4Net package instead, see https://github.com/serilog-contrib/serilog-formatting-log4net")]
 public class Log4netTextFormatter : ITextFormatter
 {
     private static readonly string SourceContextPropertyName = "SourceContext";

@@ -8,6 +8,7 @@ using System.Xml.Linq;
 
 namespace Serilog.Sinks.Udp.TextFormatters;
 
+[Obsolete("Can be deleted once the Log4jTextFormatter class is removed")]
 public class Log4jTextFormatterShould
 {
     private static readonly XNamespace Namespace = "http://jakarta.apache.org/log4j/";
