@@ -8,6 +8,7 @@ using System.Xml.Linq;
 
 namespace Serilog.Sinks.Udp.TextFormatters;
 
+[Obsolete("Can be deleted once the Log4jTextFormatter class is removed")]
 public class Log4netTextFormatterShould
 {
     private static readonly XNamespace Namespace = "http://logging.apache.org/log4net/schemas/log4net-events-1.2/";
