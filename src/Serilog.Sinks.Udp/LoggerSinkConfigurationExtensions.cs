@@ -72,6 +72,9 @@ public static class LoggerSinkConfigurationExtensions
     /// <param name="encoding">
     /// The string encoding sent over the network. The default is <see cref="Encoding.UTF8"/>.
     /// </param>
+    /// <param name="enableBroadcast">
+    /// Enables broadcasting on the UDP Client.
+    /// </param>
     /// <returns>
     /// Logger configuration, allowing configuration to continue.
     /// </returns>
@@ -85,7 +88,8 @@ public static class LoggerSinkConfigurationExtensions
         LoggingLevelSwitch? levelSwitch = null,
         string outputTemplate = DefaultOutputTemplate,
         IFormatProvider? formatProvider = null,
-        Encoding? encoding = null)
+        Encoding? encoding = null,
+        bool enableBroadcast = false)
     {
         if (sinkConfiguration == null) throw new ArgumentNullException(nameof(sinkConfiguration));
         if (outputTemplate == null) throw new ArgumentNullException(nameof(outputTemplate));
@@ -101,7 +105,8 @@ public static class LoggerSinkConfigurationExtensions
             localPort,
             restrictedToMinimumLevel,
             levelSwitch,
-            encoding);
+            encoding,
+            enableBroadcast);
     }
 
     /// <summary>
@@ -141,6 +146,9 @@ public static class LoggerSinkConfigurationExtensions
     /// <param name="encoding">
     /// The string encoding sent over the network. The default is <see cref="Encoding.UTF8"/>.
     /// </param>
+    /// <param name="enableBroadcast">
+    /// Enables broadcasting on the UDP Client.
+    /// </param>
     /// <returns>
     /// Logger configuration, allowing configuration to continue.
     /// </returns>
@@ -153,7 +161,8 @@ public static class LoggerSinkConfigurationExtensions
         int localPort = 0,
         LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
         LoggingLevelSwitch? levelSwitch = null,
-        Encoding? encoding = null)
+        Encoding? encoding = null,
+        bool enableBroadcast = false)
     {
         if (sinkConfiguration == null) throw new ArgumentNullException(nameof(sinkConfiguration));
 
@@ -161,7 +170,7 @@ public static class LoggerSinkConfigurationExtensions
 
         try
         {
-            var client = UdpClientFactory.Create(localPort, family);
+            var client = UdpClientFactory.Create(localPort, family, enableBroadcast);
             var sink = new BatchingSink(new UdpSink(client, remoteAddress, remotePort, formatter, encoding));
 
             return sinkConfiguration.Sink(sink, restrictedToMinimumLevel, levelSwitch);

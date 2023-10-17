@@ -11,7 +11,7 @@ namespace Serilog;
 
 public abstract class SinkFixture : IDisposable
 {
-    private readonly Func<int, AddressFamily, IUdpClient> originalFactory;
+    private readonly Func<int, AddressFamily, bool, IUdpClient> originalFactory;
     private readonly UdpClientMock client;
 
     protected SinkFixture()
@@ -19,7 +19,7 @@ public abstract class SinkFixture : IDisposable
         originalFactory = UdpClientFactory.Create;
 
         client = new UdpClientMock();
-        UdpClientFactory.Create = (_, __) => client.Object;
+        UdpClientFactory.Create = (_, __, ___) => client.Object;
     }
 
     protected abstract string RemoteAddress { get; }

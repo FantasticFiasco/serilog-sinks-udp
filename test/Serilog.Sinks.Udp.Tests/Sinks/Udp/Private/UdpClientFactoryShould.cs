@@ -19,7 +19,7 @@ public class UdpClientFactoryShould : IDisposable
     public void UseDualModeOnInterNetworkV6()
     {
         // Act
-        client = UdpClientFactory.Create(0, AddressFamily.InterNetworkV6);
+        client = UdpClientFactory.Create(0, AddressFamily.InterNetworkV6, false);
 
         // Assert
         client.Client.DualMode.ShouldBeTrue();
@@ -31,7 +31,7 @@ public class UdpClientFactoryShould : IDisposable
     public async void SendPayload(string address, AddressFamily family)
     {
         // Arrange
-        client = UdpClientFactory.Create(0, family);
+        client = UdpClientFactory.Create(0, family, false);
 
         var ipAddress = IPAddress.Parse(address);
 

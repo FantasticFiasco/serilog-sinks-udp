@@ -25,6 +25,6 @@ public static class UdpClientFactory
     /// <summary>
     /// Gets or sets the factory creating instances of <see cref="IUdpClient"/>.
     /// </summary>
-    public static Func<int, AddressFamily, IUdpClient> Create { get; set; }
-        = (localPort, family) => new UdpClientWrapper(localPort, family);
+    public static Func<int, AddressFamily, bool, IUdpClient> Create { get; set; }
+        = (localPort, family, enableBroadcast) => new UdpClientWrapper(localPort, family, enableBroadcast);
 }

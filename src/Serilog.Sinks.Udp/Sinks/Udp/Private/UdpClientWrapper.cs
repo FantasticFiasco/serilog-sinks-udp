@@ -23,7 +23,7 @@ internal class UdpClientWrapper : IUdpClient
 {
     private readonly UdpClient client;
 
-    public UdpClientWrapper(int localPort, AddressFamily family)
+    public UdpClientWrapper(int localPort, AddressFamily family, bool enableBroadcast)
     {
         if (localPort < IPEndPoint.MinPort || localPort > IPEndPoint.MaxPort) throw new ArgumentOutOfRangeException(nameof(localPort));
 
@@ -36,6 +36,9 @@ internal class UdpClientWrapper : IUdpClient
         {
             client.Client.DualMode = true;
         }
+
+        // Enable broadcasting
+        client.EnableBroadcast = enableBroadcast;
     }
 
     public Socket Client => client.Client;
