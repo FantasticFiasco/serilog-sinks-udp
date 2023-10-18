@@ -55,6 +55,9 @@ public static class LoggerSinkConfigurationExtensions
     /// The TCP port from which the UDP client will communicate. The default is 0 and will
     /// cause the UDP client not to bind to a local port.
     /// </param>
+    /// <param name="enableBroadcast">
+    /// Whether the <see cref="UdpClient"/> may send broadcast packets.
+    /// </param>
     /// <param name="restrictedToMinimumLevel">
     /// The minimum level for events passed through the sink. The default is
     /// <see cref="LevelAlias.Minimum"/>.
@@ -72,9 +75,6 @@ public static class LoggerSinkConfigurationExtensions
     /// <param name="encoding">
     /// The string encoding sent over the network. The default is <see cref="Encoding.UTF8"/>.
     /// </param>
-    /// <param name="enableBroadcast">
-    /// Enables broadcasting on the UDP Client.
-    /// </param>
     /// <returns>
     /// Logger configuration, allowing configuration to continue.
     /// </returns>
@@ -84,12 +84,12 @@ public static class LoggerSinkConfigurationExtensions
         int remotePort,
         AddressFamily family,
         int localPort = 0,
+        bool enableBroadcast = false,
         LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
         LoggingLevelSwitch? levelSwitch = null,
         string outputTemplate = DefaultOutputTemplate,
         IFormatProvider? formatProvider = null,
-        Encoding? encoding = null,
-        bool enableBroadcast = false)
+        Encoding? encoding = null)
     {
         if (sinkConfiguration == null) throw new ArgumentNullException(nameof(sinkConfiguration));
         if (outputTemplate == null) throw new ArgumentNullException(nameof(outputTemplate));
@@ -103,10 +103,10 @@ public static class LoggerSinkConfigurationExtensions
             family,
             formatter,
             localPort,
+            enableBroadcast,
             restrictedToMinimumLevel,
             levelSwitch,
-            encoding,
-            enableBroadcast);
+            encoding);
     }
 
     /// <summary>
@@ -136,6 +136,9 @@ public static class LoggerSinkConfigurationExtensions
     /// The TCP port from which the UDP client will communicate. The default is 0 and will
     /// cause the UDP client not to bind to a local port.
     /// </param>
+    /// <param name="enableBroadcast">
+    /// Whether the <see cref="UdpClient"/> may send broadcast packets.
+    /// </param>
     /// <param name="restrictedToMinimumLevel">
     /// The minimum level for events passed through the sink. The default is
     /// <see cref="LevelAlias.Minimum"/>.
@@ -145,9 +148,6 @@ public static class LoggerSinkConfigurationExtensions
     /// </param>
     /// <param name="encoding">
     /// The string encoding sent over the network. The default is <see cref="Encoding.UTF8"/>.
-    /// </param>
-    /// <param name="enableBroadcast">
-    /// Enables broadcasting on the UDP Client.
     /// </param>
     /// <returns>
     /// Logger configuration, allowing configuration to continue.
@@ -159,10 +159,10 @@ public static class LoggerSinkConfigurationExtensions
         AddressFamily family,
         ITextFormatter formatter,
         int localPort = 0,
+        bool enableBroadcast = false,
         LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
         LoggingLevelSwitch? levelSwitch = null,
-        Encoding? encoding = null,
-        bool enableBroadcast = false)
+        Encoding? encoding = null)
     {
         if (sinkConfiguration == null) throw new ArgumentNullException(nameof(sinkConfiguration));
 
