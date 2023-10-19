@@ -6,11 +6,12 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
-- [BREAKING CHANGE] Support for broadcast packages (contributed by [@dnatov](https://github.com/dnatov))
+## [9.0.0] - 2023-10-19
 
 ### :zap: Added
 
 - [BREAKING CHANGE] Support for specifying UDP datagram encoding (contributed by [@pedoc](https://github.com/pedoc))
+- [BREAKING CHANGE] Support for broadcast packages (contributed by [@dnatov](https://github.com/dnatov))
 
 ## [8.0.1] - 2022-11-20
 
