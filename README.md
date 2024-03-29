@@ -1,7 +1,7 @@
 <!-- omit in toc -->
 # Serilog.Sinks.Udp - A Serilog sink sending UDP packages over the network
 
-[![Build status](https://ci.appveyor.com/api/projects/status/p7gx5eltx8u0op7d/branch/main?svg=true)](https://ci.appveyor.com/project/FantasticFiasco/serilog-sinks-udp)
+[![CI/CD](https://github.com/FantasticFiasco/serilog-sinks-udp/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/FantasticFiasco/serilog-sinks-udp/actions/workflows/ci-cd.yml)
 [![NuGet Version](http://img.shields.io/nuget/v/Serilog.Sinks.Udp.svg?style=flat)](https://www.nuget.org/packages/Serilog.Sinks.Udp/)
 [![SemVer compatible](https://img.shields.io/badge/%E2%9C%85-SemVer%20compatible-blue)](https://semver.org/)
 [![NuGet](https://img.shields.io/nuget/dt/Serilog.Sinks.Udp.svg)](https://www.nuget.org/packages/Serilog.Sinks.Udp/)
