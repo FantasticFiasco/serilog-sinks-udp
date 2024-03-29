@@ -29,12 +29,10 @@ Print -Message $logo
 # -------------------------------------------------------------------------------------------------
 # VARIABLES
 # -------------------------------------------------------------------------------------------------
-$git_sha = "$env:APPVEYOR_REPO_COMMIT".TrimStart("0").substring(0, 7)
-$is_tagged_build = If ("$env:APPVEYOR_REPO_TAG" -eq "true") { $true } Else { $false }
-$is_pull_request = If ("$env:APPVEYOR_PULL_REQUEST_NUMBER" -eq "") { $false } Else { $true }
+$git_sha = "$env:GITHUB_SHA".TrimStart("0").substring(0, 7)
+$is_tagged_build = If ("$env:GITHUB_REF".StartsWith("refs/tags/")) { $true } Else { $false }
 Print "info" "git sha: $git_sha"
 Print "info" "is git tag: $is_tagged_build"
-Print "info" "is pull request: $is_pull_request"
 
 # -------------------------------------------------------------------------------------------------
 # BUILD
@@ -82,15 +80,20 @@ if ($is_tagged_build) {
 # -------------------------------------------------------------------------------------------------
 Print "test" "test started"
 
-# Test
-foreach ($test in Get-ChildItem test/*Tests)
-{
-    Push-Location $test
+dotnet test -c Release --no-build --collect:"XPlat Code Coverage" --settings coverlet.runsettings
+AssertLastExitCode
 
-    Print "test" "testing project in $test"
+Print "test" "download codecov uploader"
+Invoke-WebRequest -Uri https://uploader.codecov.io/latest/codecov.exe -Outfile codecov.exe
 
-    & dotnet test -c Release
+foreach ($test_result in Get-ChildItem .\test\Serilog.Sinks.UdpTests\TestResults\*\coverage.cobertura.xml) {
+    $relative_test_result = $test_result | Resolve-Path -Relative
+
+    # CodeCode uploader cant handle "\", thus we have to replace these with "/"
+    $relative_test_result = $relative_test_result -Replace "\\", "/"
+
+    Print "test" "upload coverage report $relative_test_result"
+
+    .\codecov.exe -f $relative_test_result
     AssertLastExitCode
-
-    Pop-Location
 }
