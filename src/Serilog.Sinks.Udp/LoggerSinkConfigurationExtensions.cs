@@ -22,6 +22,7 @@ using Serilog.Formatting.Display;
 using Serilog.Sinks.Udp.Private;
 using Serilog.Core;
 using Serilog.Debugging;
+using Serilog.Sinks.PeriodicBatching;
 
 namespace Serilog;
 
@@ -171,9 +172,16 @@ public static class LoggerSinkConfigurationExtensions
         try
         {
             var client = UdpClientFactory.Create(localPort, family, enableBroadcast);
-            var sink = new BatchingSink(new UdpSink(client, remoteAddress, remotePort, formatter, encoding));
+            var udpSink = new UdpSink(client, remoteAddress, remotePort, formatter, encoding);
+            var batchingSink = new PeriodicBatchingSink(
+                udpSink,
+                new PeriodicBatchingSinkOptions
+                {
+                    BatchSizeLimit = 1000,
+                    Period = TimeSpan.FromSeconds(0.5)
+                });
 
-            return sinkConfiguration.Sink(sink, restrictedToMinimumLevel, levelSwitch);
+            return sinkConfiguration.Sink(batchingSink, restrictedToMinimumLevel, levelSwitch);
         }
         catch (Exception e)
         {
