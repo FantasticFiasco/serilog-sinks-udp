@@ -62,10 +62,10 @@ public class Log4jTextFormatter : ITextFormatter
 
     private void WriteLogger(LogEvent logEvent, TextWriter output)
     {
-        if (logEvent.Properties.TryGetValue(SourceContextPropertyName, out var sourceContext))
+        var value = GetScalarPropertyValue(logEvent, SourceContextPropertyName);
+        if (value != null)
         {
-            var sourceContextValue = ((ScalarValue)sourceContext).Value.ToString();
-            output.Write($" logger=\"{xmlSerializer.SerializeXmlValue(sourceContextValue, true)}\"");
+            output.Write($" logger=\"{xmlSerializer.SerializeXmlValue(value, true)}\"");
         }
     }
 
@@ -112,10 +112,10 @@ public class Log4jTextFormatter : ITextFormatter
 
     private void WriteThread(LogEvent logEvent, TextWriter output)
     {
-        if (logEvent.Properties.TryGetValue(ThreadIdPropertyName, out var threadId))
+        var value = GetScalarPropertyValue(logEvent, ThreadIdPropertyName);
+        if (value != null)
         {
-            var threadIdValue = ((ScalarValue)threadId).Value.ToString();
-            output.Write($" thread=\"{xmlSerializer.SerializeXmlValue(threadIdValue, true)}\"");
+            output.Write($" thread=\"{xmlSerializer.SerializeXmlValue(value, true)}\"");
         }
     }
 
@@ -136,5 +136,16 @@ public class Log4jTextFormatter : ITextFormatter
         output.Write("<log4j:throwable>");
         xmlSerializer.SerializeXmlValue(output, logEvent.Exception.ToString(), false);
         output.Write("</log4j:throwable>");
+    }
+
+    private static string? GetScalarPropertyValue(LogEvent logEvent, string propertyName)
+    {
+        if (!logEvent.Properties.TryGetValue(propertyName, out var property))
+        {
+            return null;
+        }
+
+        var value = ((ScalarValue)property).Value;
+        return value?.ToString();
     }
 }
