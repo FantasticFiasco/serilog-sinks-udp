@@ -10,6 +10,10 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 - Support for .NET Framework 4.6.2
 
+### :syringe: Fixed
+
+- [#196](https://github.com/FantasticFiasco/serilog-sinks-udp/issues/196) Sink does not work well with other sinks due to dependency version mismatch. (discovered by [@sergey-messer](https://github.com/sergey-messer))
+
 ### :skull: Removed
 
 - [BREAKING CHANGE] Remove support for .NET Standard 1.3, aligning with the [cross-platform targeting library guidance](https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/cross-platform-targeting)
