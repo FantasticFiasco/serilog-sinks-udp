@@ -75,10 +75,10 @@ public class Log4netTextFormatter : ITextFormatter
 
     private void WriteLogger(LogEvent logEvent, TextWriter output)
     {
-        if (logEvent.Properties.TryGetValue(SourceContextPropertyName, out var sourceContext))
+        var value = GetScalarPropertyValue(logEvent, SourceContextPropertyName);
+        if (value != null)
         {
-            var sourceContextValue = ((ScalarValue)sourceContext).Value.ToString();
-            output.Write($" logger=\"{xmlSerializer.SerializeXmlValue(sourceContextValue, true)}\"");
+            output.Write($" logger=\"{xmlSerializer.SerializeXmlValue(value, true)}\"");
         }
     }
 
@@ -124,55 +124,55 @@ public class Log4netTextFormatter : ITextFormatter
 
     private void WriteThread(LogEvent logEvent, TextWriter output)
     {
-        if (logEvent.Properties.TryGetValue(ThreadIdPropertyName, out var threadId))
+        var value = GetScalarPropertyValue(logEvent, ThreadIdPropertyName);
+        if (value != null)
         {
-            var threadIdValue = ((ScalarValue)threadId).Value.ToString();
-            output.Write($" thread=\"{xmlSerializer.SerializeXmlValue(threadIdValue, true)}\"");
+            output.Write($" thread=\"{xmlSerializer.SerializeXmlValue(value, true)}\"");
         }
     }
 
     private void WriteUserName(LogEvent logEvent, TextWriter output)
     {
-        if (logEvent.Properties.TryGetValue(UserNamePropertyName, out var userName))
+        var value = GetScalarPropertyValue(logEvent, UserNamePropertyName);
+        if (value != null)
         {
-            var userNameValue = ((ScalarValue)userName).Value.ToString();
-            output.Write($" username=\"{xmlSerializer.SerializeXmlValue(userNameValue, true)}\"");
+            output.Write($" username=\"{xmlSerializer.SerializeXmlValue(value, true)}\"");
         }
     }
 
     private void WriteProcessName(LogEvent logEvent, TextWriter output)
     {
-        if (logEvent.Properties.TryGetValue(ProcessNamePropertyName, out var processName))
+        var value = GetScalarPropertyValue(logEvent, ProcessNamePropertyName);
+        if (value != null)
         {
-            var processNameValue = ((ScalarValue)processName).Value.ToString();
-            output.Write($" domain=\"{xmlSerializer.SerializeXmlValue(processNameValue, true)}\"");
+            output.Write($" domain=\"{xmlSerializer.SerializeXmlValue(value, true)}\"");
         }
     }
 
     private void WriteLocationInfoClass(LogEvent logEvent, TextWriter output)
     {
-        if (logEvent.Properties.TryGetValue(SourceContextPropertyName, out var sourceContext))
+        var value = GetScalarPropertyValue(logEvent, SourceContextPropertyName);
+        if (value != null)
         {
-            var sourceContextValue = ((ScalarValue)sourceContext).Value.ToString();
-            output.Write($" class=\"{xmlSerializer.SerializeXmlValue(sourceContextValue, true)}\"");
+            output.Write($" class=\"{xmlSerializer.SerializeXmlValue(value, true)}\"");
         }
     }
 
     private void WriteLocationInfoMethod(LogEvent logEvent, TextWriter output)
     {
-        if (logEvent.Properties.TryGetValue(MethodPropertyName, out var methodName))
+        var value = GetScalarPropertyValue(logEvent, MethodPropertyName);
+        if (value != null)
         {
-            var methodNameValue = ((ScalarValue)methodName).Value.ToString();
-            output.Write($" method=\"{xmlSerializer.SerializeXmlValue(methodNameValue, true)}\"");
+            output.Write($" method=\"{xmlSerializer.SerializeXmlValue(value, true)}\"");
         }
     }
 
     private void WriteHostName(LogEvent logEvent, TextWriter output)
     {
-        if (logEvent.Properties.TryGetValue(MachineNamePropertyName, out var machineName))
+        var value = GetScalarPropertyValue(logEvent, MachineNamePropertyName);
+        if (value != null)
         {
-            var machineNameValue = ((ScalarValue)machineName).Value.ToString();
-            output.Write($" <log4net:data name=\"log4net:HostName\" value=\"{xmlSerializer.SerializeXmlValue(machineNameValue, true)}\"></log4net:data>");
+            output.Write($" <log4net:data name=\"log4net:HostName\" value=\"{xmlSerializer.SerializeXmlValue(value, true)}\"></log4net:data>");
         }
     }
 
@@ -193,5 +193,16 @@ public class Log4netTextFormatter : ITextFormatter
         output.Write("<log4net:throwable>");
         xmlSerializer.SerializeXmlValue(output, logEvent.Exception.ToString(), false);
         output.Write("</log4net:throwable>");
+    }
+
+    private static string? GetScalarPropertyValue(LogEvent logEvent, string propertyName)
+    {
+        if (!logEvent.Properties.TryGetValue(propertyName, out var property))
+        {
+            return null;
+        }
+
+        var value = ((ScalarValue)property).Value;
+        return value?.ToString();
     }
 }
