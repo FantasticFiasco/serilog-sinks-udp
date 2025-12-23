@@ -12,12 +12,12 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: 8.x
+          dotnet-version: 10.x
       - run: scripts\build.ps1
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: nuget
           path: artifacts
@@ -28,9 +28,9 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-dotnet@v5
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v7
         with:
           name: nuget
           path: artifacts
