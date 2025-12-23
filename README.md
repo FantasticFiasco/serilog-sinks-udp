@@ -11,7 +11,7 @@
 [![Help](https://img.shields.io/badge/stackoverflow-serilog-orange.svg)](http://stackoverflow.com/questions/tagged/serilog)
 
 __Package__ - [Serilog.Sinks.Udp](https://www.nuget.org/packages/serilog.sinks.udp)
-| __Platforms__ - .NET Framework 4.6.1, .NET Standard 1.3/2.0/2.1
+| __Platforms__ - .NET Framework 4.6.2, .NET Standard 2.0/2.1
 
 <!-- omit in toc -->
 ## Table of contents
