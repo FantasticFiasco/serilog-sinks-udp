@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 using Shouldly;
 using Xunit;
 
@@ -28,7 +29,7 @@ public class UdpClientFactoryShould : IDisposable
     [Theory]
     [InlineData("127.0.0.1", AddressFamily.InterNetwork)]
     [InlineData("::1", AddressFamily.InterNetworkV6)]
-    public async void SendPayload(string address, AddressFamily family)
+    public async Task SendPayload(string address, AddressFamily family)
     {
         // Arrange
         client = UdpClientFactory.Create(0, family, false);
